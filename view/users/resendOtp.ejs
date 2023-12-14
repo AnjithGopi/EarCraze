@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <style>
+    body {
+      background: #eee;
+    }
+
+    .bgWhite {
+      background: white;
+      box-shadow: 0px 3px 6px 0px #cacaca;
+      border-radius: 10px;
+    }
+
+    .title {
+      font-weight: 600;
+      margin-top: 20px;
+      font-size: 24px;
+    }
+
+    .customBtn {
+      border-radius: 5px;
+      padding: 10px;
+    }
+
+    form input {
+      display: inline-block;
+      width: 200px;
+      height: 50px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+
+
+  <body>
+
+
+
+    <div class="container">
+      <div class="row justify-content-md-center">
+        <div class="col-md-4 text-center">
+          <div class="row">
+            <div class="col-sm-12 mt-5 bgWhite">
+              <div class="title">
+                Verify OTP
+              </div><br>
+    
+              <!-- Display the timer -->
+              <span id="otpTimerContainer">
+                Resend OTP in <span id="otpTimer">60s</span>
+              </span>
+    
+              <form action="/" class="mt-5" method="post">
+                <% if(locals.message){ %>
+                <span class="text-danger"><%= message %></span>
+                <% } %>
+    
+                <input class="otp" type="text" oninput='validateDigit(this)' onkeyup='changeTab(1)' maxlength="4" name="otp" required>
+    
+                <hr class="mt-4">
+                <button class='btn btn-success btn-block mt-4 mb-2 customBtn' id="verifyOtp" type="button" onclick="confirmRegistration()">Verify</button>
+    
+                <input type="hidden" value="<%=randomotp %>" name="generatedOtp">
+    
+                <!-- Add the "Resend OTP" link initially hidden -->
+                <a href="/getOtp" id="resendLink" class="text-secondary" onclick="resendOtp()" style="display: none;">Resend OTP</a>
+              </form>
+    
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <script>
+      // OTP timer
+      let otpTimer = 60; // Set the timer duration in seconds
+    
+      function startOtpTimer() {
+        const timerElement = document.getElementById('otpTimer');
+        const timerContainer = document.getElementById('otpTimerContainer');
+        const resendLink = document.getElementById('resendLink');
+        const verifyOtp = document.getElementById('verifyOtp');
+    
+        let interval = setInterval(function () {
+          timerElement.innerText = otpTimer + 's';
+          otpTimer--;
+    
+          if (otpTimer < 0) {
+            clearInterval(interval);
+            timerElement.innerText = 'none';
+            timerContainer.style.display = 'inline';
+            timerContainer.innerText = 'Otp timed out';
+            resendLink.style.display = 'inline'; // Show the "Resend OTP" link
+            verifyOtp.style.display='none'
+
+          }
+        }, 1000);
+      }
+    
+      // Function to trigger OTP resend (you need to implement this)
+      function resendOtp() {
+        // Your logic to resend OTP goes here
+    
+        // Hide the "Resend OTP" link and restart the timer
+        document.getElementById('resendLink').style.display = 'none';
+        document.getElementById('otpTimerContainer').style.display = 'inline';
+        otpTimer = 60;
+        startOtpTimer();
+      }
+    
+      // Start the timer when the page loads
+      window.onload = function () {
+        startOtpTimer();
+      };
+    </script>
+    
+    
+    
+    <script>
+      let validateDigit = function(ele) {
+        console.log(ele.value);
+        ele.value = ele.value.replace(/[^0-9]/g, '');
+      };
+    
+      let changeTab = function(val) {
+        let ele = document.querySelectorAll('input');
+    
+        if (val < ele.length && ele[val - 1].value !== '') {
+          ele[val].focus();
+        } else if (val > 1 && ele[val - 1].value === '') {
+          ele[val - 2].focus();
+        }
+      };
+    </script>
+
+   <!-- Include SweetAlert library -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script> -->
+
+<script>
+  function confirmRegistration() {
+    // Assuming you have an element with id="verifyOtp" for the button
+    const verifyButton = document.getElementById('verifyOtp');
+    const form = verifyButton.closest('form');
+
+    // Get form data
+    const formData = new FormData(form);
+
+    // Send a POST request using the Fetch API
+    fetch('/Otp', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: new URLSearchParams(formData),
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        // Display success message using SweetAlert
+        Swal.fire({
+          icon: 'success',
+          title: 'OTP Verified Successfully',
+          showConfirmButton: true,
+          confirmButtonClass: 'btn btn-success',
+        }).then(()=>{
+  window.location.href = '/login';
+
+        });
+
+        // Redirect or perform other actions after successful OTP verification
+        // window.location.href = '/success-page';
+      } else {
+        // Handle unsuccessful OTP verification
+        // Display an error message or take appropriate action
+        Swal.fire({
+  icon: 'error',
+  title: 'OTP Verification Failed',
+  text: 'Please check your OTP and try again.',
+  showConfirmButton: true,
+})
+// window.location.href = '/home';
+
+
+        // Optionally, show the "Resend OTP" link
+        document.getElementById('resendLink').style.display = 'block';
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      // Handle errors, display error messages, etc.
+    });
+  }
+
+ 
+
+ 
+</script>
+
+
+</body>
+</html>
+
+<!------------------------------------------------------------------------------------------------------------------------------------------------------------------------------->
+
+<!-- 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <style>
+    body {
+      background: #eee;
+    }
+
+    .bgWhite {
+      background: white;
+      box-shadow: 0px 3px 6px 0px #cacaca;
+      border-radius: 10px;
+    }
+
+    .title {
+      font-weight: 600;
+      margin-top: 20px;
+      font-size: 24px;
+    }
+
+    .customBtn {
+      border-radius: 5px;
+      padding: 10px;
+    }
+
+    form input {
+      display: inline-block;
+      width: 200px;
+      height: 50px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="row justify-content-md-center">
+      <div class="col-md-4 text-center">
+        <div class="row">
+          <div class="col-sm-12 mt-5 bgWhite">
+            <div class="title">
+              Verify OTP
+            </div>
+  
+            <form action="/Otp" class="mt-5" method="post" id="otpForm">
+              <% if(locals.message){ %>
+                <span class="text-danger"><%= message %></span>
+              <% } %>
+
+              <input class="otp" type="text" oninput='validateDigit(this)' onkeyup='changeTab(1)' maxlength="4" name="otp" required>
+
+              <hr class="mt-4">
+              <button class='btn btn-success btn-block mt-4 mb-2 customBtn' type="submit">Verify</button>
+              
+              <input type="hidden" value="<%=randomotp %>" name="generatedOtp">
+
+              <a href="#" class="text-secondary" onclick="resendOTP()">Resend OTP</a>
+            </form>
+           
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let validateDigit = function(ele) {
+      console.log(ele.value);
+      ele.value = ele.value.replace(/[^0-9]/g, '');
+    };
+
+    let changeTab = function(val) {
+      let ele = document.querySelectorAll('input');
+
+      if (val < ele.length && ele[val - 1].value !== '') {
+        ele[val].focus();
+      } else if (val > 1 && ele[val - 1].value === '') {
+        ele[val - 2].focus();
+      }
+    };
+
+    let resendOTP = function() { -->
+      <!-- // Assuming you have a function to make an AJAX request to the server to resend OTP
+      // You can replace this with your actual logic
+      fetch('/resendOTP', { method: 'POST' })
+        .then(response => response.json())
+        .then(data => {
+          console.log(data);
+          // Handle the response, you can update UI or show a success message
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    }; -->
+  <!-- </script>
+
+</body>
+</html> -->
+
