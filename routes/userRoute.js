@@ -28,7 +28,8 @@ user_Route.get("/productDetails",userController.productDetails)
 user_Route.get('/forgotPassword',userController.getForgotPassword)
 user_Route.post('/forgotPassword',userController.postForgotPassword)
 user_Route.get('/newOtp',userController.newOtp)
-user_Route.get('/newPassword',userController.passwordForm)
+user_Route.post('/newOtp',userController.verifyNewOtp)
+user_Route.post('/newPassword',userController.verifyPasswords)
 
 
 

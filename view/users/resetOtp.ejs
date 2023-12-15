@@ -69,15 +69,23 @@
       color: #333;
       margin-top: 20px;
     }
+    .text-danger {
+  color: red;
+}
   </style>
 </head>
 <body>
 
 <div>
   <h1>Enter OTP</h1>
-  <form action="/verify" method="post" onsubmit="return submitForm()">
+  <form action=" " method="post" onsubmit="return submitForm()">
     <!-- <label for="otp">OTP:</label> -->
-    <input type="text" id="otp" name="otp" required oninput="handleOTPInput()">
+    <%if(locals.message){%>
+
+      <span class="text-danger"><%-message%></span>
+
+    <%}%>
+    <input type="text" id="otp"  name="newOtp" required oninput="handleOTPInput()">
     <button type="submit" id="actionButton" disabled>Verify OTP</button>
   </form>
 
@@ -125,7 +133,9 @@
   // Function to submit the form (replace this with actual form submission logic)
   function submitForm() {
     // alert('Form submitted successfully!'); // Replace with actual form submission logic
-    window.location.href='/newPassword'
+    // window.location.href='/newPassword'
+    res.send("Password Form rendered")
+    // console.log("ywgdywi")
     return false; // Prevent the form from actually submitting for this example
   }
 

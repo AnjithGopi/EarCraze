@@ -151,6 +151,7 @@ const verifyOtp= async(req,res)=>{
                userdata.password=hashedPassword
                
                const userData= await userdata.save()
+               console.log(userData)
               
      
              
@@ -309,7 +310,7 @@ const newOtp= async(req,res)=>{
         // =================   OTP  generation  =========================
 
         var randomotp=Math.floor(1000 + Math.random() * 9000).toString();
-        // req.session.otp=randomotp
+        req.session.passwordOtp=randomotp
         // const {email,name}=req.session.data
         console.log(randomotp);
         const mailOptions = {
@@ -338,33 +339,41 @@ const newOtp= async(req,res)=>{
         
     }
 }
+const verifyNewOtp = async(req,res)=>{
+    let userOtp=req.body.newOtp;
+    if(userOtp===req.session.passwordOtp){
+        return  res.render("newPassword");
+    }else{
+        res.render("resetOtp",{message:"Invalid OTP"})
+    }
+}
 
-const passwordForm =async(req,res)=>{
+
+const verifyPasswords= async(req,res)=>{
     try {
-        res.render("newPassword.ejs")
+        if(req.body.newPassword==req.body.confirmPassword){
+            const newpass = req.body.newPassword
+       const userData = await User.findOne({email:req.session.email});
+
+       userData.password = newpass;
+      
+
+       await userData.save()
+
+       console.log(userData);
 
 
+        }else{
+            return res.render("newPassword",{message:"Passwords not match"})
+        }
+       
+  
         
     } catch (error) {
         console.log(error.message)
         
     }
 }
-
-const setNewPassword= async(req,res)=>{
-    try {
-        
-
-
-        
-    } catch (error) {
-        console.log(error.message)
-        
-    }
-}
-
-
-
 
 
 
@@ -373,5 +382,5 @@ const setNewPassword= async(req,res)=>{
 
 
 module.exports={
-   loadHome,loadRegister,loadLogin,verifySignup,verifyLogin,verifyOtp,productDetails,getOtp,getForgotPassword,postForgotPassword,newOtp,passwordForm
+   loadHome,loadRegister,loadLogin,verifySignup,verifyLogin,verifyOtp,productDetails,getOtp,getForgotPassword,postForgotPassword,newOtp,verifyNewOtp,verifyPasswords,
 }
