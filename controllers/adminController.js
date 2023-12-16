@@ -88,7 +88,7 @@ const blockUser= async(req,res)=>{
         const userId=req.query.id
         const userData=await User.findByIdAndUpdate(userId,{is_active:1})
              await userData.save()
-
+   
               const users=await User.find({is_admin:0})
 
         res.render("userlist",{message:"user Blocked",users})

@@ -5,6 +5,7 @@ mongoose.connect("mongodb://127.0.0.1:27017/EarCrazeProject")
 
 const express=require("express")
 const session=require("express-session")
+const nocache =require('nocache')
 const app=express()
 const nodemailer=require('nodemailer')
 const port=4000
@@ -45,6 +46,7 @@ app.post('/upload', upload.single('image'), async (req, res) => {
 
 
 // Middleware to parse JSON and URL-encoded data
+app.use(nocache())
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 

@@ -12,8 +12,12 @@ const loadHome=async(req,res)=>{
     try {
 
         const productData=await Product.find({is_active:0 , cat_status:0,brand_status:0})
+        const userId=req.session.userId;
+        const loginData = await User.findById(userId)
         if(productData){
-            res.render("home",{product:productData})
+            // res.render("home",{product:productData})
+
+            res.render("home",{product:productData,loginData})
         }
    
     } catch (error) {
@@ -40,9 +44,14 @@ const loadRegister= async(req,res)=>{
 
 const loadLogin=async(req,res,next)=>{
     try {
+        const from = req.query.from;
+        if(from=='pass'){
+            res.render('login',{msg:true})
+        }else{
+            res.render('login')
+        }
         
         
-        res.render('login')
     } catch (error) {
         console.log(error,"Cannot Render Login Page ")
         
@@ -135,7 +144,6 @@ const verifyOtp= async(req,res)=>{
 
         if(req.body.otp==req.body.generatedOtp){
 
-
             const{name,email,mobile,password}=req.session.data
             
 
@@ -205,7 +213,9 @@ const verifyLogin = async (req,res)=>{
                         const productData=await Product.find({is_active:0})
                         console.log(productData)
                         if(productData){
-                            res.render("home",{product:productData,loginData})
+                            req.session.userId=loginData._id
+                            // res.render("home",{product:productData,loginData})
+                            res.redirect("/")
                         }
 
                 
@@ -354,14 +364,15 @@ const verifyPasswords= async(req,res)=>{
         if(req.body.newPassword==req.body.confirmPassword){
             const newpass = req.body.newPassword
        const userData = await User.findOne({email:req.session.email});
-
-       userData.password = newpass;
-      
-
+       const saltRounds=10
+       const hashedPassword= await bcrypt.hash(newpass,saltRounds)
+    
+       userData.password=hashedPassword
        await userData.save()
+       console.log(userData)
 
-       console.log(userData);
-
+      
+        res.redirect("/login?from=pass")
 
         }else{
             return res.render("newPassword",{message:"Passwords not match"})
@@ -375,6 +386,21 @@ const verifyPasswords= async(req,res)=>{
     }
 }
 
+const loadLogout= async(req,res)=>{
+    try {
+
+        req.session.destroy()
+        res.redirect('/')
+        
+    } catch (error) {
+        console.log(error.message)
+        
+    }
+}
+
+
+
+
 
 
 
@@ -382,5 +408,5 @@ const verifyPasswords= async(req,res)=>{
 
 
 module.exports={
-   loadHome,loadRegister,loadLogin,verifySignup,verifyLogin,verifyOtp,productDetails,getOtp,getForgotPassword,postForgotPassword,newOtp,verifyNewOtp,verifyPasswords,
+   loadHome,loadRegister,loadLogin,verifySignup,verifyLogin,verifyOtp,productDetails,getOtp,getForgotPassword,postForgotPassword,newOtp,verifyNewOtp,verifyPasswords,loadLogout
 }

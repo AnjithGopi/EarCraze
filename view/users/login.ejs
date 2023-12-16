@@ -208,5 +208,16 @@ body{
 
     </script>
 
+   <%if(locals.msg){%>
+    <script>
+      Swal.fire({
+  position: "center",
+  icon: "success",
+  title: "Password Changed Successfully",
+  showConfirmButton: false,
+  timer: 1500
+});
+    </script>
+    <%}%>
 
 <%-include("../footer")-%>
