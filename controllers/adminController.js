@@ -3,6 +3,7 @@ const User=require("../models/userModel")
 const Product=require("../models/productModel")
 const Category=require("../models/categoryModel")
 const Brand=require("../models/brandModel")
+const Order= require('../models/orderModel')
 
 
 
@@ -10,7 +11,7 @@ const adminLogin= async(req,res)=>{
 
     try {
       
-        
+        console.log("admin Login")
         res.render("adminlogin")
 
 
@@ -46,15 +47,13 @@ const verifyAdmin= async(req,res)=>{
 
             if(adminData.email==req.body.email && adminData.password==req.body.password){
                 if(adminData.is_admin==1){
+                    req.session.adminId=adminData._id
+
                     console.log("Dashboard rendered")
-                    res.render("dashboard")
+
+                    res.redirect("/admin/dashboard")
                 }
-            //     }else{
-            //         res.render("adminlogin",{message:"Access Denied"})
-            //     }
-            // }else{
-            //     res.render("adminlogin",{message:"Access Denied"})
-            // }
+           
             }else{
                 res.render("adminlogin",{message:"Access Denied"})
 
@@ -90,8 +89,10 @@ const blockUser= async(req,res)=>{
              await userData.save()
    
               const users=await User.find({is_admin:0})
+              // res.render("userlist",{message:"user Blocked",users})
 
-        res.render("userlist",{message:"user Blocked",users})
+              res.redirect("/admin/userlist")
+              console.log("user Blocked")
         
     } catch (error) {
 
@@ -110,10 +111,21 @@ const unblockUser=async(req,res)=>{
 
 
         const users=await User.find({is_admin:0})
-        res.render("userlist",{message:"user Unblocked",users})
+        // res.render("userlist",{message:"user Unblocked",users})
+        console.log("user unblocked")
+        res.redirect("/admin/userlist")    
 
+    } catch (error) {
+        console.log(error.message)
+        
+    }
+}
 
-
+const adminLogout = async(req,res)=>{
+    try {
+        req.session.destroy()
+        res.redirect('/')
+        
     } catch (error) {
         console.log(error.message)
         
@@ -126,5 +138,5 @@ const unblockUser=async(req,res)=>{
 
 
 module.exports={
-    adminLogin,verifyAdmin,userList,blockUser,unblockUser,getDashboard,
+    adminLogin,verifyAdmin,userList,blockUser,unblockUser,getDashboard,adminLogout
 }

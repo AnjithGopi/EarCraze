@@ -3,6 +3,7 @@ const Product=require("../models/productModel")
 const User=require("../models/userModel")
 const Category=require("../models/categoryModel")
 const Brand=require("../models/brandModel")
+const Order= require('../models/orderModel')
 
 
 
@@ -82,10 +83,12 @@ const editProductLoad =async(req,res)=>{
 
         const id=req.query.id
         console.log(id)
-        const productDetails=await Product.findById({_id:id})
+        const productDetails=await Product.findById({_id:id}).populate('brand')
+        const category= await Category.find({})
+        const brand= await Brand.find({})
        
         if(productDetails){
-            res.render("editProduct",{Product:productDetails})
+            res.render("editProduct",{Product:productDetails,category,brand})
         }else{
             res.redirect("admin/productlist")
         }
@@ -105,12 +108,13 @@ const updateProduct= async(req,res)=>{
         // const updateData= await Product.findByIdAndUpdate({_id:id},{$set:{}})
         
         const{pname,pbrand,pdescription,regularPrice,salesPrice,image,category,tags, is_active,quantity}=req.body
-        
-        console.log(req.files);
+        console.log('===================================================');
+        console.log(req.body.pbrand, req.body.category);
           
         const updateData= await Product.findByIdAndUpdate({_id:id},{$set:{
             title:pname,
             brand:pbrand,
+            category:category,
             description:pdescription,
             regularprice:regularPrice,
             salesprice:salesPrice,
@@ -119,7 +123,7 @@ const updateProduct= async(req,res)=>{
 
      } })
         // const product=await productData.save()
-        console.log(updateData)
+        // console.log(updateData)
         res.redirect("/admin/productlist")
 
         
@@ -352,6 +356,73 @@ const unblockBrand= async(req,res)=>{
 }
 
 
+const getOrders= async(req,res)=>{
+    try {
+
+
+        // const userId=req.session.userId
+       
+        const orderList= await Order.find().populate('userId')
+
+
+
+        res.render('orderList',{orderList})
+        
+    } catch (error) {
+        console.log(error.message)
+        
+    }
+}
+
+
+
+
+const adminOrderCancel= async(req,res)=>{
+    try {
+
+         console.log(" Admin order cancel entered")
+        // const userId= req.session.userId
+        const orderId=req.query.id
+        // const orderCancel=await Order.findByIdAndUpdate(userId,$set{is_cancelled:1})
+
+        // const order = await Order.findByIdAndUpdate(userId, { $set: { is_cancelled: 1 } });
+        const orderCancel = await Order.findByIdAndUpdate(orderId,{$set: {is_cancelled:1}})
+
+
+
+       
+       
+        console.log("cancel Order Admin::",orderCancel)
+
+         res.redirect('/admin/getOrders')
+
+
+    
+
+        
+    } catch (error) {
+        console.log(error.message)
+        
+    }
+}
+
+
+
+const isDelivered= async(req,res)=>{
+
+    try {
+
+        
+
+
+
+
+        
+    } catch (error) {
+        console.log(error.message)
+        
+    }
+}
 
 
 
@@ -359,7 +430,9 @@ const unblockBrand= async(req,res)=>{
 
 
 
-   
+
+
+
 
 
 
@@ -367,6 +440,7 @@ module.exports={addProduct,addnewProduct,
     productList,editProductLoad,blockProduct,
     unblockProduct,updateProduct,getCatagories,
     addCatagories, brand,addBrand,addNewBrand,blockCategory,
-    unblockCategory,editCategoryLoad,updateCategory,blockBrand, unblockBrand}
+    unblockCategory,editCategoryLoad,updateCategory,blockBrand,
+     unblockBrand,getOrders,adminOrderCancel,isDelivered}
     
    

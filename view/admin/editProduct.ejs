@@ -32,12 +32,12 @@
         </div>
         <nav>
             <ul class="menu-aside">
-                <!-- <li class="menu-item active"> -->
+                 <li class="menu-item active"> 
                     <a class="menu-link" href="/admin/dashboard"> <i class="icon material-icons md-home"></i>
                         <span class="text">Dashboard</span>
                     </a>
-                <!-- </li> -->
-                <!-- <li class="menu-item has-submenu"> -->
+                </li> 
+                <!-- <li class="menu-item has-submenu">  -->
                     <a class="menu-link" href="/admin/productlist"> <i class="icon material-icons md-shopping_bag"></i>
                         <span class="text">Products</span>
                     </a>
@@ -49,14 +49,14 @@
                     <!-- </div>  -->
                 <!-- </li> -->
                 <!-- <li class="menu-item has-submenu"> -->
-                    <a class="menu-link" href="#"> <i class="icon material-icons md-shopping_cart"></i>
+                    <a class="menu-link" href="/admin/getOrders"> <i class="icon material-icons md-shopping_cart"></i>
                         <span class="text">Orders</span>
                     </a>
-                    <div class="submenu">
+                    <!-- <div class="submenu">
                         <a href="page-orders-1.html">Order list 1</a>
                         <a href="page-orders-2.html">Order list 2</a>
                         <a href="page-orders-detail.html">Order detail</a>
-                    </div>
+                    </div> -->
                 <!-- </li> -->
                 <!-- <li class="menu-item has-submenu"> -->
                     <a class="menu-link" href="/admin/userlist"> <i class="icon material-icons md-store"></i>
@@ -73,10 +73,16 @@
                         <span class="text">Add product</span>
                     </a>
                     <a class="menu-link" href="/admin/categories"> <i class="icon material-icons md-add_box"></i>
-                        <span class="text">Add Catagory</span>
+                        <span class="text">Catagories</span>
                     </a>
                     <!-- <div class="submenu">
                         <a href="/admin/addproduct">Add product </a>
+                        <a class="menu-link" href="/admin/addProduct"> <i class="icon material-icons md-add_box"></i>
+                        <span class="text">Add product</span>
+                    </a>
+                     <a class="menu-link" href="/admin/addProduct"> <i class="icon material-icons md-add_box"></i>
+                        <span class="text">Add product</span>
+                    </a> 
                        
                     </div> -->
                 <!-- </li> -->
@@ -105,7 +111,7 @@
                     </a>
                 <!-- </li> -->
                 <!-- <li class="menu-item"> -->
-                    <a class="menu-link" href="page-brands.html"> <i class="icon material-icons md-stars"></i>
+                    <a class="menu-link" href="/admin/brand"> <i class="icon material-icons md-stars"></i>
                         <span class="text">Brands</span> </a>
                 <!-- </li> -->
                 <!-- <li class="menu-item"> -->
@@ -156,8 +162,8 @@
                 <ul class="nav">
                     <li class="nav-item">
                         <a class="nav-link btn-icon" href="#">
-                            <i class="material-icons md-notifications animation-shake"></i>
-                            <span class="badge rounded-pill">3</span>
+                            <!-- <i class="material-icons md-notifications animation-shake"></i> -->
+                            <!-- <span class="badge rounded-pill">3</span> -->
                         </a>
                     </li>
                     <li class="nav-item">
@@ -166,15 +172,15 @@
                     <li class="nav-item">
                         <a href="#" class="requestfullscreen nav-link btn-icon"><i class="material-icons md-cast"></i></a>
                     </li>
-                    <li class="dropdown nav-item">
-                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownLanguage" aria-expanded="false"><i class="material-icons md-public"></i></a>
-                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownLanguage">
-                            <a class="dropdown-item text-brand" href="#"><img src="/admin-assets/imgs/theme/flag-us.png" alt="English">English</a>
-                            <a class="dropdown-item" href="#"><img src="/admin-assets/imgs/theme/flag-fr.png" alt="Français">Français</a>
+                    <!-- <li class="dropdown nav-item">
+                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownLanguage" aria-expanded="false"><i class="material-icons md-public"></i></a> -->
+                        <!-- <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownLanguage">
+                            <a class="dropdown-item text-brand" href="#"><img src="/admin-/admin-assets/imgs/theme/flag-us.png" alt="English">English</a>
+                            <a class="dropdown-item" href="#"><img src="/admin-/admin-assets/imgs/theme/flag-fr.png" alt="Français">Français</a>
                             <a class="dropdown-item" href="#"><img src="/admin-assets/imgs/theme/flag-jp.png" alt="Français">日本語</a>
                             <a class="dropdown-item" href="#"><img src="/admin-assets/imgs/theme/flag-cn.png" alt="Français">中国人</a>
-                        </div>
-                    </li>
+                        </div> -->
+                    <!-- </li> -->
                     <li class="dropdown nav-item">
                         <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount" aria-expanded="false"> <img class="img-xs rounded-circle" src="/admin-assets/imgs/people/avatar2.jpg" alt="User"></a>
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
@@ -184,7 +190,7 @@
                             <a class="dropdown-item" href="#"><i class="material-icons md-receipt"></i>Billing</a>
                             <a class="dropdown-item" href="#"><i class="material-icons md-help_outline"></i>Help center</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item text-danger" href="#"><i class="material-icons md-exit_to_app"></i>Logout</a>
+                            <a class="dropdown-item text-danger" href="/admin"><i class="material-icons md-exit_to_app"></i>Logout</a>
                         </div>
                     </li>
                 </ul>
@@ -202,6 +208,7 @@
                         </div>
                     </div>
                 </div>
+               <% if(locals.Product){%>
                 <div class="col-lg-6">
                     <div class="card mb-4">
                         <div class="card-header">
@@ -213,42 +220,43 @@
                                 <input type="text" placeholder="Product Name" class="form-control" id="product_name" value="<%=Product.title%>" name="pname" pattern="^[a-zA-Z0-9\s.,'-]*$
                                 " required>
                             </div>
-                            <div class="mb-4">
+                            <!-- <div class="mb-4">
                                 <label for="product_name" class="form-label">Brand</label>
-                                <input type="text" placeholder="Product Brand" class="form-control" id="product_name" name="pbrand" pattern="^[a-zA-Z0-9\s.,'-]*$
+                                <input type="text" placeholder="Product Brand" class="form-control" value="<%=Product.brand.name%>" id="product_name" name="pbrand" pattern="^[a-zA-Z0-9\s.,'-]*$
                                 " required>
                         
-                            </div>
+                            </div> -->
                             <div class="mb-4">
                                 <label class="form-label">Full description</label>
-                                <textarea placeholder="Product Description" class="form-control" rows="4" name="pdescription" required></textarea>
+                                <textarea placeholder="Product Description" class="form-control"  value=""rows="4" name="pdescription" required><%=Product.description%></textarea>
                             </div>
                             <div class="row">
                                 <div class="col-lg-4">
                                     <div class="mb-4">
                                         <label class="form-label">Regular price</label>
                                         <div class="row gx-2">
-                                            <input placeholder="₹" type="number" class="form-control" name="regularPrice" min="0"  required>
+                                            <input placeholder="₹" type="number" class="form-control" value="<%=Product.regularprice%>" name="regularPrice" min="0"  required>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-lg-4">
                                     <div class="mb-4">
                                         <label class="form-label">Sales price</label>
-                                        <input placeholder="₹" type="number" class="form-control" name="salesPrice" min="0"  required>
+                                        <input placeholder="₹" type="number" class="form-control" value="<%=Product.salesprice%>" name="salesPrice" min="0"  required>
                                     </div>
                                 </div>
                                 
                             </div>
                             <div class="mb-4">
                                 <label class="form-label">Quantity</label>
-                                <input type="number" placeholder="Quantity" class="form-control" id="product_name" name="quantity" min="1"  required>
+                                <input type="number" placeholder="Quantity" value="<%=Product.quantity%>" class="form-control" id="product_name" name="quantity" min="1"  required>
                             </div>
                            
                     </div>
                     </div>
                 
                 </div>
+              <%}%>
                 <div class="col-lg-3">
                     <div class="card mb-4">
                         <div class="card-header">
@@ -261,43 +269,53 @@
                             </div>
                         </div>
                     </div>
-                </form>       <!-- card end// -->
+                      <!-- card end// -->
                     <div class="card mb-4">
                         <div class="card-header">
                             <h4>Organization</h4>
                         </div>
                         <div class="card-body">
+
                             <div class="row gx-2">
                                 <div class="col-sm-6 mb-3">
+                                    <%if(locals.category){%>
+                                        
                                     <label class="form-label">Category</label>
-                                    <select class="form-select">
-                                        <option> Automobiles </option>
-                                        <option> Home items </option>
+                                    <select name="category" class="form-select">
+                                        <%for(let i=0;i<category.length;i++){%>
+                                        <option  value="<%=category[i]._id%>"> <%=category[i].name%> </option>
+                                        <!-- <option> Home items </option>
                                         <option> Electronics </option>
                                         <option> Smartphones </option>
                                         <option> Sport items </option>
-                                        <option> Baby and Tous </option>
+                                        <option> Baby and Tous </option> -->
+                                        <%}%>
                                     </select>
+                                  <%}%>
                                 </div>
                                 <div class="col-sm-6 mb-3">
-                                    <label class="form-label">Sub-category</label>
-                                    <select class="form-select">
-                                        <option> Nissan </option>
-                                        <option> Honda </option>
+                                    <%if(locals.brand){%>
+                                    <label class="form-label">Brand</label>
+                                    <select name="pbrand" class="form-select">
+                                        <%for(let i=0;i<brand.length;i++){%>
+                                        <option value="<%=brand[i]._id%>" > <%=brand[i].name%> </option>
+                                        <!-- <option> Honda </option>
                                         <option> Mercedes </option>
-                                        <option> Chevrolet </option>
+                                        <option> Chevrolet </option> -->
+                                        <%}%>
                                     </select>
+                                <%}%>
                                 </div>
-                                <div class="mb-4">
+                                <!-- <div class="mb-4">
                                     <label for="product_name" class="form-label">Tags</label>
                                     <input type="text" class="form-control">
-                                </div>
+                                </div> -->
                             </div> <!-- row.// -->
                         </div>
                     </div> <!-- card end// -->
                 </div>
             </div>
-        
+        </form>
         </section> <!-- content-main end// -->
         <footer class="main-footer font-xs">
             <div class="row pb-30 pt-15">

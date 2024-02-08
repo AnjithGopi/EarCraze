@@ -39,12 +39,12 @@
         </div>
         <nav>
             <ul class="menu-aside">
-                <!-- <li class="menu-item active"> -->
+                 <li class="menu-item active"> 
                     <a class="menu-link" href="/admin/dashboard"> <i class="icon material-icons md-home"></i>
                         <span class="text">Dashboard</span>
                     </a>
-                <!-- </li> -->
-                <!-- <li class="menu-item has-submenu"> -->
+                </li> 
+                <!-- <li class="menu-item has-submenu">  -->
                     <a class="menu-link" href="/admin/productlist"> <i class="icon material-icons md-shopping_bag"></i>
                         <span class="text">Products</span>
                     </a>
@@ -56,7 +56,7 @@
                     <!-- </div>  -->
                 <!-- </li> -->
                 <!-- <li class="menu-item has-submenu"> -->
-                    <a class="menu-link" href="#"> <i class="icon material-icons md-shopping_cart"></i>
+                    <a class="menu-link" href="/admin/getOrders"> <i class="icon material-icons md-shopping_cart"></i>
                         <span class="text">Orders</span>
                     </a>
                     <div class="submenu">
@@ -80,10 +80,16 @@
                         <span class="text">Add product</span>
                     </a>
                     <a class="menu-link" href="/admin/categories"> <i class="icon material-icons md-add_box"></i>
-                        <span class="text">Add Catagory</span>
+                        <span class="text">Catagories</span>
                     </a>
                     <!-- <div class="submenu">
                         <a href="/admin/addproduct">Add product </a>
+                        <a class="menu-link" href="/admin/addProduct"> <i class="icon material-icons md-add_box"></i>
+                        <span class="text">Add product</span>
+                    </a>
+                     <a class="menu-link" href="/admin/addProduct"> <i class="icon material-icons md-add_box"></i>
+                        <span class="text">Add product</span>
+                    </a> 
                        
                     </div> -->
                 <!-- </li> -->
@@ -112,7 +118,7 @@
                     </a>
                 <!-- </li> -->
                 <!-- <li class="menu-item"> -->
-                    <a class="menu-link" href="page-brands.html"> <i class="icon material-icons md-stars"></i>
+                    <a class="menu-link" href="/admin/brand"> <i class="icon material-icons md-stars"></i>
                         <span class="text">Brands</span> </a>
                 <!-- </li> -->
                 <!-- <li class="menu-item"> -->
@@ -163,8 +169,8 @@
                 <ul class="nav">
                     <li class="nav-item">
                         <a class="nav-link btn-icon" href="#">
-                            <i class="material-icons md-notifications animation-shake"></i>
-                            <span class="badge rounded-pill">3</span>
+                            <!-- <i class="material-icons md-notifications animation-shake"></i> -->
+                            <!-- <span class="badge rounded-pill">3</span> -->
                         </a>
                     </li>
                     <li class="nav-item">
@@ -173,15 +179,15 @@
                     <li class="nav-item">
                         <a href="#" class="requestfullscreen nav-link btn-icon"><i class="material-icons md-cast"></i></a>
                     </li>
-                    <li class="dropdown nav-item">
-                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownLanguage" aria-expanded="false"><i class="material-icons md-public"></i></a>
-                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownLanguage">
-                            <a class="dropdown-item text-brand" href="#"><img src="/admin-assets/imgs/theme/flag-us.png" alt="English">English</a>
-                            <a class="dropdown-item" href="#"><img src="/admin-assets/imgs/theme/flag-fr.png" alt="Français">Français</a>
+                    <!-- <li class="dropdown nav-item">
+                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownLanguage" aria-expanded="false"><i class="material-icons md-public"></i></a> -->
+                        <!-- <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownLanguage">
+                            <a class="dropdown-item text-brand" href="#"><img src="/admin-/admin-assets/imgs/theme/flag-us.png" alt="English">English</a>
+                            <a class="dropdown-item" href="#"><img src="/admin-/admin-assets/imgs/theme/flag-fr.png" alt="Français">Français</a>
                             <a class="dropdown-item" href="#"><img src="/admin-assets/imgs/theme/flag-jp.png" alt="Français">日本語</a>
                             <a class="dropdown-item" href="#"><img src="/admin-assets/imgs/theme/flag-cn.png" alt="Français">中国人</a>
-                        </div>
-                    </li>
+                        </div> -->
+                    <!-- </li> -->
                     <li class="dropdown nav-item">
                         <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount" aria-expanded="false"> <img class="img-xs rounded-circle" src="/admin-assets/imgs/people/avatar2.jpg" alt="User"></a>
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
@@ -191,7 +197,7 @@
                             <a class="dropdown-item" href="#"><i class="material-icons md-receipt"></i>Billing</a>
                             <a class="dropdown-item" href="#"><i class="material-icons md-help_outline"></i>Help center</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item text-danger" href="#"><i class="material-icons md-exit_to_app"></i>Logout</a>
+                            <a class="dropdown-item text-danger" href="/admin"><i class="material-icons md-exit_to_app"></i>Logout</a>
                         </div>
                     </li>
                 </ul>
@@ -221,10 +227,10 @@
                                     </div>
                                 </th>
                                 <th scope="col" class="col-name">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Product</th>
-                                <th scope="col" class="col-price">Price</th>
-                                <th scope="col" class="col-status">&nbsp;Status</th>
-                                <th scope="col" class="col-date">&nbsp;&nbsp;&nbsp;Date</th>
-                                <th scope="col" class="col-action text-end">Action&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                                <th scope="col" class="col-price">PRICE</th>
+                                <th scope="col" class="col-status">&nbsp;STATUS</th>
+                                <th scope="col" class="col-date">&nbsp;&nbsp;&nbsp;DATE</th>
+                                <th scope="col" class="col-action text-end">ACTION&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -247,7 +253,7 @@
                                             </a>
                                         </td>
                                         <td class="col-price">
-                                            <span><%= product[i].salesprice %></span>
+                                            <span>₹ <%= product[i].salesprice %></span>
                                         </td>
                                         <td class="col-status">
                                             <% if (product[i].is_active === 0) { %>

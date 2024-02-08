@@ -3,7 +3,11 @@
 const User=require("../models/userModel")
 const nodemailer=require('nodemailer')
 const Product=require("../models/productModel")
+const Address=require("../models/addressModel")
+const Cart= require("../models/cartModel")
+const Order= require("../models/orderModel")
 const bcrypt= require('bcrypt')
+
 
 
 
@@ -97,7 +101,8 @@ const getOtp=async(req,res)=>{
             service: 'Gmail',
             auth: {
                 user: 'ng.anjith444@gmail.com',
-                pass: 'dpnb bzyd gxpa eahu'
+               
+                pass:'vqcm bgdj rmkp wfia'
             }
         });
 
@@ -113,9 +118,7 @@ const getOtp=async(req,res)=>{
             to: email,
             subject: `Hello ${name}`,
             text: `Your verification OTP is ${randomotp}`
-            // subject: `Hello ${req.body.name}`,
-            // text: `Your verification OTP is ${randomotp}`
-            
+           
          };
          console.log(randomotp)
 
@@ -127,10 +130,7 @@ const getOtp=async(req,res)=>{
             }
          });
          res.render("otp",{randomotp})
-        // res.status(200).json({success:true})
-        
-        
-            // res.render("registration",{message:"invalid details"})
+       
 
     
     } catch (error) {
@@ -203,7 +203,13 @@ const verifyLogin = async (req,res)=>{
         console.log(req.body.email)
 
         const loginData= await User.findOne({email:req.body.email})
-            if(loginData){
+
+       
+        if(loginData && loginData.is_active == 1) {
+            return    res.render("login",{message:"User blocked by Admin"})
+        }
+
+            if(loginData && loginData.is_active == 0){
                 if(req.body.email==loginData.email) {
                     const isMatch=await bcrypt.compare(req.body.password,loginData.password)
 
@@ -279,6 +285,8 @@ const getForgotPassword= async(req,res)=>{
     }
 }
 
+
+
 const postForgotPassword=async(req,res)=>{
     try {
 
@@ -303,6 +311,8 @@ const postForgotPassword=async(req,res)=>{
 }
 
 
+
+
 const newOtp= async(req,res)=>{
     try {
 
@@ -310,14 +320,15 @@ const newOtp= async(req,res)=>{
             service: 'Gmail',
             auth: {
                 user: 'ng.anjith444@gmail.com',
-                pass: 'dpnb bzyd gxpa eahu'
+                // pass: 'dpnb bzyd gxpa eahu'
+                pass:'vqcm bgdj rmkp wfia'
             }
         });
 
         const userData=await User.findOne({email:req.session.email})
 
         
-        // =================   OTP  generation  =========================
+        // =================   OTP  generation  =========================//
 
         var randomotp=Math.floor(1000 + Math.random() * 9000).toString();
         req.session.passwordOtp=randomotp
@@ -349,6 +360,8 @@ const newOtp= async(req,res)=>{
         
     }
 }
+
+
 const verifyNewOtp = async(req,res)=>{
     let userOtp=req.body.newOtp;
     if(userOtp===req.session.passwordOtp){
@@ -389,9 +402,78 @@ const verifyPasswords= async(req,res)=>{
 const loadLogout= async(req,res)=>{
     try {
 
-        req.session.destroy()
+        req.session.userId  =null
         res.redirect('/')
         
+    } catch (error) {
+        console.log(error.message)
+        
+    }
+}
+
+const userDash= async(req,res)=>{
+    try {
+
+        const userId=req.session.userId
+
+        // const showAddress= await  Address.findOne({userId:userId})
+        const userDetails= await User.findById({_id:userId})
+        const showAddress= await Address.find({userId:userId})
+
+        
+        const order= await Order.find({userId:userId})
+        console.log(order,":::::Order details for user Dash")
+        console.log(showAddress);
+        console.log("Dashboard:",userDetails)
+        res.render("userDashboard",{showAddress,userDetails,order})
+        
+    } catch (error) {
+        console.log(error.message)
+        
+    }
+}
+
+
+const addressForm= async(req,res)=>{
+    try {
+
+        res.render("shippingAddressform")
+        
+    } catch (error) {
+        console.log(error.message)
+        
+    }
+}
+
+
+const  createAddress= async(req,res)=>{
+
+
+    try {
+        const userId=req.session.userId
+
+        const{fname,lname,address,city,state,country,zipcode,mobile}=req.body
+
+        const addressdata= new Address({
+
+            userId:userId,
+            first_name:fname,
+            last_name: lname,
+            address:address,
+            city:city,
+            state:state,
+            country:country,
+            zipcode:zipcode,
+            mobile:mobile
+        })
+
+        const addressData= await addressdata.save()
+        res.redirect('/userDashboard')
+
+        console.log(`shipment address:${addressData}`)
+        
+
+
     } catch (error) {
         console.log(error.message)
         
@@ -408,5 +490,14 @@ const loadLogout= async(req,res)=>{
 
 
 module.exports={
-   loadHome,loadRegister,loadLogin,verifySignup,verifyLogin,verifyOtp,productDetails,getOtp,getForgotPassword,postForgotPassword,newOtp,verifyNewOtp,verifyPasswords,loadLogout
+   loadHome,loadRegister,
+   loadLogin,verifySignup,
+   verifyLogin,
+   verifyOtp,productDetails,
+   getOtp,
+   getForgotPassword,
+   postForgotPassword,newOtp,
+   verifyNewOtp,verifyPasswords,
+   loadLogout,
+   userDash,addressForm,createAddress,
 }

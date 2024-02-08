@@ -18,6 +18,84 @@
     <!-- Template CSS -->
     <link href="/admin-assets/css/main.css" rel="stylesheet" type="text/css" />
 </head>
+<style>
+
+
+.table-hover {
+        width: 100%;
+        border-collapse: collapse;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        border-radius: 10px;
+        margin-bottom: 20px;
+    }
+
+    /* Header styling */
+    .table-hover thead th {
+        background-color: #3498db; /* Dodger Blue */
+        color: #fff;
+        font-weight: bold;
+        text-align: left;
+        padding: 15px;
+        border-bottom: 2px solid #2980b9; /* Slightly darker blue */
+    }
+
+    /* Row styling */
+    .table-hover tbody tr {
+        transition: background 0.3s ease;
+    }
+
+    .table-hover tbody tr:hover {
+        background-color: #ecf0f1;
+    }
+
+    /* Cell styling */
+    .table-hover td {
+        padding: 15px;
+        text-align: left;
+        border-bottom: 1px solid #bdc3c7;
+    }
+
+    /* Badge styling */
+    .badge {
+        border-radius: 5px;
+        padding: 8px 12px;
+    }
+
+    .badge.alert-success {
+        background-color: #2ecc71; /* Emerald Green */
+        color: #fff;
+    }
+
+    .badge.alert-danger {
+        background-color: #e74c3c; /* Alizarin Red */
+        color: #fff;
+    }
+
+    /* Button styling */
+    .btn-brand {
+        background-color: #3498db; /* Dodger Blue */
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        padding: 8px 15px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .btn-brand:hover {
+        background-color: #2980b9; /* Slightly darker blue */
+    }
+
+    /* Text alignment for the last column */
+    .text-end {
+        text-align: right;
+    }
+
+</style>
+
+
+
 
 <body>
     <div class="screen-overlay"></div>
@@ -32,12 +110,12 @@
         </div>
         <nav>
             <ul class="menu-aside">
-                <!-- <li class="menu-item active"> -->
+                 <li class="menu-item active"> 
                     <a class="menu-link" href="/admin/dashboard"> <i class="icon material-icons md-home"></i>
                         <span class="text">Dashboard</span>
                     </a>
-                <!-- </li> -->
-                <!-- <li class="menu-item has-submenu"> -->
+                </li> 
+                <!-- <li class="menu-item has-submenu">  -->
                     <a class="menu-link" href="/admin/productlist"> <i class="icon material-icons md-shopping_bag"></i>
                         <span class="text">Products</span>
                     </a>
@@ -49,14 +127,14 @@
                     <!-- </div>  -->
                 <!-- </li> -->
                 <!-- <li class="menu-item has-submenu"> -->
-                    <a class="menu-link" href="#"> <i class="icon material-icons md-shopping_cart"></i>
+                    <a class="menu-link" href="/admin/getOrders"> <i class="icon material-icons md-shopping_cart"></i>
                         <span class="text">Orders</span>
                     </a>
-                    <div class="submenu">
+                    <!-- <div class="submenu">
                         <a href="page-orders-1.html">Order list 1</a>
                         <a href="page-orders-2.html">Order list 2</a>
                         <a href="page-orders-detail.html">Order detail</a>
-                    </div>
+                    </div> -->
                 <!-- </li> -->
                 <!-- <li class="menu-item has-submenu"> -->
                     <a class="menu-link" href="/admin/userlist"> <i class="icon material-icons md-store"></i>
@@ -73,10 +151,16 @@
                         <span class="text">Add product</span>
                     </a>
                     <a class="menu-link" href="/admin/categories"> <i class="icon material-icons md-add_box"></i>
-                        <span class="text">Add Catagory</span>
+                        <span class="text">Catagories</span>
                     </a>
                     <!-- <div class="submenu">
                         <a href="/admin/addproduct">Add product </a>
+                        <a class="menu-link" href="/admin/addProduct"> <i class="icon material-icons md-add_box"></i>
+                        <span class="text">Add product</span>
+                    </a>
+                     <a class="menu-link" href="/admin/addProduct"> <i class="icon material-icons md-add_box"></i>
+                        <span class="text">Add product</span>
+                    </a> 
                        
                     </div> -->
                 <!-- </li> -->
@@ -105,7 +189,7 @@
                     </a>
                 <!-- </li> -->
                 <!-- <li class="menu-item"> -->
-                    <a class="menu-link" href="page-brands.html"> <i class="icon material-icons md-stars"></i>
+                    <a class="menu-link" href="/admin/brand"> <i class="icon material-icons md-stars"></i>
                         <span class="text">Brands</span> </a>
                 <!-- </li> -->
                 <!-- <li class="menu-item"> -->
@@ -138,7 +222,7 @@
     <main class="main-wrap">
         <header class="main-header navbar">
             <div class="col-search">
-                <form class="searchform">
+                <!-- <form class="searchform">
                     <div class="input-group">
                         <input list="search_terms" type="text" class="form-control" placeholder="Search term">
                         <button class="btn btn-light bg" type="button"> <i class="material-icons md-search"></i></button>
@@ -149,15 +233,15 @@
                         <option value="Apple iphone">
                         <option value="Ahmed Hassan">
                     </datalist>
-                </form>
+                </form> -->
             </div>
             <div class="col-nav">
                 <button class="btn btn-icon btn-mobile me-auto" data-trigger="#offcanvas_aside"> <i class="material-icons md-apps"></i> </button>
                 <ul class="nav">
                     <li class="nav-item">
                         <a class="nav-link btn-icon" href="#">
-                            <i class="material-icons md-notifications animation-shake"></i>
-                            <span class="badge rounded-pill">3</span>
+                            <!-- <i class="material-icons md-notifications animation-shake"></i> -->
+                            <!-- <span class="badge rounded-pill">3</span> -->
                         </a>
                     </li>
                     <li class="nav-item">
@@ -166,15 +250,15 @@
                     <li class="nav-item">
                         <a href="#" class="requestfullscreen nav-link btn-icon"><i class="material-icons md-cast"></i></a>
                     </li>
-                    <li class="dropdown nav-item">
-                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownLanguage" aria-expanded="false"><i class="material-icons md-public"></i></a>
-                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownLanguage">
-                            <a class="dropdown-item text-brand" href="#"><img src="/admin-assets/imgs/theme/flag-us.png" alt="English">English</a>
-                            <a class="dropdown-item" href="#"><img src="/admin-assets/imgs/theme/flag-fr.png" alt="Français">Français</a>
+                    <!-- <li class="dropdown nav-item">
+                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownLanguage" aria-expanded="false"><i class="material-icons md-public"></i></a> -->
+                        <!-- <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownLanguage">
+                            <a class="dropdown-item text-brand" href="#"><img src="/admin-/admin-assets/imgs/theme/flag-us.png" alt="English">English</a>
+                            <a class="dropdown-item" href="#"><img src="/admin-/admin-assets/imgs/theme/flag-fr.png" alt="Français">Français</a>
                             <a class="dropdown-item" href="#"><img src="/admin-assets/imgs/theme/flag-jp.png" alt="Français">日本語</a>
                             <a class="dropdown-item" href="#"><img src="/admin-assets/imgs/theme/flag-cn.png" alt="Français">中国人</a>
-                        </div>
-                    </li>
+                        </div> -->
+                    <!-- </li> -->
                     <li class="dropdown nav-item">
                         <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount" aria-expanded="false"> <img class="img-xs rounded-circle" src="/admin-assets/imgs/people/avatar2.jpg" alt="User"></a>
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
@@ -184,7 +268,7 @@
                             <a class="dropdown-item" href="#"><i class="material-icons md-receipt"></i>Billing</a>
                             <a class="dropdown-item" href="#"><i class="material-icons md-help_outline"></i>Help center</a>
                             <div class="dropdown-divider"></div>
-                            <a class="dropdown-item text-danger" href="#"><i class="material-icons md-exit_to_app"></i>Logout</a>
+                            <a class="dropdown-item text-danger" href="/admin"><i class="material-icons md-exit_to_app"></i>Logout</a>
                         </div>
                     </li>
                 </ul>
@@ -227,11 +311,11 @@
                                
 
                                 <tr>
-                                    <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbspUser</th>
-                                    <th>Email</th>
-                                    <th>Status</th>
-                                    <th>Registered</th>
-                                    <th class="text-end"> Action </th>
+                                    <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;USER</th>
+                                    <th>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EMAIL</th>
+                                    <th>&nbsp;&nbsp;STATUS</th>
+                                    <th>&nbsp;&nbsp;REGISTRATION</th>
+                                    <th class="text-end"> ACTION &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -244,9 +328,9 @@
                                         <tr>
                                             <td width="40%">
                                                 <a href="#" class="itemside">
-                                                    <div class="left">
-                                                        <!-- <img src="/admin-assets/imgs/people/avatar1.jpg" class="img-sm img-avatar" alt="Userpic"> -->
-                                                    </div>
+                                                    <!-- <div class="left">
+                                                        <img src="/admin-assets/imgs/people/avatar1.jpg" class="img-sm img-avatar" alt="Userpic">
+                                                    </div> -->
                                                     <div class="info pl-3">
                                                         <h6 class="mb-0 title"><%=users[i].name%></h6>
                                                         <!-- <small class="text-muted"><%=users[i].id%></small> -->
@@ -293,7 +377,7 @@
                     </div>
                 </div> <!-- card-body end// -->
             </div> <!-- card end// -->
-            <div class="pagination-area mt-15 mb-50">
+            <div class="pagination-area mt-5 mb-0">
                 <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-start">
                         <li class="page-item active"><a class="page-link" href="#">01</a></li>
@@ -306,7 +390,7 @@
                 </nav>
             </div>
         </section> <!-- content-main end// -->
-        <footer class="main-footer font-xs">
+        <!-- <footer class="main-footer font-xs">
             <div class="row pb-30 pt-15">
                 <div class="col-sm-6">
                     <script data-cfasync="false" src="../../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
@@ -319,7 +403,7 @@
                     </div>
                 </div>
             </div>
-        </footer>
+        </footer> -->
     </main>
     <script src="/admin-assets/js/vendors/jquery-3.6.0.min.js"></script>
     <script src="/admin-assets/js/vendors/bootstrap.bundle.min.js"></script>

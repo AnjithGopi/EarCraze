@@ -18,7 +18,13 @@
     <!-- Template CSS -->
     <link rel="stylesheet" href="assets/css/maind134.css?v=3.4">
 <link rel="stylesheet" href="assets/js/magiczoom.css">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
 <script src="assets/js/magiczoom.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
 </head>
 
@@ -129,7 +135,7 @@
                                         <a href="#" class="qty-up"><i class="fi-rs-angle-small-up"></i></a>
                                     </div>
                                     <div class="product-extra-link2">
-                                        <button type="submit" class="button button-add-to-cart">Add to cart</button>
+                                        <button type="submit"   class="button button-add-to-cart">Add to cart</button>
                                         <a aria-label="Add To Wishlist" class="action-btn hover-up" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
                                         <a aria-label="Compare" class="action-btn hover-up" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
                                     </div>
@@ -889,7 +895,7 @@
                                         <h2 class="title-detail"><%=products.title%></h2>
                                         <div class="product-detail-rating">
                                             <div class="pro-details-brand">
-                                                <span> Brands: <a href="shop-grid-right.html"><%=products.brand.name%></a></span>
+                                                <span> Brand: <a href="shop-grid-right.html"><%=products.brand.name%></a></span>
                                             </div>
                                             <div class="product-rate-cover text-end">
                                                 <div class="product-rate d-inline-block">
@@ -940,22 +946,35 @@
                                             </ul>
                                         </div> -->
                                         <div class="bt-1 border-color-1 mt-30 mb-30"></div>
+                                       <!-- <form action="/addtoCart" method="post"> -->
                                         <div class="detail-extralink">
+                                            
+
+                                            
                                             <div class="detail-qty border radius">
-                                                <a href="#" class="qty-down"><i class="fi-rs-angle-small-down"></i></a>
-                                                <span class="qty-val">1</span>
-                                                <a href="#" class="qty-up"><i class="fi-rs-angle-small-up"></i></a>
+                                                <a href="#" class="qty-down" onclick="decreaseQuantity()"><i class="fi-rs-angle-small-down"></i></a>
+                                                <span class="qty-val" id="qty">1</span>
+                                                <a href="#" class="qty-up" onclick="increaseQuantity()"><i class="fi-rs-angle-small-up"></i></a>
                                             </div>
                                             <div class="product-extra-link2">
-                                                <button type="submit" class="button button-add-to-cart">Add to cart</button>
+                                                <button type="submit" onclick="addToCart()" class="button button-add-to-cart">Add to cart</button>
+                                                <input type="hidden" name="productId" id="productId" value="<%=products._id%>">
                                                 <a aria-label="Add To Wishlist" class="action-btn hover-up" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
                                                 <a aria-label="Compare" class="action-btn hover-up" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
                                             </div>
+
+
+                                               
+                                               
+                                            </div>
                                         </div>
+
+                                       
+                                        
                                         <ul class="product-meta font-xs color-grey mt-50">
-                                            <li class="mb-5">SKU: <a href="#">FWM15VKT</a></li>
-                                            <li class="mb-5">Tags: <a href="#" rel="tag">Cloth</a>, <a href="#" rel="tag">Women</a>, <a href="#" rel="tag">Dress</a> </li>
-                                            <li>Availability:<span class="in-stock text-success ml-5">8 Items In Stock</span></li>
+                                            <!-- <li class="mb-5">SKU: <a href="#">FWM15VKT</a></li>
+                                            <li class="mb-5">Tags: <a href="#" rel="tag">Cloth</a>, <a href="#" rel="tag">Women</a>, <a href="#" rel="tag">Dress</a> </li> -->
+                                            <li>Availability:<span class="in-stock text-success ml-5"><%=products.quantity%> Items In Stock</span></li>
                                         </ul>
                                     </div>
                                     <!-- Detail Info -->
@@ -1516,6 +1535,84 @@
         </div>
     </div>
     <!-- Vendor JS-->
+
+    <script>
+var currentQuantity = 1; // Initialize the quantity
+
+function increaseQuantity() {
+    // if(currentQuantity<=products.quantity){
+        currentQuantity++;
+    document.getElementById('qty').innerText = currentQuantity;
+
+    // }
+  
+}
+
+function decreaseQuantity() {
+    if (currentQuantity > 1) {
+        currentQuantity--;
+        document.getElementById('qty').innerText = currentQuantity;
+    }
+}
+
+function addToCart() {
+
+    var quantity = parseInt(currentQuantity);
+    var productId = document.getElementById('productId').value;
+
+    console.log('Quantity:', quantity);
+    console.log('Product ID:', productId);
+
+    // Add your fetch logic here
+     
+
+
+
+
+        fetch("/addtoCart", {
+    method: "POST",
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ quantity, productId }),
+})
+.then(response => {
+
+    if (!response.ok) {
+        throw new Error(`Failed to add item to cart. Status: ${response.status}`);
+    }
+    return response.json(); // Assuming your server sends a JSON response
+})
+.then(data => {
+   
+    // Handle the response data accordingly, e.g., show a success message
+   
+    if(!data.success){
+        toastr.error(data.message);
+        // alert(data.message)
+    } else{
+        Swal.fire({
+        icon: 'success',
+        title: 'Added Successfully',
+        showConfirmButton: true,
+        confirmButtonClass: 'btn btn-warning',
+    })
+    .then(() => {
+        window.location.href = '/cart';
+    });
+    }
+})
+.catch(error => {
+    
+    console.error('Error adding item to cart:', error);
+    // Handle the error, e.g., show an error message to the user
+});
+
+    
+
+}
+
+    </script>
     <script src="assets/js/vendor/modernizr-3.6.0.min.js"></script>
     <script src="assets/js/vendor/jquery-3.6.0.min.js"></script>
     <script src="assets/js/vendor/jquery-migrate-3.3.0.min.js"></script>

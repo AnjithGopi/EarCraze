@@ -195,7 +195,7 @@
                                             
                                             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
                                                 <a class="dropdown-item" href="#"><i class="material-icons md-perm_identity"></i>Edit Profile</a>
-                                                <a class="dropdown-item" href="#"><i class="material-icons md-settings"></i>Account Settings</a>
+                                                <a class="dropdown-item" href="/userDashboard"><i class="material-icons md-settings"></i>Account </a>
                                                 <a class="dropdown-item" href="#"><i class="material-icons md-account_balance_wallet"></i>Wallet</a>
                                                 <a class="dropdown-item" href="#"><i class="material-icons md-receipt"></i>Billing</a>
                                                 <a class="dropdown-item" href="#"><i class="material-icons md-help_outline"></i>Help center</a>
@@ -290,7 +290,9 @@
                                                 <h4>Total <span>$4000.00</span></h4>
                                             </div>
                                             <div class="shopping-cart-button">
-                                                <a href="shop-cart.html" class="outline">View cart</a>
+                                                <%if(locals.loginData){%>
+                                                <a href="/cart" class="outline">View cart</a>
+                                                <%}%>
                                                 <a href="shop-checkout.html">Checkout</a>
                                             </div>
                                         </div>
@@ -665,7 +667,9 @@
                                             <h4>Total <span>$383.00</span></h4>
                                         </div>
                                         <div class="shopping-cart-button">
-                                            <a href="shop-cart.html">View cart</a>
+                                            <%if(locals.loginData){%>
+                                            <a href="/cart">View cart</a>
+                                            <%}%>
                                             <a href="shop-checkout.html">Checkout</a>
                                         </div>
                                     </div>
@@ -2409,7 +2413,9 @@
                         <h5 class="widget-title wow fadeIn animated">My Account</h5>
                         <ul class="footer-list wow fadeIn animated">
                             <li><a href="#">Sign In</a></li>
-                            <li><a href="#">View Cart</a></li>
+                            <%if(locals.loginData){%>
+                            <li><a href="/cart">View Cart</a></li>
+                            <%}%>
                             <li><a href="#">My Wishlist</a></li>
                             <li><a href="#">Track My Order</a></li>
                             <li><a href="#">Help</a></li>
@@ -2456,7 +2462,7 @@
         <div class="preloader d-flex align-items-center justify-content-center">
             <div class="preloader-inner position-relative">
                 <div class="text-center">
-                    <h5 class="mb-5">Now Loading</h5>
+                    <h5 class="mb-5">Ear Craze</h5>
                     <div class="loader">
                         <div class="bar bar1"></div>
                         <div class="bar bar2"></div>
