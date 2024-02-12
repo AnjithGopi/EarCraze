@@ -377,16 +377,16 @@ const getOrders= async(req,res)=>{
 
 
 
-const adminOrderCancel= async(req,res)=>{
+const adminOrderCancelled= async(req,res)=>{
     try {
 
-         console.log(" Admin order cancel entered")
+         console.log("Order Cancelled")
         // const userId= req.session.userId
         const orderId=req.query.id
         // const orderCancel=await Order.findByIdAndUpdate(userId,$set{is_cancelled:1})
 
         // const order = await Order.findByIdAndUpdate(userId, { $set: { is_cancelled: 1 } });
-        const orderCancel = await Order.findByIdAndUpdate(orderId,{$set: {is_cancelled:1}})
+        const orderCancel = await Order.findByIdAndUpdate(orderId,{$set: {orderStatus:'Cancelled'}})
 
 
 
@@ -407,14 +407,102 @@ const adminOrderCancel= async(req,res)=>{
 }
 
 
+const adminOrderPending= async(req,res)=>{
+    try {
 
-const isDelivered= async(req,res)=>{
+        console.log("order changed to pending")
+        const orderId= req.query.id
+        const orderPending= await Order.findByIdAndUpdate(orderId,{$set:{orderStatus:"Pending"}})
+        console.log('orderPending:',orderPending)
+        res.redirect('/admin/getOrders')
+        
+    } catch (error) {
+
+        console.log(error.message)
+        
+    }
+}
+
+
+
+
+const adminOrderShipped= async(req,res)=>{
+
+    try {
+        console.log("Order changed to shipped")
+
+        const orderId= req.query.id
+    
+        const orderShipped =await Order.findByIdAndUpdate(orderId,{$set:{ orderStatus:'Shipped'}})
+    
+        console.log('ordershipped:',orderShipped)
+    
+        res.redirect('/admin/getOrders')
+        
+    } catch (error) {
+
+        console.log(error.message)
+        
+    }
+   
+}
+
+
+const adminOrderDelivered=async(req,res)=>{
+
 
     try {
 
+        console.log("Order changed to delivered")
+
+        const orderId= req.query.id
+        const orderDelivered= await  Order.findByIdAndUpdate(orderId,{$set:{orderStatus:'Delivered'}})
+         console.log('order delivered:',orderDelivered)
+         res.redirect('/admin/getOrders')
         
+    } catch (error) {
+
+        console.log(error.message)
+        
+    }
+   
 
 
+}
+
+
+const adminOrderReturned=async(req,res)=>{
+    try {
+
+        
+        console.log("Order changed to Returned")
+
+        const orderId= req.query.id
+        const orderReturned= await  Order.findByIdAndUpdate(orderId,{$set:{orderStatus:'Returned'}})
+         console.log('order Returned:',orderReturned)
+         res.redirect('/admin/getOrders')
+
+
+        
+    } catch (error) {
+        console.log(error.message)
+        
+    }
+}
+
+
+
+
+
+
+
+
+const orderDetails= async(req,res)=>{
+
+    try {
+
+
+        res.render('orderdetails')
 
 
         
@@ -436,11 +524,13 @@ const isDelivered= async(req,res)=>{
 
 
 
+
 module.exports={addProduct,addnewProduct,
     productList,editProductLoad,blockProduct,
     unblockProduct,updateProduct,getCatagories,
     addCatagories, brand,addBrand,addNewBrand,blockCategory,
     unblockCategory,editCategoryLoad,updateCategory,blockBrand,
-     unblockBrand,getOrders,adminOrderCancel,isDelivered}
+     unblockBrand,getOrders,adminOrderCancelled,orderDetails,adminOrderShipped,
+     adminOrderDelivered,adminOrderPending,adminOrderReturned}
     
    

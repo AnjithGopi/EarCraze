@@ -25,11 +25,11 @@ const orderSchema= mongoose.Schema({
     orderId:{type:String},
     paymentMethod:{type:String,required:true},
     paymentStatus:{type:String,enum:['Pending','Recieved','Failed','Refund'],default:"Pending"},
-    orderStatus:{type:String,enum:['Order Placed','Confirmed','Shipped','delivered','Cancelled','Returned'],default:"Order Placed"},
+    orderStatus:{type:String,enum:['Order Placed','Confirmed','Shipped','Delivered','Cancelled','Returned'],default:"Order Placed"},
     orderDate:{type:Date,default:Date.now},
     orderId:{type:String},
     totalAmount:{type:String},
-    is_cancelled:{type:Number,default:0},
+    // is_cancelled:{type:Number,default:0},
     deliveryStatus:{type:Number,default:0}
     
 

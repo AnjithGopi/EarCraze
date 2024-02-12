@@ -98,6 +98,85 @@
     background-color: #0056b3;
 }
 
+.custom-btn-danger {
+    background-color: red; /* Change to your desired color */
+    color: white; /* Text color */
+    border: 1px solid red; /* Border color */
+    border-radius: 5px; /* Rounded corners */
+    padding: 5px 10px; /* Padding */
+    font-size: 12px; /* Font size */
+}
+
+.custom-btn-primary {
+    background-color: blue; /* Change to your desired color */
+    color: white; /* Text color */
+    border: 1px solid blue; /* Border color */
+    border-radius: 5px; /* Rounded corners */
+    padding: 5px 10px; /* Padding */
+    font-size: 12px; /* Font size */
+}
+
+.custom-btn-danger:hover,
+.custom-btn-primary:hover {
+    background-color: darker shade; /* Change to a darker shade when hovered */
+    border-color: darker shade; /* Change border color on hover */
+}
+
+/* cancel and return button */
+.custom-btn-red {
+    background-color: #d83e48fd; /* Red color */
+    color: white; /* Text color */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 5px 10px; /* Padding */
+    font-size: 14px; /* Font size */
+    font-weight: bold; /* Bold text */
+    text-decoration: none; /* No underline */
+    transition: background-color 0.3s; /* Smooth transition for background color */
+}
+
+.custom-btn-red:hover {
+    background-color: #d20505; /* Darker shade of red on hover */
+}
+
+.custom-btn-black {
+    background-color: #090101; /* Red color */
+    color: white; /* Text color */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    padding: 5px 10px; /* Padding */
+    font-size: 14px; /* Font size */
+    font-weight: bold; /* Bold text */
+    text-decoration: none; /* No underline */
+    transition: background-color 0.3s; /* Smooth transition for background color */
+}
+
+.custom-btn-black:hover {
+    background-color: #373636; /* Darker shade of red on hover */
+}
+
+
+
+
+.custom-brown {
+    background-color: rgb(10, 0, 0);
+    /* You can also adjust other styles like text color, border, etc., to fit your design */
+}
+.custom-green{
+    background-color: rgb(21, 123, 21);
+}
+.custom-red{
+    background-color: rgb(185, 16, 13)
+}
+.custom-orange{
+    background-color: rgb(246, 137, 53);
+}
+.custom-blue{
+    background-color: dodgerblue;
+}
+
+
+
     </style>
 </head>
 
@@ -582,7 +661,7 @@
                                                                     <th>Order</th>
                                                                     <th>Payment</th>
                                                                     <th>Order Status</th>
-                                                                    <th>Delivery Status</th>
+                                                                    <th>Payment Status</th>
                                                                     <th>Total</th>
                                                                     <th>Actions</th>
                                                                 </tr>
@@ -594,23 +673,100 @@
                                                                             <td><%= item.orderId %></td>
                                                                             <td><%= item.paymentMethod %></td>
                                                                             <td>
-                                                                                <% if (item.is_cancelled == 0) { %>
-                                                                                    <span class="text-success"><%= item.orderStatus %></span>
+                                                                                <!-- <% if (item.orderStatus=='Cancelled') { %>
+                                                                                    <span class="badge bg-danger"><%= item.orderStatus %></span>
+
+
+
+
+
+
+
+
+
+
+
                                                                                 <% } else { %>
-                                                                                    <span class="text-danger">cancelled</span>
-                                                                                <% } %>
+                                                                                    <span class="badge bg-success"><%=item.orderStatus %></span>
+                                                                                <% } %> -->
+
+                                                                                <%if(item.orderStatus=='Cancelled'){%>
+                                                                                
+                                                                                      
+                                                                                      
+                                                                                            <span class="badge rounded-pill custom-red"><%=item.orderStatus%></span>
+                                                                                        
+                                                                                        
+                                                                                <%}else if(item.orderStatus=='Pending'){%>
+                                                                                    
+                                                                                        
+                                                                                        <span class="badge rounded-pill custom-orange"><%=item.orderStatus%></span>
+                                                                                    
+                                                                                <%}else if(item.orderStatus=='Shipped'){%>
+                                                                                    
+                                                                                        
+                                                                                        <span class="badge rounded-pill custom-blue"><%=item.orderStatus%></span>
+                                                                                    
+                                        
+                                                                                <%}else if(item.orderStatus=='Delivered'){%>
+                                                                                    
+                                                                                        
+                                                                                        <span class="badge rounded-pill custom-green"><%=item.orderStatus%></span>
+                                                                                    
+                                        
+                                                                               <% }else if(item.orderStatus=='Returned'){%>
+                                        
+                                                                                <!-- <td>
+                                                                                        
+                                                                                    <span class="badge rounded-pill alert-success"><%=order.orderStatus%></span>
+                                                                                </td> -->
+                                                                            
+                                                                                    <span class="badge rounded-pill custom-brown"><%=item.orderStatus%></span>
+                                                                                
+                                                                                
+                                        
+                                        
+                                                                            <%}else{%>
+                                        
+                                                                                
+                                                                                    <span class="badge rounded-pill custom-green"><%=item.orderStatus%></span>
+                                                                            
+                                        
+                                        
+                                                                                <%}%>
+                                        
+                                        
+                                                                                
                                                                             </td>
-                                                                            <td>pending</td>
+                                                                            <td><span class="badge bg-warning">Pending</span></td> 
                                                                             <td>₹ <%= item.totalAmount %></td>
                                                                             <td>
-                                                                                <a href="/cancelOrder?id=<%= item._id %>" class="btn-small text-danger d-block">Cancel</a>
-                                                                                <a href="/returnOrder?id=<%= item._id %>" class="btn-small text-primary d-block">Return</a>
+
+                                                                                <div class="btn-group" role="group">
+                                                                                  <%  if(item.orderStatus=='Delivered'){%>
+                                                                                    <a href="/returnOrder?id=<%= item._id %>" class="btn btn-sm  custom-btn-black">Return</a>
+
+                                                                                    <%}else{%>
+                                                                                        <!-- <a href="/cancelOrder?id=<%= item._id %>" class="btn btn-sm btn-danger">Cancel</a> -->
+                                                                                        <a href="/cancelOrder?id=<%= item._id %>" class="btn btn-sm custom-btn-red">Cancel </a>
+
+
+                                                                                   <%}%>
+                                                                                    
+                                                                                   
+                                                                                </div>
+                                                                                
+                                                                                <!-- <div class="btn-group" role="group">
+                                                                                    <a href="/cancelOrder?id=<%= item._id %>" class="btn btn-danger">Cancel</a>
+                                                                                    <a href="/returnOrder?id=<%= item._id %>" class="btn btn-primary">Return</a>
+                                                                                </div> -->
                                                                             </td>
                                                                         </tr>
                                                                     <% }) %>
                                                                 <% } %>
                                                             </tbody>
                                                         </table>
+                                                        
                                                     </div>
                                                     
                                               

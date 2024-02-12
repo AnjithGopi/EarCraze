@@ -56,8 +56,13 @@ admin_Route.get('/unblockBrand',adminAuth.isLogin,productController.unblockBrand
 
 
 admin_Route.get('/getOrders',adminAuth.isLogin,productController.getOrders)
+admin_Route.get('/adminOrderpending',adminAuth.isLogin,productController.adminOrderPending)
+admin_Route.get('/adminOrderShipped',adminAuth.isLogin,productController.adminOrderShipped)
+admin_Route.get('/adminOrderDelivered',adminAuth.isLogin,productController.adminOrderDelivered)
+admin_Route.get('/adminOrderCancelled',adminAuth.isLogin,productController.adminOrderCancelled)
+admin_Route.get('/adminOrderReturned',adminAuth.isLogin,productController.adminOrderReturned)
+admin_Route.get('/orderdetails',adminAuth.isLogin,productController.orderDetails)
 
-admin_Route.get('/adminOrderCancel',adminAuth.isLogin,productController.adminOrderCancel)
 
 
 

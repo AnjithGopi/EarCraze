@@ -8,4 +8,5 @@ const brandSchema = mongoose.Schema({
   is_active: { type: Number, default: 0 },
 });
 
+
 module.exports = mongoose.model("brand", brandSchema);

@@ -239,15 +239,29 @@ const placeOrder= async(req,res)=>{
         const addressData= await Address.find({_id:req.body.selectedAddress})
         const cartData= await Cart.find({userId:userId})
         console.log("addressData:",addressData)
+        // function generateOrderId() {
+        //     const timestamp = Date.now(); // Get the current timestamp
+        //     const randomNum = Math.floor(Math.random() * 10); // Generate a random number between 0 and 9999
+        
+        //     // Combine timestamp and random number to create a unique order ID
+        //     const orderId = `ORD${timestamp}${randomNum}`;
+        
+        //     return orderId;
+        // }
         function generateOrderId() {
-            const timestamp = Date.now(); // Get the current timestamp
-            const randomNum = Math.floor(Math.random() * 10); // Generate a random number between 0 and 9999
-        
-            // Combine timestamp and random number to create a unique order ID
-            const orderId = `ORD${timestamp}${randomNum}`;
-        
-            return orderId;
+            const timestamp = Date.now().toString(); // Get the current timestamp and convert it to a string
+            const randomChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'; // Define the characters to choose from
+            let orderId = 'ORD'; // Initial order ID
+            
+            // Add random characters to the order ID until it reaches a length of 6
+            while (orderId.length < 6) {
+                const randomIndex = Math.floor(Math.random() * randomChars.length);
+                orderId += randomChars.charAt(randomIndex);
+            }
+            
+            return orderId + timestamp.slice(-6); // Append the last 6 digits of the timestamp to ensure uniqueness
         }
+        
         
         // Example usage
         const newOrderId = generateOrderId();
@@ -292,7 +306,7 @@ const placeOrder= async(req,res)=>{
 }
 
 
-const cancelOrder= async(req,res)=>{
+const userOrderCancel= async(req,res)=>{
     try {
 
          console.log("order cancel entered")
@@ -301,7 +315,7 @@ const cancelOrder= async(req,res)=>{
         // const orderCancel=await Order.findByIdAndUpdate(userId,$set{is_cancelled:1})
 
         // const order = await Order.findByIdAndUpdate(userId, { $set: { is_cancelled: 1 } });
-        const orderCancel = await Order.findByIdAndUpdate(orderId,{$set: {is_cancelled:1}})
+        const orderCancel = await Order.findByIdAndUpdate(orderId,{$set: {orderStatus:'Cancelled'}})
 
 
 
@@ -322,10 +336,35 @@ const cancelOrder= async(req,res)=>{
 }
 
 
+const userOrderReturn= async(req,res)=>{
+    try {
+
+        console.log("order return entered")
+        const userId= req.session.userId
+        const orderId=req.query.id
+        // const orderCancel=await Order.findByIdAndUpdate(userId,$set{is_cancelled:1})
+
+        // const order = await Order.findByIdAndUpdate(userId, { $set: { is_cancelled: 1 } });
+        const orderCancel = await Order.findByIdAndUpdate(orderId,{$set: {orderStatus:'Returned'}})
+
+        res.redirect("/userDashboard")
+
+
+
+
+
+        
+    } catch (error) {
+        console.log(error.message)
+        
+    }
+}
 
 
 
 
 
 
-module.exports={getCart,addtoCart,deleteIteminCart,updateitemQuantity,checkOut,placeOrder,cancelOrder}
+
+
+module.exports={getCart,addtoCart,deleteIteminCart,updateitemQuantity,checkOut,placeOrder,userOrderCancel,userOrderReturn}
