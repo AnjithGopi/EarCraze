@@ -851,27 +851,35 @@
                                     <h5>Payment</h5>
                                 </div>
                                 <div class="payment_option">
-                                    <div class="custome-radio">
-                                        <input class="form-check-input" required="" type="radio" name="payment_option" id="exampleRadios3" checked="">
-                                        <label class="form-check-label" for="exampleRadios3" data-bs-toggle="collapse" data-target="#bankTranfer" aria-controls="bankTranfer">Direct Bank Transfer</label>
-                                        <div class="form-group collapse in" id="bankTranfer">
-                                            <p class="text-muted mt-5">There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration. </p>
-                                        </div>
-                                    </div>
-                                    <div class="custome-radio">
-                                        <input class="form-check-input" required="" type="radio" name="payment_option" id="exampleRadios4" checked="">
-                                        <label class="form-check-label" for="exampleRadios4" data-bs-toggle="collapse" data-target="#checkPayment" aria-controls="checkPayment">Check Payment</label>
-                                        <div class="form-group collapse in" id="checkPayment">
-                                            <p class="text-muted mt-5">Please send your cheque to Store Name, Store Street, Store Town, Store State / County, Store Postcode. </p>
-                                        </div>
-                                    </div>
-                                    <div class="custome-radio">
+                                    
+                                    <!-- <div class="custome-radio">
                                         <input class="form-check-input" required="" type="radio" name="payment_option" id="exampleRadios5" value="Paypal" checked="">
                                         <label class="form-check-label" for="exampleRadios5" data-bs-toggle="collapse" data-target="#paypal"  aria-controls="paypal">Paypal</label>
                                         <div class="form-group collapse in" id="paypal">
                                             <p class="text-muted mt-5">Pay via PayPal; you can pay with your credit card if you don't have a PayPal account.</p>
                                         </div>
+                                    </div> -->
+                                    <!-- <div class="custome-radio"> -->
+                                        <!-- Razorpay option --
+                                        <input class="form-check-input" required="" type="radio" name="payment_option" id="WalletOption" value="Wallet">
+                                        <label class="form-check-label" for="walletOption" data-bs-toggle="collapse" data-target="#razorpay" aria-controls="razorpay">Wallet</label>
+                                        < Additional in
+                                        <div class="form-group collapse in" id="wallet">
+                                            <p class="text-muted mt-5">Pay via wallet</p>
+                                        </div>
                                     </div>
+
+
+
+                                    <div class="custome-radio">
+                                         Razorpay option -
+                                        <input class="form-check-input" required="" type="radio" name="payment_option" id="razorpayOption" value="Razorpay">
+                                        <label class="form-check-label" for="razorpayOption" data-bs-toggle="collapse" data-target="#razorpay" aria-controls="razorpay">Razorpay</label>
+                                        <Additional information for Razorpay -->
+                                        <!-- <div class="form-group collapse in" id="razorpay">
+                                            <p class="text-muted mt-5">Pay via Razorpay.</p>
+                                        </div>
+                                    </div> -->
                                     <div class="custome-radio">
                                         <input class="form-check-input" required="" type="radio" name="payment_option" id="exampleRadios6" value="Cash on delivery" checked="">
                                         <label class="form-check-label" for="exampleRadios6" data-bs-toggle="collapse" data-target="#paypal" aria-controls="paypal">Cash On delivery</label>
@@ -879,6 +887,27 @@
                                             <p class="text-muted mt-5">Pay via PayPal; you can pay with your credit card if you don't have a PayPal account.</p>
                                         </div>
                                     </div>
+
+                                    <div class="custome-radio">
+                                        <!-- Wallet option -->
+                                        <input class="form-check-input" required="" type="radio" name="payment_option" id="walletOption" value="Wallet">
+                                        <label class="form-check-label" for="walletOption" data-bs-toggle="collapse" data-target="#wallet" aria-controls="wallet">Wallet</label>
+                                        <!-- Additional information for Wallet -->
+                                        <div class="form-group collapse in" id="wallet">
+                                            <p class="text-muted mt-5">Pay via wallet</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="custome-radio">
+                                        <!-- Razorpay option -->
+                                        <input class="form-check-input" required="" type="radio" name="payment_option" id="razorpayOption" value="Razorpay">
+                                        <label class="form-check-label" for="razorpayOption" data-bs-toggle="collapse" data-target="#razorpay" aria-controls="razorpay">Razorpay</label>
+                                        <!-- Additional information for Razorpay -->
+                                        <div class="form-group collapse in" id="razorpay">
+                                            <p class="text-muted mt-5">Pay via Razorpay.</p>
+                                        </div>
+                                    </div>
+                                    
                                 </div>
                             </div>
                             <button onclick="placeOrder()" class="btn btn-fill-out btn-block mt-30">Place Order</button>
@@ -1016,6 +1045,9 @@
     </div>
 
 
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+
     <script>
 
 function placeOrder() {
@@ -1025,26 +1057,13 @@ function placeOrder() {
     const totalAmount=document.getElementById("totalAmount").innerText
 
    
-    
     console.log(selectedRadioButton)
     console.log(selectedAddress)
     console.log(totalAmount)
     // Get values from the form
-    // const userId = document.getElementById('userId').value;
-    // const product1Id = document.getElementById('product1Id').value;
-    // const product1Quantity = parseInt(document.getElementById('product1Quantity').value);
 
-    // Add other form fields based on your order schema
 
-    // Construct the order data object
-    // const orderData = {
-    //     userId: userId,
-    //     products: [{
-    //         productId: product1Id,
-    //         quantity: product1Quantity
-    //     }],
-    //     // Add other fields based on your order schema
-    // };
+   
     const orderData ={
         paymentMethod:selectedRadioButton,
         selectedAddress:selectedAddress,
@@ -1053,6 +1072,99 @@ function placeOrder() {
     }
     console.log("Data :",orderData)
     console.log("Amount:",totalAmount)
+
+
+    if(selectedRadioButton==='Razorpay'){
+  console.log('iffff');
+
+        fetch('/paymentByRazorpay',{
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify(orderData)
+        })
+
+
+
+        .then(response=>response.json())
+        .then(data=>{
+            const orderId= data.razOrder
+            //const user = data.userData
+
+            console.log('inside');
+
+            initiatePayment(orderId)
+
+        })
+
+
+
+
+        function initiatePayment(orderId){
+            let order= JSON.stringify(orderId)
+            //let user=JSON.stringify(user)
+         console.log('amountttt'+order.amount);
+   console.log('calleddd');
+            var options = {
+    "key": "rzp_test_HLFENnvKhWUWjZ", // Enter the Key ID generated from the Dashboard
+    "amount":Math.ceil(totalAmount*100), // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+    "currency": "INR",
+    "name": "Acme Corp",
+    "description": "Test Transaction",
+    "image": "https://example.com/your_logo",
+    "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+    "handler": function (response){
+        // alert(response.razorpay_payment_id);
+        // alert(response.razorpay_order_id);
+        // alert(response.razorpay_signature)
+        window.location.href="/";
+    },
+    "prefill": {
+        "name": 'hghghhh',
+        "email": 'jhhgjhg',
+        "contact": 'hfjuhfjuhg'
+    },
+    "notes": {
+        "address": "Razorpay Corporate Office"
+    },
+    "theme": {
+        "color": "#3399cc"
+    }
+};
+var rzp1 = new Razorpay(options);
+rzp1.on('payment.failed', function (response){
+        alert(response.error.code);
+        alert(response.error.description);
+        alert(response.error.source);
+        alert(response.error.step);
+        alert(response.error.reason);
+        alert(response.error.metadata.order_id);
+        alert(response.error.metadata.payment_id);
+});
+
+      rzp1.open()
+        }
+
+
+
+    }else{
+
+
+
+    
+
+        
+
+
+
+
+
+
+
+
+
+
 
     // Send a POST request to the server
     fetch('/placeorder', {
@@ -1096,6 +1208,7 @@ function placeOrder() {
 });
         // Handle error (display an error message, etc.)
     });
+}
 }
 
 

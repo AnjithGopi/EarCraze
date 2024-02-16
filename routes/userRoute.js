@@ -55,7 +55,14 @@ user_Route.get("/userDashboard",userAuth.isLogin,userController.userDash)
 user_Route.get("/addressForm",userAuth.isLogin,userController.addressForm)
 user_Route.post("/createAddress",userAuth.isLogin,userController.createAddress)
 user_Route.get("/cancelOrder",userAuth.isLogin,cartController.userOrderCancel)
-user_Route.get('/returnOrder',userAuth.isLogin,cartController.userOrderCancel)
+user_Route.get('/returnOrder',userAuth.isLogin,cartController.userOrderReturn)
+
+
+//.......Rasorpay..........
+
+//user_Route.post('/checkOutRazorpay',userAuth.isLogin,cartController.razorpayCheckout)
+
+user_Route.post('/paymentByRazorpay',userAuth.isLogin,cartController.onlinePayment)
 
 
 

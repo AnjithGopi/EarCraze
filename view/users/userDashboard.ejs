@@ -154,6 +154,9 @@
 .custom-btn-black:hover {
     background-color: #373636; /* Darker shade of red on hover */
 }
+.custom-btn-violet{
+    background-color: rgb(48, 2, 91);
+}
 
 
 
@@ -173,6 +176,9 @@
 }
 .custom-blue{
     background-color: dodgerblue;
+}
+.custom-dgreen{
+    background-color: rgb(175, 248, 6);
 }
 
 
@@ -676,16 +682,6 @@
                                                                                 <!-- <% if (item.orderStatus=='Cancelled') { %>
                                                                                     <span class="badge bg-danger"><%= item.orderStatus %></span>
 
-
-
-
-
-
-
-
-
-
-
                                                                                 <% } else { %>
                                                                                     <span class="badge bg-success"><%=item.orderStatus %></span>
                                                                                 <% } %> -->
@@ -711,7 +707,7 @@
                                                                                 <%}else if(item.orderStatus=='Delivered'){%>
                                                                                     
                                                                                         
-                                                                                        <span class="badge rounded-pill custom-green"><%=item.orderStatus%></span>
+                                                                                        <span class="badge rounded-pill custom-dgreen"><%=item.orderStatus%></span>
                                                                                     
                                         
                                                                                <% }else if(item.orderStatus=='Returned'){%>
@@ -746,7 +742,14 @@
                                                                                   <%  if(item.orderStatus=='Delivered'){%>
                                                                                     <a href="/returnOrder?id=<%= item._id %>" class="btn btn-sm  custom-btn-black">Return</a>
 
-                                                                                    <%}else{%>
+
+                                                                                    <%}else if(item.orderStatus=='Returned'){%>
+                                                                                        <a href="" class="btn btn-sm custom-btn-violet">Returned </a>
+
+                                                                                    
+                                                                                    
+
+                                                                                    <%}else {%>
                                                                                         <!-- <a href="/cancelOrder?id=<%= item._id %>" class="btn btn-sm btn-danger">Cancel</a> -->
                                                                                         <a href="/cancelOrder?id=<%= item._id %>" class="btn btn-sm custom-btn-red">Cancel </a>
 

@@ -61,7 +61,16 @@ admin_Route.get('/adminOrderShipped',adminAuth.isLogin,productController.adminOr
 admin_Route.get('/adminOrderDelivered',adminAuth.isLogin,productController.adminOrderDelivered)
 admin_Route.get('/adminOrderCancelled',adminAuth.isLogin,productController.adminOrderCancelled)
 admin_Route.get('/adminOrderReturned',adminAuth.isLogin,productController.adminOrderReturned)
-admin_Route.get('/orderdetails',adminAuth.isLogin,productController.orderDetails)
+admin_Route.get('/adminOrderdetails',adminAuth.isLogin,productController.orderDetails)
+
+
+
+
+
+
+
+
+
 
 
 

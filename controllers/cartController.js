@@ -5,6 +5,15 @@ const User=require("../models/userModel")
 const Address=require("../models/addressModel")
 const Order=require("../models/orderModel")
 
+const Razorpay=require('razorpay')
+
+var instance = new Razorpay({
+    key_id: 'rzp_test_HLFENnvKhWUWjZ',
+    key_secret: 'SQd2IeNenul5pBC1TWPUXiVx',
+  });
+
+
+
 
 
 
@@ -237,17 +246,12 @@ const placeOrder= async(req,res)=>{
 
         const userId=req.session.userId
         const addressData= await Address.find({_id:req.body.selectedAddress})
-        const cartData= await Cart.find({userId:userId})
+        const cartData= await Cart.findOne({userId:userId})
         console.log("addressData:",addressData)
-        // function generateOrderId() {
-        //     const timestamp = Date.now(); // Get the current timestamp
-        //     const randomNum = Math.floor(Math.random() * 10); // Generate a random number between 0 and 9999
-        
-        //     // Combine timestamp and random number to create a unique order ID
-        //     const orderId = `ORD${timestamp}${randomNum}`;
-        
-        //     return orderId;
-        // }
+
+
+        console.log("cartData",cartData)
+
         function generateOrderId() {
             const timestamp = Date.now().toString(); // Get the current timestamp and convert it to a string
             const randomChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'; // Define the characters to choose from
@@ -267,6 +271,8 @@ const placeOrder= async(req,res)=>{
         const newOrderId = generateOrderId();
         console.log(newOrderId);
 
+        console.log("cartdata.products:,",cartData.products)
+
         const orderData= new Order({
             userId:req.session.userId,
             products:cartData.products,
@@ -275,6 +281,8 @@ const placeOrder= async(req,res)=>{
             totalAmount:req.body.amount,
             orderId:newOrderId
         })
+
+        
 
       const newOrder=  await orderData.save()
 
@@ -291,7 +299,7 @@ const placeOrder= async(req,res)=>{
         }
        
 
-       
+       // res.status(200).json({ orderId: razorpayOrder.id });
 
 
         res.status(200).json({message:'success'})
@@ -304,6 +312,128 @@ const placeOrder= async(req,res)=>{
         
     }
 }
+
+
+
+
+
+
+// Assuming 'instance' is already initialized with your Razorpay instance
+
+const onlinePayment = async (req, res) => {
+    try {
+        console.log("placed successfully using Razorpay")
+        console.log("req.body", req.body)
+
+        const userId = req.session.userId
+        const addressData = await Address.find({ _id: req.body.selectedAddress })
+        const cartData = await Cart.findOne({ userId: userId })
+        const userData= await User.findById(userId)
+        console.log("addressData:", addressData)
+
+        function generateOrderId() {
+            const timestamp = Date.now().toString(); // Get the current timestamp and convert it to a string
+            const randomChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'; // Define the characters to choose from
+            let orderId = 'ORD'; // Initial order ID
+            
+            // Add random characters to the order ID until it reaches a length of 6
+            while (orderId.length < 6) {
+                const randomIndex = Math.floor(Math.random() * randomChars.length);
+                orderId += randomChars.charAt(randomIndex);
+            }
+            
+            return orderId + timestamp.slice(-6); // Append the last 6 digits of the timestamp to ensure uniqueness
+        }
+        const newOrderId = generateOrderId();
+        console.log(newOrderId);
+
+
+
+
+
+
+        var options = {
+            amount: req.body.amount, // amount in the smallest currency unit
+            currency: "INR",
+            receipt: "order_rcptid_11"
+        };
+
+        instance.orders.create(options,async function (err, razOrder) {
+            if (err) {
+                console.error(err);
+                res.status(500).json({ error: "Failed to create Razorpay order" });
+                return;
+            }
+            console.log(razOrder);
+
+            //save the order//...............
+
+            const orderData= new Order({
+                userId:req.session.userId,
+                products:cartData.products,
+                address:addressData[0],
+                paymentMethod:req.body.paymentMethod,
+                totalAmount:req.body.amount,
+                orderId:newOrderId,
+                razOrderId:razOrder.id
+            })
+        
+            
+        
+          const newOrder=  await orderData.save()
+        
+          if(newOrder){
+            const result = await Cart.updateOne(
+                {userId:userId},
+                {
+                  $unset: {
+                    products: 1,
+                  },
+                }
+              );
+        }
+          res.status(200).json({ message: "Order placed successfully", razOrder });
+        
+          
+
+
+
+
+
+            //.........................
+
+          
+       
+    });
+
+
+
+  
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 const userOrderCancel= async(req,res)=>{
@@ -367,4 +497,8 @@ const userOrderReturn= async(req,res)=>{
 
 
 
-module.exports={getCart,addtoCart,deleteIteminCart,updateitemQuantity,checkOut,placeOrder,userOrderCancel,userOrderReturn}
+
+
+
+
+module.exports={getCart,addtoCart,deleteIteminCart,updateitemQuantity,checkOut,placeOrder,onlinePayment,userOrderCancel,userOrderReturn}

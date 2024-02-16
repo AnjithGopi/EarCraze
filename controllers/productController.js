@@ -502,7 +502,19 @@ const orderDetails= async(req,res)=>{
     try {
 
 
-        res.render('orderdetails')
+        const orderId=req.query.id
+
+        const orderDetails= await Order.findById(orderId).populate('userId').populate('products.productId')
+
+        console.log("...............................................................")
+        console.log(orderDetails)
+        console.log("...............................................................")
+        console.log(orderDetails.products[0].quantity)
+
+        console.log("...............................................................")
+
+
+        res.render('orderdetails',{orderDetails})
 
 
         

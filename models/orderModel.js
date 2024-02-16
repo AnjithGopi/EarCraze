@@ -9,6 +9,7 @@ const orderSchema= mongoose.Schema({
           quantity:{type:Number}}
         ],
 
+
     address:{
      
         first_name:{type:String,required:true},
@@ -23,6 +24,7 @@ const orderSchema= mongoose.Schema({
 
     
     orderId:{type:String},
+    razOrderId:{type:String},
     paymentMethod:{type:String,required:true},
     paymentStatus:{type:String,enum:['Pending','Recieved','Failed','Refund'],default:"Pending"},
     orderStatus:{type:String,enum:['Order Placed','Confirmed','Shipped','Delivered','Cancelled','Returned'],default:"Order Placed"},
