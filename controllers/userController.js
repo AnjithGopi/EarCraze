@@ -15,7 +15,15 @@ const bcrypt= require('bcrypt')
 const loadHome=async(req,res)=>{
     try {
 
-        const productData=await Product.find({is_active:0 , cat_status:0,brand_status:0})
+
+        var search = ""
+        if( req.body.search){
+            search= req.body.search
+        }
+
+        const productData=await Product.find({is_active:0 , cat_status:0,brand_status:0,$or: [
+            { title: { $regex: search, $options: 'i' } } 
+        ]})
         const userId=req.session.userId;
         const loginData = await User.findById(userId)
         if(productData){
@@ -80,9 +88,9 @@ const verifySignup=async(req,res)=>{
             }
            
 
-            console.log(data)
+          
             req.session.data=data
-            console.log(req.session.data)
+       
             res.redirect('/getOtp')
 
         
@@ -93,6 +101,8 @@ const verifySignup=async(req,res)=>{
         
     }
 }
+
+
 
 const getOtp=async(req,res)=>{
     try {
@@ -159,23 +169,21 @@ const verifyOtp= async(req,res)=>{
                userdata.password=hashedPassword
                
                const userData= await userdata.save()
-               console.log(userData)
+
               
      
              
              if(userData) {
 
-                // req.session.registrationSuccess=true;
+                
                
              res.json(   {
                     "success": true,
                     "message": "OTP verification successful",
-                    // additional data, if needed
+                    
                   }
              )
-                //  res.redirect('/login')
-                // res.json({success:true})
-                // res.render('login',{registrationSuccess:res.locals.registrationSuccess})
+                
      
              }
     
@@ -200,8 +208,7 @@ const verifyOtp= async(req,res)=>{
 
 const verifyLogin = async (req,res)=>{
     try {
-        console.log(req.body.email)
-
+        
         const loginData= await User.findOne({email:req.body.email})
 
        
@@ -217,10 +224,10 @@ const verifyLogin = async (req,res)=>{
                 if(isMatch){
                     
                         const productData=await Product.find({is_active:0})
-                        console.log(productData)
+                      
                         if(productData){
                             req.session.userId=loginData._id
-                            // res.render("home",{product:productData,loginData})
+                          
                             res.redirect("/")
                         }
 
@@ -257,7 +264,7 @@ const productDetails= async(req,res)=>{
 
         const id= req.query.id
         const ptData= await Product.findOne({_id:id}).populate('brand')
-        console.log(ptData)
+     
         if(ptData){
 
             res.render("productDetails" ,{products:ptData})
@@ -292,8 +299,7 @@ const postForgotPassword=async(req,res)=>{
 
 
         const verifyEmail= await User.findOne({email:req.body.email})
-        console.log(verifyEmail)
-        console.log(req.body.email)
+        
         if(verifyEmail){
 
             req.session.email=req.body.email
@@ -320,7 +326,7 @@ const newOtp= async(req,res)=>{
             service: 'Gmail',
             auth: {
                 user: 'ng.anjith444@gmail.com',
-                // pass: 'dpnb bzyd gxpa eahu'
+              
                 pass:'vqcm bgdj rmkp wfia'
             }
         });
@@ -332,15 +338,14 @@ const newOtp= async(req,res)=>{
 
         var randomotp=Math.floor(1000 + Math.random() * 9000).toString();
         req.session.passwordOtp=randomotp
-        // const {email,name}=req.session.data
+       
         console.log(randomotp);
         const mailOptions = {
             from: 'ng.anjith444@gmail.com',
             to: req.session.email,
             subject: `Hello ${userData.name}`,
             text: `Your verification OTP is ${randomotp}`
-            // subject: `Hello ${req.body.name}`,
-            // text: `Your verification OTP is ${randomotp}`
+            
             
          };
          console.log(randomotp)
@@ -363,12 +368,20 @@ const newOtp= async(req,res)=>{
 
 
 const verifyNewOtp = async(req,res)=>{
-    let userOtp=req.body.newOtp;
-    if(userOtp===req.session.passwordOtp){
-        return  res.render("newPassword");
-    }else{
-        res.render("resetOtp",{message:"Invalid OTP"})
+    try {
+
+        let userOtp=req.body.newOtp;
+        if(userOtp===req.session.passwordOtp){
+            return  res.render("newPassword");
+        }else{
+            res.render("resetOtp",{message:"Invalid OTP"})
+        }
+        
+    } catch (error) {
+        console.log(error.message)
+        
     }
+   
 }
 
 
@@ -382,7 +395,7 @@ const verifyPasswords= async(req,res)=>{
     
        userData.password=hashedPassword
        await userData.save()
-       console.log(userData)
+     
 
       
         res.redirect("/login?from=pass")
@@ -416,15 +429,12 @@ const userDash= async(req,res)=>{
 
         const userId=req.session.userId
 
-        // const showAddress= await  Address.findOne({userId:userId})
+       
         const userDetails= await User.findById({_id:userId})
         const showAddress= await Address.find({userId:userId})
 
         
-        const order= await Order.find({userId:userId})
-        console.log(order,":::::Order details for user Dash")
-        console.log(showAddress);
-        console.log("Dashboard:",userDetails)
+        const order= await Order.find({userId:userId}).sort({ orderDate:-1})
         res.render("userDashboard",{showAddress,userDetails,order})
         
     } catch (error) {
@@ -470,7 +480,7 @@ const  createAddress= async(req,res)=>{
         const addressData= await addressdata.save()
         res.redirect('/userDashboard')
 
-        console.log(`shipment address:${addressData}`)
+       
         
 
 
@@ -482,6 +492,80 @@ const  createAddress= async(req,res)=>{
 
 
 
+const editProfile=async(req,res)=>{
+    try {
+
+        res.render("editProfile")
+        
+    } catch (error) {
+        console.log(error.message)
+        
+    }
+}
+
+
+
+const  updateUserDetails= async(req,res)=>{
+
+    try {
+
+
+        const userId= req.session.userId
+        const userData= await User.findById(userId)
+
+
+        const hashedPassword = await bcrypt.hash(req.body.password, 10);
+
+        if(userData.name==req.body.name && userData.email==req.body.email && await bcrypt.compare(req.body.password, userData.password)){
+
+           if(req.body.npassword==req.body.cpassword){
+
+
+
+            const hashedNewPassword = await bcrypt.hash(req.body.npassword, 10);
+
+
+
+            userData.password = hashedNewPassword;
+
+           const newUserData= await userData.save()
+
+           if(newUserData){
+            const passwordChanged=true
+           }
+
+           if(passwordChanged){
+            req.flash('success', 'Password changed successfully')
+           }
+         
+
+           
+
+            res.redirect("/")
+
+          
+
+
+           }else{
+
+            res.render("editprofile",{message: "Passwords do not match"})
+
+           }
+
+
+        }else{
+
+            res.render("editprofile",{message:"Invalid Credentials"})
+        }
+
+
+
+      
+    } catch (error) {
+        console.log(error.message)
+        
+    }
+}
 
 
 
@@ -502,6 +586,6 @@ module.exports={
    getForgotPassword,
    postForgotPassword,newOtp,
    verifyNewOtp,verifyPasswords,
-   loadLogout,
+   loadLogout,editProfile,updateUserDetails,
    userDash,addressForm,createAddress,
 }

@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Account Details</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-header {
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .card-header h5 {
+            color: #333;
+            font-weight: bold;
+        }
+
+        .form-control {
+            border: 1px solid #ced4da;
+            border-radius: 5px;
+        }
+
+        .btn-fill-out {
+            background-color: #437e5d;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn-fill-out:hover {
+            background-color: #79be7c;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="text-center">Account Details</h5>
+                    </div>
+                    <div class="card-body">
+                        <form action="/updateProfile" method="post">
+                            <div class="form-group">
+                                <input required class="form-control" name="name" type="text" placeholder="User Name">
+                            </div>
+                            <div class="form-group">
+                                <input required class="form-control" name="email" type="email" placeholder="Email Address">
+                            </div>
+                            <div class="form-group">
+                                <input required class="form-control" name="password" type="password" placeholder="Current Password">
+                            </div>
+                            <div class="form-group">
+                                <input required class="form-control" name="npassword" type="password" placeholder="New Password">
+                            </div>
+                            <div class="form-group">
+                                <input required class="form-control" name="cpassword" type="password" placeholder="Confirm Password">
+                            </div>
+                            <div class="form-group text-center">
+                                <button type="submit" class="btn btn-fill-out submit" name="submit" value="Submit">Save</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Flash Message Container -->
+    <div id="flash-message-container" class="position-fixed mt-5 mr-5" style="top: 0; right: 0; z-index: 1000; width: 300px;">
+        <% if (locals.message) { %>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <%= message %>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        <% } %>
+    </div>
+    
+    <!-- Bootstrap JS -->
+
+ 
+
+
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <script>
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var flashMessageContainer = document.getElementById('flash-message-container');
+        if (flashMessageContainer) {
+            // Hide flash message after 2 seconds
+            setTimeout(function() {
+                flashMessageContainer.style.display = 'none';
+            }, 2000);
+        }
+    });
+
+    </script>
+
+    <script>
+
+        
+    </script>
+
+
+
+
+   
+
+</body>
+</html>
+
+

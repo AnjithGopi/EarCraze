@@ -2,6 +2,7 @@ const mongoose=require("mongoose")
 mongoose.connect("mongodb://127.0.0.1:27017/EarCrazeProject")
 // const UserController=require('./controllers/userController')
 // const adminController=require('./controllers/adminController')
+const flash = require('express-flash')
 
 const express=require("express")
 const sharp= require('sharp')
@@ -15,6 +16,9 @@ const port=9000
 const multer=require("multer")
 const storage=multer.memoryStorage()
 app.use("/uploads",express.static("uploads"))
+const PDFDocument = require('pdfkit');
+const fs = require('fs');
+const path = require('path');
 
 
 
@@ -34,6 +38,9 @@ app.use(session({
     resave:false,
     saveUninitialized:true
 }))
+
+
+app.use(flash());
 
 
 //user routes

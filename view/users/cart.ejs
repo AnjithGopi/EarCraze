@@ -17,6 +17,35 @@
     <link rel="shortcut icon" type="image/x-icon" href="assets/imgs/theme/favicon.svg">
     <!-- Template CSS -->
     <link rel="stylesheet" href="assets/css/maind134.css?v=3.4">
+
+
+    <style>
+
+.cart-action {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px; /* Adjust margin as needed */
+}
+
+.cart-action .btn {
+    margin-left: 10px; /* Adjust margin as needed */
+}
+
+/* Media query for mobile responsiveness */
+@media screen and (max-width: 768px) {
+    .cart-action {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .cart-action .btn {
+        margin: 10px 0;
+    }
+}
+
+    </style>
+
+
 </head>
 
 <body>
@@ -68,77 +97,12 @@
                         <a href="index.html"><img src="assets/imgs/theme/logo.svg" alt="logo"></a>
                     </div>
                     <div class="header-right">
-                        <div class="search-style-2">
-                            <form action="#">
-                                <select class="select-active">
-                                    <option>All Categories</option>
-                                    <option>Women's</option>
-                                    <option>Men's</option>
-                                    <option>Cellphones</option>
-                                    <option>Computer</option>
-                                    <option>Electronics</option>
-                                    <option> Accessories</option>
-                                    <option>Home & Garden</option>
-                                    <option>Luggage</option>
-                                    <option>Shoes</option>
-                                    <option>Mother & Kids</option>
-                                </select>
-                                <input type="text" placeholder="Search for items...">
+                        <div class="search-style-premium">
+                            <form id="searchForm" action="#">
+                                <input id="searchInput" type="text" placeholder="🔍 Search">
                             </form>
                         </div>
-                        <div class="header-action-right">
-                            <div class="header-action-2">
-                                <div class="header-action-icon-2">
-                                    <a href="shop-wishlist.html">
-                                        <img class="svgInject" alt="Evara" src="assets/imgs/theme/icons/icon-heart.svg">
-                                        <span class="pro-count blue">4</span>
-                                    </a>
-                                </div>
-                                <div class="header-action-icon-2">
-                                    <a class="mini-cart-icon" href="shop-cart.html">
-                                        <img alt="Evara" src="assets/imgs/theme/icons/icon-cart.svg">
-                                        <span class="pro-count blue">2</span>
-                                    </a>
-                                    <div class="cart-dropdown-wrap cart-dropdown-hm2">
-                                        <ul>
-                                            <li>
-                                                <div class="shopping-cart-img">
-                                                    <a href="shop-product-right.html"><img alt="Evara" src="assets/imgs/shop/thumbnail-3.jpg"></a>
-                                                </div>
-                                                <div class="shopping-cart-title">
-                                                    <h4><a href="shop-product-right.html">Daisy Casual Bag</a></h4>
-                                                    <h4><span>1 × </span>$800.00</h4>
-                                                </div>
-                                                <div class="shopping-cart-delete">
-                                                    <a href="#"><i class="fi-rs-cross-small"></i></a>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="shopping-cart-img">
-                                                    <a href="shop-product-right.html"><img alt="Evara" src="assets/imgs/shop/thumbnail-2.jpg"></a>
-                                                </div>
-                                                <div class="shopping-cart-title">
-                                                    <h4><a href="shop-product-right.html">Corduroy Shirts</a></h4>
-                                                    <h4><span>1 × </span>$3200.00</h4>
-                                                </div>
-                                                <div class="shopping-cart-delete">
-                                                    <a href="#"><i class="fi-rs-cross-small"></i></a>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                        <div class="shopping-cart-footer">
-                                            <div class="shopping-cart-total">
-                                                <h4>Total <span>$4000.00</span></h4>
-                                            </div>
-                                            <div class="shopping-cart-button">
-                                                <a href="shop-cart.html" class="outline">View cart</a>
-                                                <a href="shop-checkout.html">Checkout</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        
                     </div>
                 </div>
             </div>
@@ -150,15 +114,15 @@
                         <a href="index.html"><img src="assets/imgs/theme/logo.svg" alt="logo"></a>
                     </div>
                     <div class="header-nav d-none d-lg-flex">
-                        <div class="main-categori-wrap d-none d-lg-block">
+                        <!-- <div class="main-categori-wrap d-none d-lg-block">
                             <a class="categori-button-active" href="#">
                                 <span class="fi-rs-apps"></span> Browse Categories
-                            </a>
-                            <div class="categori-dropdown-wrap categori-dropdown-active-large">
-                                <ul>
-                                    <li class="has-children">
-                                        <a href="shop-grid-right.html"><i class="evara-font-dress"></i>Women's Clothing</a>
-                                        <div class="dropdown-menu">
+                            </a> -->
+                            <!-- <div class="categori-dropdown-wrap categori-dropdown-active-large"> -->
+                                <!-- <ul> -->
+                                    <!-- <li class="has-children"> -->
+                                        <!-- <a href="shop-grid-right.html"><i class="evara-font-dress"></i>Women's Clothing</a> -->
+                                        <!-- <div class="dropdown-menu">
                                             <ul class="mega-menu d-lg-flex">
                                                 <li class="mega-menu-col col-lg-7">
                                                     <ul class="d-lg-flex">
@@ -210,8 +174,8 @@
                                                 </li>
                                             </ul>
                                         </div>
-                                    </li>
-                                    <li class="has-children">
+                                    </li> -->
+                                    <!-- <li class="has-children">
                                         <a href="shop-grid-right.html"><i class="evara-font-tshirt"></i>Men's Clothing</a>
                                         <div class="dropdown-menu">
                                             <ul class="mega-menu d-lg-flex">
@@ -311,8 +275,8 @@
                                                 </li>
                                             </ul>
                                         </div>
-                                    </li>
-                                    <li><a href="shop-grid-right.html"><i class="evara-font-desktop"></i>Computer & Office</a></li>
+                                    </li> -->
+                                    <!-- <li><a href="shop-grid-right.html"><i class="evara-font-desktop"></i>Computer & Office</a></li>
                                     <li><a href="shop-grid-right.html"><i class="evara-font-cpu"></i>Consumer Electronics</a></li>
                                     <li><a href="shop-grid-right.html"><i class="evara-font-diamond"></i>Jewelry & Accessories</a></li>
                                     <li><a href="shop-grid-right.html"><i class="evara-font-home"></i>Home & Garden</a></li>
@@ -329,24 +293,24 @@
                                     </li>
                                 </ul>
                                 <div class="more_categories">Show more...</div>
-                            </div>
-                        </div>
+                            </div> -->
+                        <!-- </div> -->
                         <div class="main-menu main-menu-padding-1 main-menu-lh-2 d-none d-lg-block">
                             <nav>
                                 <ul>
                                     <li><a class="active" href="index.html">Home <i class="fi-rs-angle-down"></i></a>
-                                        <ul class="sub-menu">
+                                        <!-- <ul class="sub-menu">
                                             <li><a href="index.html">Home 1</a></li>
                                             <li><a href="index-2.html">Home 2</a></li>
                                             <li><a href="index-3.html">Home 3</a></li>
                                             <li><a href="index-4.html">Home 4</a></li>
-                                        </ul>
+                                        </ul> -->
                                     </li>
                                     <li>
                                         <a href="page-about.html">About</a>
                                     </li>
                                     <li><a href="shop-grid-right.html">Shop <i class="fi-rs-angle-down"></i></a>
-                                        <ul class="sub-menu">
+                                        <!-- <ul class="sub-menu">
                                             <li><a href="shop-grid-right.html">Shop Grid – Right Sidebar</a></li>
                                             <li><a href="shop-grid-left.html">Shop Grid – Left Sidebar</a></li>
                                             <li><a href="shop-list-right.html">Shop List – Right Sidebar</a></li>
@@ -364,10 +328,10 @@
                                             <li><a href="shop-cart.html">Shop – Cart</a></li>
                                             <li><a href="shop-checkout.html">Shop – Checkout</a></li>
                                             <li><a href="shop-compare.html">Shop – Compare</a></li>
-                                        </ul>
+                                        </ul> -->
                                     </li>
                                     <li class="position-static"><a href="#">Mega menu <i class="fi-rs-angle-down"></i></a>
-                                        <ul class="mega-menu">
+                                        <!-- <ul class="mega-menu">
                                             <li class="sub-mega-menu sub-mega-menu-width-22">
                                                 <a class="menu-title" href="#">Women's Fashion</a>
                                                 <ul>
@@ -421,10 +385,10 @@
                                                     </div>
                                                 </div>
                                             </li>
-                                        </ul>
+                                        </ul> -->
                                     </li>
                                     <li><a href="blog-category-grid.html">Blog <i class="fi-rs-angle-down"></i></a>
-                                        <ul class="sub-menu">
+                                        <!-- <ul class="sub-menu">
                                             <li><a href="blog-category-grid.html">Blog Category Grid</a></li>
                                             <li><a href="blog-category-list.html">Blog Category List</a></li>
                                             <li><a href="blog-category-big.html">Blog Category Big</a></li>
@@ -436,10 +400,10 @@
                                                     <li><a href="blog-post-fullwidth.html">No Sidebar</a></li>
                                                 </ul>
                                             </li>
-                                        </ul>
+                                        </ul> -->
                                     </li>
                                     <li><a href="#">Pages <i class="fi-rs-angle-down"></i></a>
-                                        <ul class="sub-menu">
+                                        <!-- <ul class="sub-menu">
                                             <li><a href="page-about.html">About Us</a></li>
                                             <li><a href="page-contact.html">Contact</a></li>
                                             <li><a href="page-account.html">My Account</a></li>
@@ -448,7 +412,7 @@
                                             <li><a href="page-privacy-policy.html">Privacy Policy</a></li>
                                             <li><a href="page-terms.html">Terms of Service</a></li>
                                             <li><a href="page-404.html">404 Page</a></li>
-                                        </ul>
+                                        </ul> -->
                                     </li>
                                     <li>
                                         <a href="page-contact.html">Contact</a>
@@ -711,7 +675,7 @@
                                         <th scope="col">Remove</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="productTableBody">
                                     <%let Total =0%>
                                     <!-- ..............................loopp..................................... -->
                                     <%if(locals.cartData){%>
@@ -736,8 +700,9 @@
                                             </div>
                                         </td>
                                         <td class="text-right" data-title="Cart">
-                                            <span id="subTotal_<%=cartData.products[i].productId._id%>">₹<%=cartData.products[i].productId.salesprice*cartData.products[i].quantity%></span>
-                                            
+                                            <span id="subTotal_<%=cartData.products[i].productId._id%>">₹<%=cartData.products[i].productId.salesprice*cartData.products[i].quantity.toLocaleString()%></span>
+                                            <!-- <span id="subTotal_<%=cartData.products[i].productId._id%>">₹<%= (cartData.products[i].productId.salesprice * cartData.products[i].quantity).toLocaleString() %></span> -->
+
                                         </td>
                                         <!-- <td class="action" data-title="Remove"><a href="/removeFromCart" class="text-muted"><i class="fi-rs-trash"></i></a></td> -->
                                         <td class="action" data-title="Remove">
@@ -814,19 +779,25 @@ function decreaseQuantity(productId, total, price) {
                                       </script>
 <!--  loopp......ends----........................................................-->
                                    
-                                    <tr>
+                                    <!-- <tr>
                                         <td colspan="6" class="text-end">
                                             <a href="#" class="text-muted"> <i class="fi-rs-cross-small"></i> Clear Cart</a>
                                         </td>
-                                    </tr>
+                                    </tr> -->
                                 </tbody>
                             </table>
                         </div>
+                        <!-- new buttons -->
                         <div class="cart-action text-end">
-                            <!-- <a class="btn  mr-10 mb-sm-15"><i class="fi-rs-shuffle mr-10"></i>Update Cart</a> -->
+                            <a class="btn continue-shopping-btn" href="/"><i class="fi-rs-shopping-bag mr-10"></i>Continue Shopping</a>
+                            <a href="/checkOut" class="btn proceed-to-checkout-btn"> <i class="fi-rs-box-alt mr-10"></i> Proceed To Checkout</a>
+                        </div>
+                        
+                        <!-- <div class="cart-action text-end">
+                        
                             <a class="btn " href="/"><i class="fi-rs-shopping-bag mr-10"></i>Continue Shopping</a>
                             <a href="/checkOut" class="btn "> <i class="fi-rs-box-alt mr-10"></i> Proceed To CheckOut</a>
-                        </div>
+                        </div> -->
                         <div class="divider center_icon mt-50 mb-50"><i class="fi-rs-fingerprint"></i></div>
                         <div class="row mb-50">
                            
@@ -990,12 +961,86 @@ function decreaseQuantity(productId, total, price) {
         }
     }
     </script>
-    
+
+    <!-- search cart -->
     <script>
-
-
-
+        document.addEventListener("DOMContentLoaded", function() {
+            const searchInput = document.getElementById('searchInput');
+            const tableBody = document.getElementById('productTableBody');
+    
+            if (!tableBody) {
+                console.error('Table body element not found.');
+                return; // Exit the function if table body is not found
+            }
+    
+            searchInput.addEventListener('input', function() {
+                const searchTerm = searchInput.value.trim();
+                if (searchTerm.length >= 0) {
+                    searchProducts(searchTerm);
+                } else {
+                    // Clear search results or show default content
+                    clearTable();
+                }
+            });
+    
+            function searchProducts(searchTerm) {
+                fetch(`/search?term=${encodeURIComponent(searchTerm)}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        // Update UI with search results
+                       
+                        updateTable(data);
+                    })
+                    .catch(error => {
+                        console.error('Error searching products:', error);
+                    });
+            }
+    
+            function updateTable(products) {
+                // Clear existing products from the table
+                clearTable();
+                console.log(products);
+                // Add the new products to the table
+                products.forEach(product => {
+                    const row = document.createElement('tr');
+                       
+                    // Create and append cells for product details
+                    const imageCell = document.createElement('td');
+                    const image = document.createElement('img');
+                    image.src = product.productId.image[0]; // Adjust according to your data structure
+                    image.alt = product.productId.title; // Adjust according to your data structure
+                    imageCell.appendChild(image);
+                    row.appendChild(imageCell);
+    
+                    const nameCell = document.createElement('td');
+                    nameCell.textContent = product.productId.title; // Adjust according to your data structure
+                    row.appendChild(nameCell);
+    
+                    const priceCell = document.createElement('td');
+                    priceCell.textContent = product.productId.salesprice; // Adjust according to your data structure
+                    row.appendChild(priceCell);
+    
+                    // Append the row to the table body
+                    tableBody.appendChild(row);
+                });
+            }
+    
+            function clearTable() {
+                if (tableBody) {
+                    // Remove all rows from the table body
+                    tableBody.innerHTML = '';
+                }
+            }
+        });
     </script>
+    
+    
+
 
  
     <script src="assets/js/vendor/modernizr-3.6.0.min.js"></script>

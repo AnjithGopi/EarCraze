@@ -15,11 +15,13 @@ admin_Route.set("view engine",'ejs')
 admin_Route.set('views',"./view/admin")
 
 
+
+
+
 admin_Route.get("/",adminAuth.isLogout,adminController.adminLogin)
 admin_Route.get("/dashboard",adminAuth.isLogin,adminController.getDashboard)
 admin_Route.post("/dashboard",adminController.verifyAdmin)
 admin_Route.get("/userlist",adminAuth.isLogin,adminController.userList)
-
 admin_Route.get("/blockuser",adminAuth.isLogin,adminController.blockUser)
 admin_Route.get("/unblockuser",adminAuth.isLogin,adminController.unblockUser)
 admin_Route.get('/logout',adminController.adminLogin)
@@ -50,8 +52,6 @@ admin_Route.get('/blockBrand',adminAuth.isLogin,productController.blockBrand)
 admin_Route.get('/unblockBrand',adminAuth.isLogin,productController.unblockBrand)
 
 
-
-
 //...................Orders......................................
 
 
@@ -63,6 +63,14 @@ admin_Route.get('/adminOrderCancelled',adminAuth.isLogin,productController.admin
 admin_Route.get('/adminOrderReturned',adminAuth.isLogin,productController.adminOrderReturned)
 admin_Route.get('/adminOrderdetails',adminAuth.isLogin,productController.orderDetails)
 
+
+//......................report..............
+
+admin_Route.get('/salesReport',adminAuth.isLogin,adminController.salesReport)
+admin_Route.post('/salesreportsearch',adminAuth.isLogin,adminController.salesReportSearch)
+
+admin_Route.get('/Coupons',adminAuth.isLogin,adminController.coupon)
+admin_Route.post('/createCoupon',adminAuth.isLogin,adminController.createCoupon)
 
 
 

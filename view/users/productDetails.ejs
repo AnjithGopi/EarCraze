@@ -25,6 +25,44 @@
 
 <script src="assets/js/magiczoom.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<style>
+
+.product-extra-link2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.product-extra-link2 .button-add-to-cart {
+    flex-grow: 1;
+    margin-right: 10px; /* Adjust margin as needed */
+}
+
+.product-extra-link2 .action-btn {
+    flex-grow: 1;
+    text-align: center;
+    text-decoration: none;
+    color: #faf7f7; /* Adjust color as needed */
+    border: 1px solid #ccc; /* Adjust border as needed */
+    padding: 10px; /* Adjust padding as needed */
+}
+
+/* Media query for mobile responsiveness */
+@media screen and (max-width: 768px) {
+    .product-extra-link2 {
+        flex-direction: column;
+    }
+
+    .product-extra-link2 .button-add-to-cart,
+    .product-extra-link2 .action-btn {
+        margin: 5px 0;
+    }
+}
+
+
+
+
+</style>
 
 </head>
 
@@ -134,11 +172,18 @@
                                         <span class="qty-val">1</span>
                                         <a href="#" class="qty-up"><i class="fi-rs-angle-small-up"></i></a>
                                     </div>
-                                    <div class="product-extra-link2">
+                                    <!-- new buttons -->
+                                    <!-- <div class="product-extra-link2">
                                         <button type="submit"   class="button button-add-to-cart">Add to cart</button>
                                         <a aria-label="Add To Wishlist" class="action-btn hover-up" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
                                         <a aria-label="Compare" class="action-btn hover-up" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
+                                    </div> -->
+                                    <div class="product-extra-link2">
+                                        <button type="submit" class="button button-add-to-cart">Add to cart</button>
+                                        <a aria-label="Add To Wishlist" class="action-btn hover-up wishlist-btn" href="shop-wishlist.html"><i class="fi-rs-heart"></i> Wishlist</a>
+                                        <!-- <a aria-label="Compare" class="action-btn hover-up" href="shop-compare.html"><i class="fi-rs-shuffle"></i> Compare</a> -->
                                     </div>
+                                    
                                 </div>
                                 <ul class="product-meta font-xs color-grey mt-50">
                                     <li class="mb-5">SKU: <a href="#">FWM15VKT</a></li>
@@ -201,7 +246,7 @@
                         <a href="index.html"><img src="assets/imgs/theme/logo.svg" alt="logo"></a>
                     </div>
                     <div class="header-right">
-                        <div class="search-style-2">
+                        <!-- <div class="search-style-2">
                             <form action="#">
                                 <select class="select-active">
                                     <option>All Categories</option>
@@ -218,20 +263,20 @@
                                 </select>
                                 <input type="text" placeholder="Search for items...">
                             </form>
-                        </div>
+                        </div> -->
                         <div class="header-action-right">
                             <div class="header-action-2">
-                                <div class="header-action-icon-2">
+                                <!-- <div class="header-action-icon-2">
                                     <a href="shop-wishlist.html">
                                         <img class="svgInject" alt="Evara" src="assets/imgs/theme/icons/icon-heart.svg">
                                         <span class="pro-count blue">4</span>
                                     </a>
-                                </div>
+                                </div> -->
                                 <div class="header-action-icon-2">
-                                    <a class="mini-cart-icon" href="shop-cart.html">
+                                    <!-- <a class="mini-cart-icon" href="shop-cart.html">
                                         <img alt="Evara" src="assets/imgs/theme/icons/icon-cart.svg">
                                         <span class="pro-count blue">2</span>
-                                    </a>
+                                    </a> -->
                                     <div class="cart-dropdown-wrap cart-dropdown-hm2">
                                         <ul>
                                             <li>
@@ -959,8 +1004,8 @@
                                             <div class="product-extra-link2">
                                                 <button type="submit" onclick="addToCart()" class="button button-add-to-cart">Add to cart</button>
                                                 <input type="hidden" name="productId" id="productId" value="<%=products._id%>">
-                                                <a aria-label="Add To Wishlist" class="action-btn hover-up" href="shop-wishlist.html"><i class="fi-rs-heart"></i></a>
-                                                <a aria-label="Compare" class="action-btn hover-up" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
+                                                <button type="submit" onclick="addToWishlist()" aria-label="Add To Wishlist" class="action-btn hover-up" ><i class="fi-rs-heart"></i></button>
+                                                <!-- <a aria-label="Compare" class="action-btn hover-up" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a> -->
                                             </div>
 
 
@@ -1611,6 +1656,73 @@ function addToCart() {
     
 
 }
+
+
+// add to wishlist....................
+
+
+
+function addToWishlist() {
+
+//var quantity = parseInt(currentQuantity);
+var productId = document.getElementById('productId').value;
+
+//console.log('Quantity:', quantity);
+console.log('Product ID:', productId);
+
+// Add your fetch logic here
+ 
+
+
+
+
+    fetch("/addtoWishlist", {
+method: "POST",
+headers: {
+    'Content-Type': 'application/json',
+},
+body: JSON.stringify({productId }),
+})
+.then(response => {
+
+if (!response.ok) {
+    throw new Error(`Failed to add item to cart. Status: ${response.status}`);
+}
+return response.json(); // Assuming your server sends a JSON response
+})
+.then(data => {
+
+// Handle the response data accordingly, e.g., show a success message
+
+if(!data.success){
+    toastr.error(data.message);
+    // alert(data.message)
+} else{
+    Swal.fire({
+    icon: 'success',
+    title: 'Added Successfully',
+    showConfirmButton: true,
+    confirmButtonClass: 'btn btn-warning',
+})
+.then(() => {
+    window.location.href = '/wishList';
+});
+}
+})
+.catch(error => {
+
+console.error('Error adding item to cart:', error);
+// Handle the error, e.g., show an error message to the user
+});
+
+
+
+}
+
+
+
+
+
 
     </script>
     <script src="assets/js/vendor/modernizr-3.6.0.min.js"></script>

@@ -699,12 +699,12 @@
         </div>
         <section class="mt-50 mb-50">
             <div class="container">
-                <div class="row">
-                    <div class="col-lg-6 mb-sm-15">
-                        <div class="toggle_info">
+                <!-- <div class="row"> -->
+                    <!-- <div class="col-lg-6 mb-sm-15"> -->
+                        <!-- <div class="toggle_info">
                             <span><i class="fi-rs-user mr-10"></i><span class="text-muted">Already have an account?</span> <a href="#loginform" data-bs-toggle="collapse" class="collapsed" aria-expanded="false">Click here to login</a></span>
-                        </div>
-                        <div class="panel-collapse collapse login_form" id="loginform">
+                        </div> -->
+                        <!-- <div class="panel-collapse collapse login_form" id="loginform">
                             <div class="panel-body">
                                 <p class="mb-30 font-sm">If you have shopped with us before, please enter your details below. If you are a new customer, please proceed to the Billing &amp; Shipping section.</p>
                                 <form method="post">
@@ -728,36 +728,21 @@
                                     </div>
                                 </form>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="toggle_info">
-                            <span><i class="fi-rs-label mr-10"></i><span class="text-muted">Have a coupon?</span> <a href="#coupon" data-bs-toggle="collapse" class="collapsed" aria-expanded="false">Click here to enter your code</a></span>
-                        </div>
-                        <div class="panel-collapse collapse coupon_form " id="coupon">
-                            <div class="panel-body">
-                                <p class="mb-30 font-sm">If you have a coupon code, please apply it below.</p>
-                                <form method="post">
-                                    <div class="form-group">
-                                        <input type="text" placeholder="Enter Coupon Code...">
-                                    </div>
-                                    <div class="form-group">
-                                        <button class="btn  btn-md" name="login">Apply Coupon</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                        </div> -->
+                    <!-- </div> -->
+                    
+                <!-- </div> -->
                 <div class="row">
                     <div class="col-12">
                         <div class="divider mt-50 mb-50"></div>
                     </div>
                 </div>
                 <div class="row">
+                   
                     <div class="col-md-6">
+                        
                         <div class="mb-25">
-                            <h5>Shipment details</h5>
+                            <h5>Shipment details</h5><a href="/addressForm" class="btn-small">Add new Address</a>
                         </div>
                         <%if(locals.addressData){%>
 
@@ -781,7 +766,7 @@
                                         <address>Address :<%=address.address%><br>
                                             City :<%=address.city%><br>State :<%=address.state%><br>Phone : <%=address.mobile%><br>Zipcode :<%=address.zipcode%></address><br>
                                         
-                                        <a href="#" class="btn-small">Edit</a>
+                                        <!-- <a href="#" class="btn-small">Edit</a> -->
                                     </div>
                                    
                                 </div>
@@ -850,36 +835,9 @@
                                 <div class="mb-25">
                                     <h5>Payment</h5>
                                 </div>
-                                <div class="payment_option">
+                                <div class="payment_option d-flex" >
                                     
-                                    <!-- <div class="custome-radio">
-                                        <input class="form-check-input" required="" type="radio" name="payment_option" id="exampleRadios5" value="Paypal" checked="">
-                                        <label class="form-check-label" for="exampleRadios5" data-bs-toggle="collapse" data-target="#paypal"  aria-controls="paypal">Paypal</label>
-                                        <div class="form-group collapse in" id="paypal">
-                                            <p class="text-muted mt-5">Pay via PayPal; you can pay with your credit card if you don't have a PayPal account.</p>
-                                        </div>
-                                    </div> -->
-                                    <!-- <div class="custome-radio"> -->
-                                        <!-- Razorpay option --
-                                        <input class="form-check-input" required="" type="radio" name="payment_option" id="WalletOption" value="Wallet">
-                                        <label class="form-check-label" for="walletOption" data-bs-toggle="collapse" data-target="#razorpay" aria-controls="razorpay">Wallet</label>
-                                        < Additional in
-                                        <div class="form-group collapse in" id="wallet">
-                                            <p class="text-muted mt-5">Pay via wallet</p>
-                                        </div>
-                                    </div>
-
-
-
-                                    <div class="custome-radio">
-                                         Razorpay option -
-                                        <input class="form-check-input" required="" type="radio" name="payment_option" id="razorpayOption" value="Razorpay">
-                                        <label class="form-check-label" for="razorpayOption" data-bs-toggle="collapse" data-target="#razorpay" aria-controls="razorpay">Razorpay</label>
-                                        <Additional information for Razorpay -->
-                                        <!-- <div class="form-group collapse in" id="razorpay">
-                                            <p class="text-muted mt-5">Pay via Razorpay.</p>
-                                        </div>
-                                    </div> -->
+                                   <div>
                                     <div class="custome-radio">
                                         <input class="form-check-input" required="" type="radio" name="payment_option" id="exampleRadios6" value="Cash on delivery" checked="">
                                         <label class="form-check-label" for="exampleRadios6" data-bs-toggle="collapse" data-target="#paypal" aria-controls="paypal">Cash On delivery</label>
@@ -907,6 +865,32 @@
                                             <p class="text-muted mt-5">Pay via Razorpay.</p>
                                         </div>
                                     </div>
+
+                                   </div>
+                                    
+
+
+                                    <div class="col-lg-6 m-5 mt-0">
+                                        <div class="toggle_info">
+                                            <span><i class="fi-rs-label mr-10"></i><span class="text-muted">Have a coupon?</span> <a href="#coupon" data-bs-toggle="collapse" class="collapsed" aria-expanded="false">Click here to enter your code</a></span>
+                                        </div>
+                                        <div class="panel-collapse collapse coupon_form " id="coupon">
+                                            <div class="panel-body">
+                                                <p class="mb-30 font-sm">If you have a coupon code, please apply it below.</p>
+                                                <form method="post">
+                                                    <div class="form-group">
+                                                        <input type="text" placeholder="Enter Coupon Code...">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <button class="btn  btn-md" name="login">Apply Coupon</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
                                     
                                 </div>
                             </div>
@@ -1051,6 +1035,7 @@
     <script>
 
 function placeOrder() {
+    
     console.log("place order worked")
     const selectedRadioButton = document.querySelector('input[name="payment_option"]:checked').value;
     const selectedAddress = document.querySelector('input[name="delivery_address"]:checked').value;

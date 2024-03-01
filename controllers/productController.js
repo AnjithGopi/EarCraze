@@ -12,11 +12,7 @@ const addProduct=async(req,res)=>{
 
         const newcategory= await Category.find({is_active:0})
         const brand=await Brand.find({is_active:0})
-
-
         res.render("addProduct",{newcategory,brand})
-
-
         
     } catch (error) {
         console.log(error.message)
@@ -47,11 +43,6 @@ const addnewProduct= async(req,res)=>{
         })
         const product=await productData.save()
         console.log(product)
-        
-
-
-       
-        
         res.redirect("/admin/addproduct")
 
         
@@ -105,12 +96,10 @@ const updateProduct= async(req,res)=>{
     try {
 
         const id=req.query.id
-        // const updateData= await Product.findByIdAndUpdate({_id:id},{$set:{}})
-        
+       
         const{pname,pbrand,pdescription,regularPrice,salesPrice,image,category,tags, is_active,quantity}=req.body
-        console.log('===================================================');
-        console.log(req.body.pbrand, req.body.category);
-          
+    
+        
         const updateData= await Product.findByIdAndUpdate({_id:id},{$set:{
             title:pname,
             brand:pbrand,
@@ -122,8 +111,7 @@ const updateProduct= async(req,res)=>{
             quantity:quantity
 
      } })
-        // const product=await productData.save()
-        // console.log(updateData)
+        
         res.redirect("/admin/productlist")
 
         
@@ -360,9 +348,9 @@ const getOrders= async(req,res)=>{
     try {
 
 
-        // const userId=req.session.userId
        
-        const orderList= await Order.find().populate('userId')
+       
+        const orderList= await Order.find().sort({orderDate:-1}).populate('userId')
 
 
 
@@ -380,19 +368,10 @@ const getOrders= async(req,res)=>{
 const adminOrderCancelled= async(req,res)=>{
     try {
 
-         console.log("Order Cancelled")
-        // const userId= req.session.userId
+         
         const orderId=req.query.id
-        // const orderCancel=await Order.findByIdAndUpdate(userId,$set{is_cancelled:1})
-
-        // const order = await Order.findByIdAndUpdate(userId, { $set: { is_cancelled: 1 } });
+       
         const orderCancel = await Order.findByIdAndUpdate(orderId,{$set: {orderStatus:'Cancelled'}})
-
-
-
-       
-       
-        console.log("cancel Order Admin::",orderCancel)
 
          res.redirect('/admin/getOrders')
 
@@ -410,10 +389,9 @@ const adminOrderCancelled= async(req,res)=>{
 const adminOrderPending= async(req,res)=>{
     try {
 
-        console.log("order changed to pending")
+       
         const orderId= req.query.id
         const orderPending= await Order.findByIdAndUpdate(orderId,{$set:{orderStatus:"Pending"}})
-        console.log('orderPending:',orderPending)
         res.redirect('/admin/getOrders')
         
     } catch (error) {
@@ -429,15 +407,12 @@ const adminOrderPending= async(req,res)=>{
 const adminOrderShipped= async(req,res)=>{
 
     try {
-        console.log("Order changed to shipped")
+       
 
         const orderId= req.query.id
     
         const orderShipped =await Order.findByIdAndUpdate(orderId,{$set:{ orderStatus:'Shipped'}})
-    
-        console.log('ordershipped:',orderShipped)
-    
-        res.redirect('/admin/getOrders')
+         res.redirect('/admin/getOrders')
         
     } catch (error) {
 
@@ -453,11 +428,10 @@ const adminOrderDelivered=async(req,res)=>{
 
     try {
 
-        console.log("Order changed to delivered")
+       
 
         const orderId= req.query.id
         const orderDelivered= await  Order.findByIdAndUpdate(orderId,{$set:{orderStatus:'Delivered'}})
-         console.log('order delivered:',orderDelivered)
          res.redirect('/admin/getOrders')
         
     } catch (error) {
@@ -475,11 +449,11 @@ const adminOrderReturned=async(req,res)=>{
     try {
 
         
-        console.log("Order changed to Returned")
+       
 
         const orderId= req.query.id
         const orderReturned= await  Order.findByIdAndUpdate(orderId,{$set:{orderStatus:'Returned'}})
-         console.log('order Returned:',orderReturned)
+        
          res.redirect('/admin/getOrders')
 
 
@@ -506,12 +480,7 @@ const orderDetails= async(req,res)=>{
 
         const orderDetails= await Order.findById(orderId).populate('userId').populate('products.productId')
 
-        console.log("...............................................................")
-        console.log(orderDetails)
-        console.log("...............................................................")
-        console.log(orderDetails.products[0].quantity)
-
-        console.log("...............................................................")
+       
 
 
         res.render('orderdetails',{orderDetails})
@@ -523,8 +492,6 @@ const orderDetails= async(req,res)=>{
         
     }
 }
-
-
 
 
 

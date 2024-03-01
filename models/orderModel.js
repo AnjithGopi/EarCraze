@@ -32,7 +32,12 @@ const orderSchema= mongoose.Schema({
     orderId:{type:String},
     totalAmount:{type:String},
     // is_cancelled:{type:Number,default:0},
-    deliveryStatus:{type:Number,default:0}
+    deliveryStatus:{type:Number,default:0},
+    
+    
+
+
+
     
 
 

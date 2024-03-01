@@ -17,6 +17,52 @@
     <link rel="shortcut icon" type="image/x-icon" href="admin-assets/imgs/theme/favicon.svg">
     <!-- Template CSS -->
     <link href="/admin-assets/css/main.css" rel="stylesheet" type="text/css" />
+
+    <style>
+
+
+        .custom-brown {
+    background-color: rgb(10, 0, 0);
+    /* You can also adjust other styles like text color, border, etc., to fit your design */
+}
+.custom-green{
+    background-color: rgb(21, 123, 21);
+}
+.custom-red{
+    background-color: rgb(185, 16, 13)
+}
+.custom-orange{
+    background-color: rgb(246, 137, 53);
+}
+.custom-blue{
+    background-color: dodgerblue;
+}
+.custom-dgreen{
+    background-color: rgb(175, 248, 6);
+}
+.custom-orange{
+    background-color: rgb(228, 159, 9);
+}
+.badge.rounded-pill {
+    padding: 0.1rem 0.5rem; /* Adjust padding as needed */
+    font-size: 0.7rem; /* Adjust font size as needed */
+    height: 1.2rem; /* Adjust height as needed */
+    width: 80px; /* Set a fixed width for the badges */
+    display: inline-flex; /* Use inline-flex to allow centering of content */
+    justify-content: center; /* Center the content horizontally */
+    align-items: center; /* Center the content vertically */
+    overflow: hidden; /* Hide any overflowing text */
+    white-space: nowrap; /* Prevent text from wrapping */
+    text-overflow: ellipsis; /* Display ellipsis (...) for overflowed text */
+}
+
+
+    
+    </style>
+
+
+
+
 </head>
 
 
@@ -116,8 +162,8 @@
                         <span class="text">Brands</span> </a>
                 <!-- </li> -->
                 <!-- <li class="menu-item"> -->
-                    <a class="menu-link" disabled href="#"> <i class="icon material-icons md-pie_chart"></i>
-                        <span class="text">Statistics</span>
+                    <a class="menu-link" disabled href="/admin/Coupons"> <i class="icon material-icons md-pie_chart"></i>
+                        <span class="text">Coupon</span>
                     </a>
                 <!-- </li> -->
             </ul>
@@ -147,10 +193,10 @@
         <header class="main-header navbar">
             <div class="col-search">
                 <form class="searchform">
-                    <div class="input-group">
+                    <!-- <div class="input-group">
                         <input list="search_terms" type="text" class="form-control" placeholder="Search term">
                         <button class="btn btn-light bg" type="button"> <i class="material-icons md-search"></i></button>
-                    </div>
+                    </div> -->
                     <datalist id="search_terms">
                         <option value="Products">
                         <option value="New orders">
@@ -174,15 +220,7 @@
                     <li class="nav-item">
                         <a href="#" class="requestfullscreen nav-link btn-icon"><i class="material-icons md-cast"></i></a>
                     </li>
-                    <!-- <li class="dropdown nav-item">
-                        <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownLanguage" aria-expanded="false"><i class="material-icons md-public"></i></a> -->
-                        <!-- <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownLanguage">
-                            <a class="dropdown-item text-brand" href="#"><img src="/admin-/admin-assets/imgs/theme/flag-us.png" alt="English">English</a>
-                            <a class="dropdown-item" href="#"><img src="/admin-/admin-assets/imgs/theme/flag-fr.png" alt="Français">Français</a>
-                            <a class="dropdown-item" href="#"><img src="/admin-assets/imgs/theme/flag-jp.png" alt="Français">日本語</a>
-                            <a class="dropdown-item" href="#"><img src="/admin-assets/imgs/theme/flag-cn.png" alt="Français">中国人</a>
-                        </div> -->
-                    <!-- </li> -->
+                   
                     <li class="dropdown nav-item">
                         <a class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount" aria-expanded="false"> <img class="img-xs rounded-circle" src="/admin-assets/imgs/people/avatar2.jpg" alt="User"></a>
                         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownAccount">
@@ -205,33 +243,49 @@
                     <p>Whole data about your business here</p>
                 </div>
                 <div>
-                    <a href="#" class="btn btn-primary"><i class="text-muted material-icons md-post_add"></i>Create report</a>
+                    
+                    <a href="/admin/salesReport" class="btn btn-primary"><i class="text-muted material-icons md-post_add"></i>Create report</a>
                 </div>
             </div>
             <div class="row">
                 <div class="col-lg-3">
+                   <%if(locals.totalOrders){%>
                     <div class="card card-body mb-4">
                         <article class="icontext">
                             <span class="icon icon-sm rounded-circle bg-primary-light"><i class="text-primary material-icons md-monetization_on"></i></span>
                             <div class="text">
+                                <%let total=0%>
+                                <%totalOrders.forEach((item)=>{
+                                    if(!isNaN(parseInt(item.totalAmount))){
+                                       total+= parseInt(item.totalAmount)
+                                   }
+                               })%>
                                 <h6 class="mb-1 card-title">Revenue</h6>
-                                <span>$13,456.5</span>
+                                <!-- <span>Rs <%=total%></span> -->
+                                <span>Rs <%= total.toLocaleString() %></span>
                                 <span class="text-sm">
                                     Shipping fees are not included
                                 </span>
                             </div>
                         </article>
                     </div>
+
+                    <%}%>
+                    
                 </div>
                 <div class="col-lg-3">
                     <div class="card card-body mb-4">
                         <article class="icontext">
                             <span class="icon icon-sm rounded-circle bg-success-light"><i class="text-success material-icons md-local_shipping"></i></span>
                             <div class="text">
-                                <h6 class="mb-1 card-title">Orders</h6> <span>53.668</span>
+                               <%if(locals.totalOrders){%>
+                                <h6 class="mb-1 card-title">Orders</h6> <span><%=totalOrders.length%></span>
                                 <span class="text-sm">
                                     Excluding orders in transit
                                 </span>
+
+                                <%}%>
+                               
                             </div>
                         </article>
                     </div>
@@ -239,13 +293,17 @@
                 <div class="col-lg-3">
                     <div class="card card-body mb-4">
                         <article class="icontext">
-                            <span class="icon icon-sm rounded-circle bg-warning-light"><i class="text-warning material-icons md-qr_code"></i></span>
+                            <%if(locals.totalProducts){%>
+                                <span class="icon icon-sm rounded-circle bg-warning-light"><i class="text-warning material-icons md-qr_code"></i></span>
                             <div class="text">
-                                <h6 class="mb-1 card-title">Products</h6> <span>9.856</span>
+                                <h6 class="mb-1 card-title">Products</h6> <span><%=totalProducts.length%></span>
                                 <span class="text-sm">
                                     In 19 Categories
                                 </span>
                             </div>
+
+                            <%}%>
+                            
                         </article>
                     </div>
                 </div>
@@ -272,7 +330,7 @@
                         </article>
                     </div>
                     <div class="row">
-                        <div class="col-lg-5">
+                        <!-- <div class="col-lg-5">
                             <div class="card mb-4">
                                 <article class="card-body">
                                     <h5 class="card-title">New Members</h5>
@@ -316,8 +374,8 @@
                                     </div>
                                 </article>
                             </div>
-                        </div>
-                        <div class="col-lg-7">
+                        </div> -->
+                        <!-- <div class="col-lg-7">
                             <div class="card mb-4">
                                 <article class="card-body">
                                     <h5 class="card-title">Recent activities</h5>
@@ -409,8 +467,8 @@
                             <h5 class="card-title">Revenue Base on Area</h5>
                             <canvas id="myChart2" height="217"></canvas>
                         </article>
-                    </div>
-                    <div class="card mb-4">
+                    </div> -->
+                    <!-- <div class="card mb-4">
                         <article class="card-body">
                             <h5 class="card-title">Marketing Chanel</h5>
                             <span class="text-muted font-xs">Facebook</span>
@@ -434,7 +492,7 @@
                                 <div class="progress-bar" role="progressbar" style="width: 80%"> 80%</div>
                             </div>
                         </article>
-                    </div>
+                    </div> -->
                 </div>
             </div>
             <div class="card mb-4">
@@ -442,7 +500,7 @@
                     <h4 class="card-title">Latest orders</h4>
                     <div class="row align-items-center">
                         <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
-                            <div class="custom_select">
+                            <!-- <div class="custom_select">
                                 <select class="form-select select-nice">
                                     <option selected>All Categories</option>
                                     <option>Women's Clothing</option>
@@ -456,12 +514,12 @@
                                     <option>Shoes</option>
                                     <option>Mother & Kids</option>
                                 </select>
-                            </div>
+                            </div> -->
                         </div>
-                        <div class="col-md-2 col-6">
+                        <!-- <div class="col-md-2 col-6">
                             <input type="date" value="02.05.2021" class="form-control">
-                        </div>
-                        <div class="col-md-2 col-6">
+                        </div> -->
+                        <!-- <div class="col-md-2 col-6">
                             <div class="custom_select">
                                 <select class="form-select select-nice">
                                     <option selected>Status</option>
@@ -471,181 +529,68 @@
                                     <option>Refund</option>
                                 </select>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
                 </header>
                 <div class="card-body">
                     <div class="table-responsive">
                         <div class="table-responsive">
                             <table class="table align-middle table-nowrap mb-0">
-                                <thead class="table-light">
+                              
+
+
+
+                                <thead>
                                     <tr>
-                                        <th scope="col" class="text-center">
-                                            <div class="form-check align-middle">
-                                                <input class="form-check-input" type="checkbox" id="transactionCheck01">
-                                                <label class="form-check-label" for="transactionCheck01"></label>
-                                            </div>
-                                        </th>
-                                        <th class="align-middle" scope="col">Order ID</th>
-                                        <th class="align-middle" scope="col">Billing Name</th>
-                                        <th class="align-middle" scope="col">Date</th>
-                                        <th class="align-middle" scope="col">Total</th>
-                                        <th class="align-middle" scope="col">Payment Status</th>
-                                        <th class="align-middle" scope="col">Payment Method</th>
-                                        <th class="align-middle" scope="col">View Details</th>
+                                        <th>Order ID</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Payment</th>
+                                        <th scope="col">Total</th>
+                                        <th scope="col">Date</th>
+                                        <th scope="col">Payment Status</th>
+                                        <th scope="col">Order Status</th>
+                                        
+                                        <!-- <th scope="col">Change Status</th> -->
+                                        <!-- <th scope="col" class="text-center " >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Actions</th> -->
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td class="text-center">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="transactionCheck02">
-                                                <label class="form-check-label" for="transactionCheck02"></label>
-                                            </div>
-                                        </td>
-                                        <td><a href="#" class="fw-bold">#SK2540</a> </td>
-                                        <td>Neal Matthews</td>
-                                        <td>
-                                            07 Oct, 2021
-                                        </td>
-                                        <td>
-                                            $400
-                                        </td>
-                                        <td>
-                                            <span class="badge badge-pill badge-soft-success">Paid</span>
-                                        </td>
-                                        <td>
-                                            <i class="material-icons md-payment font-xxl text-muted mr-5"></i> Mastercard
-                                        </td>
-                                        <td>
-                                            <a href="#" class="btn btn-xs"> View details</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-center">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="transactionCheck03">
-                                                <label class="form-check-label" for="transactionCheck03"></label>
-                                            </div>
-                                        </td>
-                                        <td><a href="#" class="fw-bold">#SK2541</a> </td>
-                                        <td>Jamal Burnett</td>
-                                        <td>
-                                            07 Oct, 2021
-                                        </td>
-                                        <td>
-                                            $380
-                                        </td>
-                                        <td>
-                                            <span class="badge badge-pill badge-soft-danger">Chargeback</span>
-                                        </td>
-                                        <td>
-                                            <i class="material-icons md-payment font-xxl text-muted mr-5"></i> Visa
-                                        </td>
-                                        <td>
-                                            <a href="#" class="btn btn-xs"> View details</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-center">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="transactionCheck04">
-                                                <label class="form-check-label" for="transactionCheck04"></label>
-                                            </div>
-                                        </td>
-                                        <td><a href="#" class="fw-bold">#SK2542</a> </td>
-                                        <td>Juan Mitchell</td>
-                                        <td>
-                                            06 Oct, 2021
-                                        </td>
-                                        <td>
-                                            $384
-                                        </td>
-                                        <td>
-                                            <span class="badge badge-pill badge-soft-success">Paid</span>
-                                        </td>
-                                        <td>
-                                            <i class="material-icons md-payment font-xxl text-muted mr-5"></i> Paypal
-                                        </td>
-                                        <td>
-                                            <a href="#" class="btn btn-xs"> View details</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-center">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="transactionCheck05">
-                                                <label class="form-check-label" for="transactionCheck05"></label>
-                                            </div>
-                                        </td>
-                                        <td><a href="#" class="fw-bold">#SK2543</a> </td>
-                                        <td>Barry Dick</td>
-                                        <td>
-                                            05 Oct, 2021
-                                        </td>
-                                        <td>
-                                            $412
-                                        </td>
-                                        <td>
-                                            <span class="badge badge-pill badge-soft-success">Paid</span>
-                                        </td>
-                                        <td>
-                                            <i class="material-icons md-payment font-xxl text-muted mr-5"></i> Mastercard
-                                        </td>
-                                        <td>
-                                            <a href="#" class="btn btn-xs"> View details</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-center">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="transactionCheck06">
-                                                <label class="form-check-label" for="transactionCheck06"></label>
-                                            </div>
-                                        </td>
-                                        <td><a href="#" class="fw-bold">#SK2544</a> </td>
-                                        <td>Ronald Taylor</td>
-                                        <td>
-                                            04 Oct, 2021
-                                        </td>
-                                        <td>
-                                            $404
-                                        </td>
-                                        <td>
-                                            <span class="badge badge-pill badge-soft-warning">Refund</span>
-                                        </td>
-                                        <td>
-                                            <i class="material-icons md-payment font-xxl text-muted mr-5"></i> Visa
-                                        </td>
-                                        <td>
-                                            <a href="#" class="btn btn-xs"> View details</a>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-center">
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" id="transactionCheck07">
-                                                <label class="form-check-label" for="transactionCheck07"></label>
-                                            </div>
-                                        </td>
-                                        <td><a href="#" class="fw-bold">#SK2545</a> </td>
-                                        <td>Jacob Hunter</td>
-                                        <td>
-                                            04 Oct, 2021
-                                        </td>
-                                        <td>
-                                            $392
-                                        </td>
-                                        <td>
-                                            <span class="badge badge-pill badge-soft-success">Paid</span>
-                                        </td>
-                                        <td>
-                                            <i class="material-icons md-payment font-xxl text-muted mr-5"></i> Paypal
-                                        </td>
-                                        <td>
-                                            <a href="#" class="btn btn-xs"> View details</a>
-                                        </td>
-                                    </tr>
+                                    <% if(locals.orderList) { %>
+                                        <% orderList.forEach((order) => { %>
+                                            <tr>
+                                                <td><%= order.orderId %></td>
+                                                <td><b><%= order.userId.name %></b></td>
+                                                <td><b><%= order.paymentMethod %></b></td>
+                                                <!-- <td>₹ <%= order.totalAmount %></td> -->
+                                                <td>₹ <%= parseFloat(order.totalAmount).toLocaleString() %></td>
+
+                                                <td class="col-date">
+                                                    <span class="fs-0"><%= order.orderDate.toLocaleDateString() %></span>
+                                                </td>
+                                                <% if(order.paymentStatus=="Recieved") { %>
+                                                    <td><span class="badge rounded-pill custom-green"><%= order.paymentStatus %></span></td>
+                                                <% } else { %>
+                                                    <td><span class="badge rounded-pill custom-orange"><%= order.paymentStatus %></span></td>
+                                                <% } %>
+                                                <% if(order.orderStatus=='Cancelled') { %>
+                                                    <td><span class="badge rounded-pill custom-red"><%= order.orderStatus %></span></td>
+                                                <% } else if(order.orderStatus=='Pending') { %>
+                                                    <td><span class="badge rounded-pill custom-orange"><%= order.orderStatus %></span></td>
+                                                <% } else if(order.orderStatus=='Shipped') { %>
+                                                    <td><span class="badge rounded-pill custom-blue"><%= order.orderStatus %></span></td>
+                                                <% } else if(order.orderStatus=='Delivered') { %>
+                                                    <td><span class="badge rounded-pill custom-dgreen"><%= order.orderStatus %></span></td>
+                                                <% } else if(order.orderStatus=='Returned') { %>
+                                                    <td><span class="badge rounded-pill custom-brown"><%= order.orderStatus %></span></td>
+                                                <% } else { %>
+                                                    <td><span class="badge rounded-pill custom-green"><%= order.orderStatus %></span></td>
+                                                <% } %>
+                                            </tr>
+                                        <% }) %>
+                                    <% } %>
+                                    
+                                   
+                                   
                                 </tbody>
                             </table>
                         </div>

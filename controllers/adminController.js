@@ -4,7 +4,14 @@ const Product=require("../models/productModel")
 const Category=require("../models/categoryModel")
 const Brand=require("../models/brandModel")
 const Order= require('../models/orderModel')
+const Coupon=require('../models/couponModel')
 
+
+
+const PDFDocument = require('pdfkit');
+const fs = require('fs');
+const path = require('path');
+const filePath = path.join(__dirname, 'sales-report.pdf');
 
 
 const adminLogin= async(req,res)=>{
@@ -27,8 +34,12 @@ const adminLogin= async(req,res)=>{
 
 const getDashboard=async(req,res)=>{
     try {
+        const orderList= await Order.find().sort({orderDate:-1}).limit(5).populate('userId')
 
-        res.render("dashboard")
+        const totalOrders= await Order.find().populate('userId')
+        const totalProducts= await Product.find()
+
+        res.render("dashboard",{orderList,totalOrders,totalProducts})
         
     } catch (error) {
         console.log(error.message)
@@ -89,7 +100,7 @@ const blockUser= async(req,res)=>{
              await userData.save()
    
               const users=await User.find({is_admin:0})
-              // res.render("userlist",{message:"user Blocked",users})
+             
 
               res.redirect("/admin/userlist")
               console.log("user Blocked")
@@ -111,8 +122,7 @@ const unblockUser=async(req,res)=>{
 
 
         const users=await User.find({is_admin:0})
-        // res.render("userlist",{message:"user Unblocked",users})
-        console.log("user unblocked")
+       
         res.redirect("/admin/userlist")    
 
     } catch (error) {
@@ -134,9 +144,99 @@ const adminLogout = async(req,res)=>{
 
 
 
+const salesReport= async(req,res)=>{
+    try {
+
+
+        const orderList= await Order.find().populate('userId')
+
+        res.render('salesReport',{orderList})
+     
+
+
+    } catch (error) {
+        console.log(error.message)
+        
+    }
+}
+
+
+
+const salesReportSearch= async(req,res)=>{
+
+    try {
+
+        
+
+        const { start, end } = req.body; 
+       
+        const orderList = await Order.find({
+            orderDate: { $gte: new Date(start), $lte: new Date(end) }
+        }).populate('userId');
+
+       
+        res.render('salesReport', { orderList,start,end }); 
+
+        
+    } catch (error) {
+        console.log(error.message)
+        
+    }
+}
+
+
+
+const coupon= async(req,res)=>{
+    try {
+
+
+        const coupons= await Coupon.find().sort({_id:-1})
+        res.render("coupon",{coupons})
+        
+    } catch (error) {
+        console.log(error.message)
+        
+    }
+}
+
+const createCoupon= async(req,res)=>{
+    try {
+       
+        const {name, code, dpercent,maxamt, mpamt, date } = req.body;
+    
+      
+        const newCoupon = new Coupon({
+        name:name,
+        code: code,
+        discountpercentage:dpercent,
+        discountAmount:maxamt,
+        minimumAmount:mpamt,
+        validUntil:date,
+        });
+    
+       
+        const savedCoupon = await newCoupon.save();
+
+        console.log("coupon details:",savedCoupon)
+    
+       
+        // res.status(201).json(savedCoupon);
+        res.redirect("/admin/Coupons")
+      } catch (error) {
+        
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+      }
+    }
+    
+
+
+
+
+
 
 
 
 module.exports={
-    adminLogin,verifyAdmin,userList,blockUser,unblockUser,getDashboard,adminLogout
+    adminLogin,verifyAdmin,userList,blockUser,unblockUser,getDashboard,adminLogout,salesReport,salesReportSearch,coupon,createCoupon
 }

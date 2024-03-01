@@ -41,6 +41,19 @@
 .custom-orange{
     background-color: rgb(228, 159, 9);
 }
+.badge.rounded-pill {
+    padding: 0.1rem 0.5rem; /* Adjust padding as needed */
+    font-size: 0.7rem; /* Adjust font size as needed */
+    height: 1.2rem; /* Adjust height as needed */
+    width: 80px; /* Set a fixed width for the badges */
+    display: inline-flex; /* Use inline-flex to allow centering of content */
+    justify-content: center; /* Center the content horizontally */
+    align-items: center; /* Center the content vertically */
+    overflow: hidden; /* Hide any overflowing text */
+    white-space: nowrap; /* Prevent text from wrapping */
+    text-overflow: ellipsis; /* Display ellipsis (...) for overflowed text */
+}
+
 
     </style>
 </head>
@@ -264,6 +277,7 @@
                                     <th scope="col">Name</th>
                                     <th scope="col">Payment</th>
                                     <th scope="col">Total</th>
+                                    <th scope="col">Date</th>
                                     <th scope="col">Payment Status</th>
                                     <th scope="col">Order Status</th>
                                     
@@ -278,8 +292,27 @@
                                         <td><%=order.orderId%></td>
                                         <td><b><%=order.userId.name%></b></td>
                                         <td><b><%=order. paymentMethod%></b></td>
-                                        <td>₹ <%=order.totalAmount%></td>
-                                        <td><span class="badge rounded-pill custom-orange"><%=order.paymentStatus%></span></td>
+                                        <!-- <td>₹ <%=order.totalAmount.toLocaleString()%></td> -->
+                                        <!-- <td>₹ <%= order.totalAmount.toLocaleString() %></td> -->
+                                        <td>₹ <%= parseFloat(order.totalAmount).toLocaleString() %></td>
+
+
+                                        <td class="col-date">
+                                           
+                                            <span class="fs-0"><%= order.orderDate.toLocaleDateString()%></span>
+                                        </td>
+
+                                        <%if(order.paymentStatus=="Recieved"){%>
+                                            <td><span class="badge rounded-pill custom-green"><%=order.paymentStatus%></span></td>
+
+                                        <%}else{%>
+                                            <td><span class="badge rounded-pill custom-orange"><%=order.paymentStatus%></span></td>
+
+                                        <%}%>
+
+                                       
+
+
                                         <%if(order.orderStatus=='Cancelled'){%>
                                             <td>
                                               
@@ -306,10 +339,7 @@
 
                                        <% }else if(order.orderStatus=='Returned'){%>
 
-                                        <!-- <td>
-                                                
-                                            <span class="badge rounded-pill alert-success"><%=order.orderStatus%></span>
-                                        </td> -->
+                                        
                                         <td>
                                             <span class="badge rounded-pill custom-brown"><%=order.orderStatus%></span>
                                         </td>
@@ -352,27 +382,12 @@
                                         <!-- <td><span class="badge rounded-pill alert-danger">Delivery Status</span></td> -->
                                        
                                         <td class="text-end">
-                                            <!-- <a href="#" class="btn btn-md rounded font-sm">Detail</a> -->
-                                            <!-- <div class="btn btn-md rounded font-sm">
-                                                <a href="#" data-bs-toggle="dropdown" class="btn btn-light rounded btn-sm font-sm">View</a>
-                                                <div class="dropdown-menu"> -->
-                                                    <!-- <a class="dropdown-item" href="#">View detail</a> -->
-                                                    <!-- <a class="dropdown-item" href="#">Payment</a>
-                                                    <a class="dropdown-item text-danger" href="#">Cancel Order</a>
-                                                </div>
-                                            </div> dropdown //end -->
+                                           
                                              <div class="btn-group">
                                                 <a href="/admin/adminOrderdetails?id=<%=order._id%>" class="btn btn-md btn-light rounded font-sm">
                                                     Order Details
                                                 </a>
-                                                <!-- <button type="button" class="btn btn-light btn-md dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
-                                                    <span class="visually-hidden">Toggle Dropdown</span>
-                                                </button>
-                                                <ul class="dropdown-menu">
-                                                    <li><a class="dropdown-item text-danger" href="/admin/orderdetails">Order Details</a></li>
-                                                    <li><a class="dropdown-item text-danger" href="/admin/adminOrderCancel?id=<%=order._id%>">Cancel Order</a></li> -->
-                                                    <!-- <li><a class="dropdown-item text-danger" href="/admin/adminOrderCancel?id=<%=order._id%>">Delivered</a></li> -->
-                                                <!-- </ul> -->
+                                              
                                             </div> 
                                            
                                         </td>
