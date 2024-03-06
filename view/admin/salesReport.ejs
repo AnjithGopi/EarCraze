@@ -93,6 +93,7 @@
                                             <th>Order ID</th>
                                             <th scope="col">Name</th>
                                             <th scope="col">Payment</th>
+                                            <th scope="col">coupon Discount</th>
                                             <th scope="col">Total</th>
                                             <th scope="col">Date</th>
                                             <!-- <th scope="col">Payment Status</th>
@@ -102,13 +103,15 @@
                                     </thead>
                                     <tbody>
 
-
+                                        <%let totalDiscount=0%>
                                         <%if(locals.orderList){%>
                                             <% orderList.forEach((order)=>{%>
+                                                <%totalDiscount += parseInt(order.couponDiscount)%>
                                              <tr>
                                                  <td><%=order.orderId%></td>
                                                  <td><b><%=order.userId.name%></b></td>
                                                  <td><b><%=order. paymentMethod%></b></td>
+                                                 <td><b>₹ <%=order.couponDiscount%></b></td>
                                                  <td>₹ <%=order.totalAmount%></td>
                                                  <td class="col-date">
                                                     
@@ -159,16 +162,10 @@
                                 <p></p><br>
                                 <span><h6 class="mb-0">Total Orders: <%=orderList.length%></h6></span>
                                 <p> </p><br>
-                                <!-- <h6 class="mb-0">Total Online:</h6>
-                                <p></p><br> -->
-                                <!-- <h6 class="mb-0">Email:</h6>
-                                <p><template class="_cf_email_" data-cfemail="9cefe9ececf3eee8dcf9e4fdf1ecf0f9b2fff3f1">[email&#160;protected]</template></p><br> -->
-                                <!-- <h6 class="mb-0">Item purchased:</h6><br> -->
-                                <!-- <p>
-                                    <a href="#"> Adidas Air Jordan <i class="icons material-icons md-launch"></i> </a>
-                                    <br>
-                                    <a href="#"> Great product <i class="icons material-icons md-launch"></i> </a>
-                                </p> -->
+                                <br>
+                                <p>Total coupon discount:</p>
+                                <p class="h4">₹ <%=totalDiscount.toLocaleString()%></p>
+                               
                                 <br>
                                 <p>Total Payment:</p>
                                 <p class="h4">₹ <%=total.toLocaleString()%></p>

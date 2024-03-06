@@ -32,7 +32,7 @@ user_Route.get("/login",userAuth.isLogout,userController.loadLogin)
 user_Route.post('/login',userController.verifyLogin)
 user_Route.get('/getOtp',userAuth.isLogout,userController.getOtp)
 user_Route.post("/Otp",userAuth.isLogout,userController.verifyOtp)
-user_Route.get("/productDetails",userController.productDetails)
+user_Route.get("/productDetails",userAuth.isBlocked,userController.productDetails)
 
 
 user_Route.post('/searchproduct',userController.loadHome)
@@ -54,33 +54,34 @@ user_Route.get('/logout',userController.loadLogout)
  
 //------------------Cart------------
 
-user_Route.get('/cart',userAuth.isLogin,cartController.getCart)
-user_Route.post('/addtoCart',userAuth.isLogin,cartController.addtoCart)
+user_Route.get('/cart',userAuth.isLogin,userAuth.isBlocked,cartController.getCart)
+user_Route.post('/addtoCart',userAuth.isLogin,userAuth.isBlocked,cartController.addtoCart)
 user_Route.post('/removeFromCart',userAuth.isLogin,cartController.deleteIteminCart)
-user_Route.post('/updateCartItemQuantity',userAuth.isLogin,cartController.updateitemQuantity)
-user_Route.get('/search',userAuth.isLogin,cartController.searchInCart)
-user_Route.get("/checkOut",userAuth.isLogin,cartController.checkOut)
-user_Route.post('/placeorder',userAuth.isLogin,cartController.placeOrder)
+user_Route.post('/updateCartItemQuantity',userAuth.isLogin,userAuth.isBlocked,cartController.updateitemQuantity)
+user_Route.get('/search',userAuth.isLogin,userAuth.isBlocked,cartController.searchInCart)
+user_Route.get("/checkOut",userAuth.isLogin,userAuth.isBlocked,cartController.checkOut)
+user_Route.post('/placeorder',userAuth.isLogin,userAuth.isBlocked,cartController.placeOrder)
+user_Route.post('/applyCoupon',userAuth.isLogin,userAuth.isBlocked,cartController.applyCoupon)
 
 //---------wishlist
 
-user_Route.get('/wishList',userAuth.isLogin,cartController.getWishlist)
-user_Route.post('/addtoWishList',userAuth.isLogin,cartController.addtoWishList)
-user_Route.post('/removeFromWishlist',userAuth.isLogin,cartController.removeFromWishlist)
+user_Route.get('/wishList',userAuth.isLogin,userAuth.isBlocked,cartController.getWishlist)
+user_Route.post('/addtoWishList',userAuth.isLogin,userAuth.isBlocked,cartController.addtoWishList)
+user_Route.post('/removeFromWishlist',userAuth.isLogin,userAuth.isBlocked,cartController.removeFromWishlist)
 
 
 //..........Dashboard.................
 
-user_Route.get("/userDashboard",userAuth.isLogin,userController.userDash)
-user_Route.get("/addressForm",userAuth.isLogin,userController.addressForm)
-user_Route.post("/createAddress",userAuth.isLogin,userController.createAddress)
-user_Route.get("/cancelOrder",userAuth.isLogin,cartController.userOrderCancel)
-user_Route.get('/returnOrder',userAuth.isLogin,cartController.userOrderReturn)
-user_Route.get('/userOrderDetails',userAuth.isLogin,cartController.userOrderDetails)
+user_Route.get("/userDashboard",userAuth.isLogin,userAuth.isBlocked,userController.userDash)
+user_Route.get("/addressForm",userAuth.isLogin,userAuth.isBlocked,userController.addressForm)
+user_Route.post("/createAddress",userAuth.isLogin,userAuth.isBlocked,userAuth.isBlocked,userController.createAddress)
+user_Route.get("/cancelOrder",userAuth.isLogin,userAuth.isBlocked,cartController.userOrderCancel)
+user_Route.get('/returnOrder',userAuth.isLogin,userAuth.isBlocked,cartController.userOrderReturn)
+user_Route.get('/userOrderDetails',userAuth.isLogin,userAuth.isBlocked,cartController.userOrderDetails)
 
 
-user_Route.get('/editProfile',userAuth.isLogin,userController.editProfile)
-user_Route.post('/updateProfile',userAuth.isLogin,userController.updateUserDetails)
+user_Route.get('/editProfile',userAuth.isLogin,userAuth.isBlocked,userController.editProfile)
+user_Route.post('/updateProfile',userAuth.isLogin,userAuth.isBlocked,userController.updateUserDetails)
 
 
 
@@ -90,8 +91,8 @@ user_Route.post('/updateProfile',userAuth.isLogin,userController.updateUserDetai
 
 
 
-user_Route.post('/paymentByRazorpay',userAuth.isLogin,cartController.onlinePayment)
-
+user_Route.post('/paymentByRazorpay',userAuth.isLogin,userAuth.isBlocked,cartController.onlinePayment)
+user_Route.get('/changestatus',cartController.changeStatus)
 
 
 

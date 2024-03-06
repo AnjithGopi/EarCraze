@@ -495,6 +495,8 @@ const  createAddress= async(req,res)=>{
 const editProfile=async(req,res)=>{
     try {
 
+
+
         res.render("editProfile")
         
     } catch (error) {
@@ -510,53 +512,67 @@ const  updateUserDetails= async(req,res)=>{
     try {
 
 
-        const userId= req.session.userId
-        const userData= await User.findById(userId)
+        // const userId= req.session.userId
+        // const userData= await User.findById(userId)
 
 
-        const hashedPassword = await bcrypt.hash(req.body.password, 10);
+        // const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
-        if(userData.name==req.body.name && userData.email==req.body.email && await bcrypt.compare(req.body.password, userData.password)){
+        // if(userData.name==req.body.name && userData.email==req.body.email && await bcrypt.compare(req.body.password, userData.password)){
 
-           if(req.body.npassword==req.body.cpassword){
+        //    if(req.body.npassword==req.body.cpassword){
 
+        //     const hashedNewPassword = await bcrypt.hash(req.body.npassword, 10);
 
+        //     userData.password = hashedNewPassword;
 
-            const hashedNewPassword = await bcrypt.hash(req.body.npassword, 10);
+        //    const newUserData= await userData.save()
 
+        //    if(newUserData){
+        //     const passwordChanged=true
+        //    }
 
-
-            userData.password = hashedNewPassword;
-
-           const newUserData= await userData.save()
-
-           if(newUserData){
-            const passwordChanged=true
-           }
-
-           if(passwordChanged){
-            req.flash('success', 'Password changed successfully')
-           }
+        //    if(passwordChanged){
+        //     req.flash('success', 'Password changed successfully')
+        //    }
          
+        //     res.redirect("/")
 
-           
+        //    }else{
 
-            res.redirect("/")
+        //     res.render("editprofile",{message: "Passwords do not match"})
 
-          
+        //    }
 
+        // }else{
 
-           }else{
-
-            res.render("editprofile",{message: "Passwords do not match"})
-
-           }
+        //     res.render("editprofile",{message:"Invalid Credentials"})
+        // }
 
 
-        }else{
+        const userId = req.session.userId;
+        const userData = await User.findById(userId);
 
-            res.render("editprofile",{message:"Invalid Credentials"})
+        if (!userData) {
+            return res.status(404).send("User not found");
         }
+
+        const passwordsMatch = await bcrypt.compare(req.body.password, userData.password);
+
+        if (userData.name === req.body.name && userData.email === req.body.email && passwordsMatch) {
+            if (req.body.newpassword === req.body.cpassword) {
+                const hashedNewPassword = await bcrypt.hash(req.body.newpassword, 10);
+                userData.password = hashedNewPassword;
+                await userData.save();
+                req.flash('success', 'Password changed successfully');
+                return res.redirect("/");
+            } else {
+                return res.render("editprofile", { message: "Passwords do not match" });
+            }
+        } else {
+            return res.render("editprofile", { message: "Invalid Credentials" });
+        }
+
 
 
 

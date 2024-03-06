@@ -35,11 +35,63 @@ const adminLogin= async(req,res)=>{
 const getDashboard=async(req,res)=>{
     try {
         const orderList= await Order.find().sort({orderDate:-1}).limit(5).populate('userId')
-
         const totalOrders= await Order.find().populate('userId')
         const totalProducts= await Product.find()
 
-        res.render("dashboard",{orderList,totalOrders,totalProducts})
+
+        // most ordered Products
+
+        const mostOrderedProducts = await Order.aggregate([
+            { $unwind: "$products" },
+            { $group: { _id: "$products.productId", totalQuantity: { $sum: "$products.quantity" } } },
+            { $sort: { totalQuantity: -1 } },
+            { $limit: 5 },
+            { $lookup: { from: "products", localField: "_id", foreignField: "_id", as: "product" } }, // Populate product details
+            { $unwind: "$product" },
+            { $project: { _id: "$product._id", title: "$product.title", totalQuantity: 1 } }
+        ]).limit(10);
+
+
+        //  top selling categories
+
+
+        const topSellingCategories = await Order.aggregate([
+            { $unwind: "$products" },
+            { $lookup: { from: "products", localField: "products.productId", foreignField: "_id", as: "product" } },
+            { $unwind: "$product" },
+            { $group: { _id: "$product.category", totalQuantity: { $sum: "$products.quantity" } } },
+            { $sort: { totalQuantity: -1 } },
+            { $limit: 5 },
+            { $lookup: { from: "categories", localField: "_id", foreignField: "_id", as: "category" } },
+            { $unwind: "$category" },
+            { $project: { categoryName: "$category.name", totalQuantity: 1 } }
+        ]).limit(10);
+
+
+        // Fetch top selling brands
+
+        
+        const topSellingBrands = await Order.aggregate([
+            { $unwind: "$products" },
+            { $lookup: { from: "products", localField: "products.productId", foreignField: "_id", as: "product" } },
+            { $unwind: "$product" },
+            { $group: { _id: "$product.brand", totalQuantity: { $sum: "$products.quantity" } } },
+            { $sort: { totalQuantity: -1 } },
+            { $limit: 5 },
+            { $lookup: { from: "brands", localField: "_id", foreignField: "_id", as: "brand" } },
+            { $unwind: "$brand" },
+            { $project: { brandName: "$brand.name", totalQuantity: 1 } }
+        ]).limit(10);
+
+    
+        // mostOrderedProducts will contain an array of objects, each containing _id (productId) and totalQuantity
+        console.log("Most ordered products:", mostOrderedProducts);
+        console.log("Top selling Categories:",topSellingCategories)
+        console.log("top selling Brands:", topSellingBrands)
+
+
+
+        res.render("dashboard",{orderList,totalOrders,totalProducts,mostOrderedProducts,topSellingCategories,topSellingBrands})
         
     } catch (error) {
         console.log(error.message)
@@ -148,7 +200,7 @@ const salesReport= async(req,res)=>{
     try {
 
 
-        const orderList= await Order.find().populate('userId')
+        const orderList= await Order.find().sort({orderDate:-1}).populate('userId')
 
         res.render('salesReport',{orderList})
      
@@ -228,7 +280,70 @@ const createCoupon= async(req,res)=>{
         res.status(500).json({ error: 'Internal server error' });
       }
     }
-    
+
+
+
+    const blockCoupon= async(req,res)=>{
+        try {
+
+            const couponId= req.query.id
+
+            const updatedCoupon= await Coupon.findByIdAndUpdate(couponId,{is_active:false})
+            await updatedCoupon.save()
+
+            res.redirect("/admin/Coupons")
+
+
+
+            
+        } catch (error) {
+            console.log(error.message)
+            
+        }
+    }
+
+
+
+    const unblockCoupon= async(req,res)=>{
+
+
+        try {
+            const couponId= req.query.id
+
+        const updatedCoupon= await Coupon.findByIdAndUpdate(couponId,{is_active:true})
+
+        await updatedCoupon.save()
+
+        res.redirect("/admin/Coupons")
+            
+        } catch (error) {
+
+            console.log(error.message)
+            
+        }
+
+
+        
+
+    }
+
+
+    const getCouponCode= async(req,res)=>{
+        try {
+            const couponId = req.query.couponId;
+            const coupon = await Coupon.findById(couponId);
+            if (!coupon) {
+                return res.status(404).json({ error: 'Coupon not found' });
+            }
+            res.json({ code: coupon.code });
+        } catch (error) {
+            console.error('Error:', error);
+            res.status(500).json({ error: 'Internal server error' });
+        }
+    }
+
+
+
 
 
 
@@ -238,5 +353,5 @@ const createCoupon= async(req,res)=>{
 
 
 module.exports={
-    adminLogin,verifyAdmin,userList,blockUser,unblockUser,getDashboard,adminLogout,salesReport,salesReportSearch,coupon,createCoupon
+    adminLogin,verifyAdmin,userList,blockUser,unblockUser,getDashboard,adminLogout,salesReport,salesReportSearch,coupon,createCoupon,blockCoupon, unblockCoupon,getCouponCode
 }

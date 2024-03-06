@@ -71,6 +71,9 @@ admin_Route.post('/salesreportsearch',adminAuth.isLogin,adminController.salesRep
 
 admin_Route.get('/Coupons',adminAuth.isLogin,adminController.coupon)
 admin_Route.post('/createCoupon',adminAuth.isLogin,adminController.createCoupon)
+admin_Route.get('/blockCoupon',adminAuth.isLogin,adminController.blockCoupon)
+admin_Route.get("/unblockCoupon",adminAuth.isLogin,adminController.unblockCoupon)
+admin_Route.get('/getCoupon',adminAuth.isLogin,adminController.getCouponCode) 
 
 
 

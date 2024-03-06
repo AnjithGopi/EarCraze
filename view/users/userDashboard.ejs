@@ -645,7 +645,7 @@
                                                                 <input type="email" class="form-control" id="email" value="<%=userDetails.email%>" readonly>
                                                             </div>
                                                             <a href="/editProfile" class="btn btn-success btn-block" data-toggle="modal" data-target="#editProfileModal">
-                                                                <i class="fas fa-edit mr-2"></i>Edit Profile
+                                                                <i class="fas fa-edit mr-2"></i>Change Password
                                                             </a>
                                                         
                                                     </div>
@@ -707,10 +707,10 @@
                                                                                 <span class="badge bg-info"><%=item.orderStatus%></span>
                                                                             <% } %>
                                                                         </td>
-                                                                        <% if(item.paymentStatus=='Received'){ %>
-                                                                            <td><span class="badge bg-success"><%item.paymentStatus%></span></td> 
+                                                                        <% if(item.paymentStatus=='Recieved'){ %>
+                                                                            <td><span class="badge bg-success"><%=item.paymentStatus%></span></td> 
                                                                         <% } else { %>
-                                                                            <td><span class="badge bg-warning text-dark">Pending</span></td> 
+                                                                            <td><span class="badge bg-warning text-dark"><%=item.paymentStatus%></span></td> 
                                                                         <% } %>
                                                                         <td style="font-size: 11px;"><%= item.orderDate.toLocaleDateString() %></td>
                                                                         <td style="font-size:11px;">₹ <%= parseFloat(item.totalAmount).toLocaleString() %></td>

@@ -248,7 +248,7 @@ const blockCategory =async(req,res)=>{
        
         const categoryId=req.query.id
         const categoryblock= await Category.findByIdAndUpdate(categoryId,{is_active:1})
-       
+        await Product.updateMany({ category: categoryId }, { is_active: 1 });
 
         res.redirect("/admin/categories")
         
@@ -262,6 +262,7 @@ const unblockCategory= async(req,res)=>{
     try {
         const categoryId= req.query.id
         const categoryUnblock=await Category.findByIdAndUpdate(categoryId,{is_active:0})
+        await Product.updateMany({ category: categoryId }, { is_active: 0});
         res.redirect("/admin/categories")
 
 

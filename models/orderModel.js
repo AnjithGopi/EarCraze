@@ -30,19 +30,10 @@ const orderSchema= mongoose.Schema({
     orderStatus:{type:String,enum:['Order Placed','Confirmed','Shipped','Delivered','Cancelled','Returned'],default:"Order Placed"},
     orderDate:{type:Date,default:Date.now},
     orderId:{type:String},
+    couponDiscount:{type:Number},
     totalAmount:{type:String},
     // is_cancelled:{type:Number,default:0},
     deliveryStatus:{type:Number,default:0},
-    
-    
-
-
-
-    
-
-
-
-
 })
 
 

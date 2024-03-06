@@ -5,6 +5,7 @@ const User=require("../models/userModel")
 const Address=require("../models/addressModel")
 const Order=require("../models/orderModel")
 const WishList= require('../models/wishListModel')
+const Coupon= require('../models/couponModel')
 
 const Razorpay=require('razorpay')
 
@@ -247,10 +248,12 @@ const checkOut= async(req,res)=>{
         const userId=req.session.userId
         const addressData= await Address.find({userId:userId})
         const cartData= await Cart.findOne({userId:userId}).populate("products.productId")
+        const coupons= await Coupon.find({is_active:true})
+        
 
 
 
-        res.render("checkOut",{addressData,cartData})
+        res.render("checkOut",{addressData,cartData,coupons})
         
     } catch (error) {
         console.log(error.message)
@@ -264,11 +267,20 @@ const placeOrder= async(req,res)=>{
     try {
 
        
-
+        console.log('adskjfhakh');
         const userId=req.session.userId
         const addressData= await Address.find({_id:req.body.selectedAddress})
         const cartData= await Cart.findOne({userId:userId})
         console.log("addressData:",addressData)
+        console.log("amount:",req.body.amount)
+
+        if(parseInt(req.body.amount)>1000){
+            console.log("no cod")
+
+            res.status(400).json()
+        }else{
+
+        
 
 
        
@@ -298,6 +310,7 @@ const placeOrder= async(req,res)=>{
             address:addressData[0],
             paymentMethod:req.body.paymentMethod,
             totalAmount:req.body.amount,
+            couponDiscount:req.body.couponDiscount,
             orderId:newOrderId
         })
 
@@ -324,13 +337,31 @@ const placeOrder= async(req,res)=>{
         res.status(200).json({message:'success'})
 
 
-
+    }
         
     } catch (error) {
         console.log(error.message)
         
     }
 }
+
+
+const changeStatus = async(req,res)=>{
+    try {
+          const id = req.query.id
+         console.log("id...........",id);
+         if(id){
+            console.log('insideeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee');
+            const updatedOrder = await Order.findByIdAndUpdate(id, { paymentStatus: 'failed' });
+    if (updatedOrder) {
+        res.redirect('/')
+    } 
+}    
+    } catch (error) {
+        console.log(error.message);
+    }
+}
+
 
 
 
@@ -340,6 +371,10 @@ const placeOrder= async(req,res)=>{
 const onlinePayment = async (req, res) => {
     try {
        
+       
+
+
+
 
         const userId = req.session.userId
         const addressData = await Address.find({ _id: req.body.selectedAddress })
@@ -391,6 +426,7 @@ const onlinePayment = async (req, res) => {
                 paymentMethod:req.body.paymentMethod,
                 paymentStatus:'Recieved',
                 totalAmount:req.body.amount,
+                couponDiscount:req.body.couponDiscount,
                 orderId:newOrderId,
                 razOrderId:razOrder.id
             })
@@ -398,7 +434,7 @@ const onlinePayment = async (req, res) => {
             
         
           const newOrder=  await orderData.save()
-        
+          const id = newOrder._id;
           if(newOrder){
             const result = await Cart.updateOne(
                 {userId:userId},
@@ -409,7 +445,7 @@ const onlinePayment = async (req, res) => {
                 }
               );
         }
-          res.status(200).json({ message: "Order placed successfully", razOrder });
+          res.status(200).json({ message: "Order placed successfully", razOrder,id});
         
           
 
@@ -423,8 +459,7 @@ const onlinePayment = async (req, res) => {
        
     });
 
-
-
+         
   
     } catch (error) {
         console.error(error);
@@ -596,6 +631,60 @@ const removeFromWishlist = async (req, res) => {
 
 
 
+const applyCoupon= async(req,res)=>{
+
+
+    try {
+
+         // Get the coupon ID from the request body
+         const { couponId } = req.body;
+         const userId= req.session.userId
+
+         const cartData= await Cart.findOne({userId:userId}).populate('products.productId')
+         console.log("cartData:",cartData)
+
+         var total=0
+         cartData.products.forEach((cart)=>{
+
+             total+=cart.productId.salesprice*cart.quantity
+         })
+         console.log("newTotal:",total)
+
+
+         // Check if the coupon with the given ID exists
+         const coupon = await Coupon.findById(couponId);
+
+         if (!coupon) {
+             return res.status(404).json({ error: 'Coupon not found' });
+         }
+
+         
+         if(total<coupon.minimumAmount){
+            return res.json({ success :false, message:"Coupon Cannot be applied"})    
+         }
+
+         // Calculate the discount amount based on the coupon's discount percentage
+        const discountAmount = (total * coupon.discountpercentage) / 100;
+
+        
+
+        // Subtract the discount amount from the total amount
+        const grandTotal = total - discountAmount;
+
+        // Prepare the response with the updated grand total and coupon details
+       
+
+        res.json({success: true, message: 'Coupon applied successfully',coupon,grandTotal,discountAmount});
+
+        
+    } catch (error) {
+        console.log(error.message)
+        
+    }
+}
+
+
+
 
 
 
@@ -613,5 +702,5 @@ const removeFromWishlist = async (req, res) => {
 
 
 module.exports={getCart,addtoCart,deleteIteminCart,updateitemQuantity,
-    checkOut,placeOrder,onlinePayment,userOrderCancel,userOrderReturn,
-    userOrderDetails,getWishlist,addtoWishList,removeFromWishlist,searchInCart}  
+    checkOut,placeOrder,onlinePayment,userOrderCancel,userOrderReturn,applyCoupon,
+    userOrderDetails,getWishlist,addtoWishList,removeFromWishlist,searchInCart,changeStatus}  

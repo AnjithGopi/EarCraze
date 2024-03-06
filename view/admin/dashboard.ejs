@@ -497,106 +497,163 @@
             </div>
             <div class="card mb-4">
                 <header class="card-header">
-                    <h4 class="card-title">Latest orders</h4>
-                    <div class="row align-items-center">
-                        <div class="col-md-3 col-12 me-auto mb-md-0 mb-3">
-                            <!-- <div class="custom_select">
-                                <select class="form-select select-nice">
-                                    <option selected>All Categories</option>
-                                    <option>Women's Clothing</option>
-                                    <option>Men's Clothing</option>
-                                    <option>Cellphones</option>
-                                    <option>Computer & Office</option>
-                                    <option>Consumer Electronics</option>
-                                    <option>Jewelry & Accessories</option>
-                                    <option>Home & Garden</option>
-                                    <option>Luggage & Bags</option>
-                                    <option>Shoes</option>
-                                    <option>Mother & Kids</option>
-                                </select>
-                            </div> -->
-                        </div>
-                        <!-- <div class="col-md-2 col-6">
-                            <input type="date" value="02.05.2021" class="form-control">
-                        </div> -->
-                        <!-- <div class="col-md-2 col-6">
-                            <div class="custom_select">
-                                <select class="form-select select-nice">
-                                    <option selected>Status</option>
-                                    <option>All</option>
-                                    <option>Paid</option>
-                                    <option>Chargeback</option>
-                                    <option>Refund</option>
-                                </select>
-                            </div>
-                        </div> -->
-                    </div>
+                    <h4 class="card-title">Top selling products </h4>
+                    
                 </header>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <div class="table-responsive">
-                            <table class="table align-middle table-nowrap mb-0">
-                              
 
+                        <!-- newtable -->
 
-
-                                <thead>
-                                    <tr>
-                                        <th>Order ID</th>
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Payment</th>
-                                        <th scope="col">Total</th>
-                                        <th scope="col">Date</th>
-                                        <th scope="col">Payment Status</th>
-                                        <th scope="col">Order Status</th>
-                                        
-                                        <!-- <th scope="col">Change Status</th> -->
-                                        <!-- <th scope="col" class="text-center " >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Actions</th> -->
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <% if(locals.orderList) { %>
-                                        <% orderList.forEach((order) => { %>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <div class="table-responsive">
+                                    <table class="table align-middle table-nowrap mb-0">
+                                        <thead>
                                             <tr>
-                                                <td><%= order.orderId %></td>
-                                                <td><b><%= order.userId.name %></b></td>
-                                                <td><b><%= order.paymentMethod %></b></td>
-                                                <!-- <td>₹ <%= order.totalAmount %></td> -->
-                                                <td>₹ <%= parseFloat(order.totalAmount).toLocaleString() %></td>
-
-                                                <td class="col-date">
-                                                    <span class="fs-0"><%= order.orderDate.toLocaleDateString() %></span>
-                                                </td>
-                                                <% if(order.paymentStatus=="Recieved") { %>
-                                                    <td><span class="badge rounded-pill custom-green"><%= order.paymentStatus %></span></td>
-                                                <% } else { %>
-                                                    <td><span class="badge rounded-pill custom-orange"><%= order.paymentStatus %></span></td>
-                                                <% } %>
-                                                <% if(order.orderStatus=='Cancelled') { %>
-                                                    <td><span class="badge rounded-pill custom-red"><%= order.orderStatus %></span></td>
-                                                <% } else if(order.orderStatus=='Pending') { %>
-                                                    <td><span class="badge rounded-pill custom-orange"><%= order.orderStatus %></span></td>
-                                                <% } else if(order.orderStatus=='Shipped') { %>
-                                                    <td><span class="badge rounded-pill custom-blue"><%= order.orderStatus %></span></td>
-                                                <% } else if(order.orderStatus=='Delivered') { %>
-                                                    <td><span class="badge rounded-pill custom-dgreen"><%= order.orderStatus %></span></td>
-                                                <% } else if(order.orderStatus=='Returned') { %>
-                                                    <td><span class="badge rounded-pill custom-brown"><%= order.orderStatus %></span></td>
-                                                <% } else { %>
-                                                    <td><span class="badge rounded-pill custom-green"><%= order.orderStatus %></span></td>
-                                                <% } %>
+                                                 
+                                                <th>Product Name</th>
+                                                <th>Total Orders</th>  
+                                               
                                             </tr>
-                                        <% }) %>
-                                    <% } %>
-                                    
-                                   
-                                   
-                                </tbody>
-                            </table>
+                                        </thead>
+                                        <tbody>
+                                            <% mostOrderedProducts.forEach(product => { %>
+                                                <tr>
+        
+                                                   
+                                                    
+                                                    <td><%= product.title %></td> <!-- Product name -->
+                                                    <td><%= product.totalQuantity %></td> <!-- Total quantity ordered -->   
+                                                  
+                                                </tr>
+                                            <% }); %>
+                                           
+                                           
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div> <!-- table-responsive end// -->
                         </div>
+
+                         <!-- newtable -->
+                       
+                        
                     </div> <!-- table-responsive end// -->
                 </div>
             </div>
+            <!-- ---------------------------------------------top selling categories------------------------------------------------------------------------- -->
+
+            <div class="card mb-4">
+                <header class="card-header">
+                    <h4 class="card-title">Top Selling Categories</h4>
+                    
+                </header>
+                <div class="card-body">
+                    <div class="table-responsive">
+
+                        <!-- newtable -->
+
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <div class="table-responsive">
+                                    <table class="table align-middle table-nowrap mb-0">
+                                        <thead>
+                                            <tr>
+                                                 
+                                                <th>Category Name</th>
+                                                <th>Total Orders</th>  
+                                               
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% topSellingCategories.forEach(cat => { %>
+                                                <tr>
+        
+                                                  
+                                                    
+                                                    <td><%= cat.categoryName %></td> <!-- Product name -->
+                                                    <td><%= cat.totalQuantity %></td> <!-- Total quantity ordered -->   
+                                                  
+                                                </tr>
+                                            <% }); %>
+                                           
+                                           
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div> <!-- table-responsive end// -->
+                        </div>
+
+                         <!-- newtable -->
+                       
+                        
+                    </div> <!-- table-responsive end// -->
+                </div>
+            </div>
+
+
+
+            <!-- -----------------------------------------------top sellimg categories end---------------------------------------------------------------------------------------------- -->
+
+            <!-- ---------------------------------------------------top Selling Brands --------------------------------------------------------------------------------------------------->
+
+
+            <div class="card mb-4">
+                <header class="card-header">
+                    <h4 class="card-title">Top Selling Brands</h4>
+                    
+                </header>
+                <div class="card-body">
+                    <div class="table-responsive">
+
+                        <!-- newtable -->
+
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <div class="table-responsive">
+                                    <table class="table align-middle table-nowrap mb-0">
+                                        <thead>
+                                            <tr>
+                                                 
+                                                <th>Brand Name</th>
+                                                <th>Total Orders</th>  
+                                               
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <% topSellingBrands.forEach(brand => { %>
+                                                <tr>
+        
+                                                  
+                                                    
+                                                    <td><%= brand.brandName %></td> <!-- Product name -->
+                                                    <td><%= brand.totalQuantity %></td> <!-- Total quantity ordered -->   
+                                                  
+                                                </tr>
+                                            <% }); %>
+                                           
+                                           
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div> <!-- table-responsive end// -->
+                        </div>
+
+                         <!-- newtable -->
+                       
+                        
+                    </div> <!-- table-responsive end// -->
+                </div>
+            </div>
+
+
+
+
+
+            <!-- ---------------------------------------------------top selling brands end--------------------------------------------------------------------------------------------- -->
+
+
             <div class="pagination-area mt-30 mb-50">
                 <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-start">
@@ -625,6 +682,7 @@
             </div>
         </footer>
     </main>
+   
     <script src="/admin-assets/js/vendors/jquery-3.6.0.min.js"></script>
     <script src="/admin-assets/js/vendors/bootstrap.bundle.min.js"></script>
     <script src="/admin-assets/js/vendors/select2.min.js"></script>

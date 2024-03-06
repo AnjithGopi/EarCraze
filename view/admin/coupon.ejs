@@ -76,6 +76,20 @@
         background-color: #ca2929; /* Alizarin Red */
         color: #fff;
     }
+    .premium-button {
+    display: inline-block;
+    padding: 8px 16px;
+    border-radius: 5px;
+    background-color: #3f51b5; /* Violet button background color */
+    color: #fff; /* Button text color */
+    text-decoration: none; /* Remove underline */
+    transition: background-color 0.3s ease;
+}
+
+.premium-button:hover {
+    background-color:#5f6cb9; /* Hover background color */
+}
+
 
 
 
@@ -291,10 +305,7 @@
                                     <label for="product_slug" class="form-label">Minimum Purchase Amount</label>
                                     <input type="text" placeholder="Type here" name="mpamt" class="form-control" id="product_slug" />
                                 </div>
-                                <div class="mb-4">
-                                    <label for="product_slug" class="form-label">Maximum Discount</label>
-                                    <input type="text" placeholder="Type here" name="maxamt" class="form-control" id="product_slug" />
-                                </div>
+                               
                                 <div class="col-auto">
                                     <label for="birthday1"  class="col-form-label">Valid until</label>
                                 </div>
@@ -319,7 +330,7 @@
                                             <th>Code</th>
                                             <th>Discount</th>
                                             <th>Min Purchase Amount</th>
-                                            <th>Max Discount</th>
+                                            
                                             <th>Validity</th>
                                             <th>Status</th>
                                             <th class="text-end">Action</th>
@@ -331,15 +342,26 @@
                                                 <tr>
                                                     <td><%= coupons[i].name %></td>
                                                     <td><%= coupons[i].code %></td>
-                                                    <td><b><%= coupons[i].discountpercentage %> %</b></td>
+                                                    <td><%= coupons[i].discountpercentage %> %</td>
                                                     <td>Rs <%= coupons[i].minimumAmount %></td>
-                                                    <td>Rs <%= coupons[i].discountAmount %></td>
+                                                  
                                                     <td><%= coupons[i].validUntil.toLocaleDateString() %></td>
                                                    <% if(coupons[i].is_active==true){%>
                                                         <td><span class="badge rounded-pill alert-success">Active</span></td>
                                                    <% }else{%>
                                                     <td><span class="badge rounded-pill alert-danger">Blocked</span></td>
                                                   <% } %>
+
+                                                 <% if(coupons[i].is_active==true){%>
+                                                    <td><a class="premium-button"  href="/admin/blockCoupon?id=<%= coupons[i]._id %>">Block</a></td>
+
+                                                  <%} else{%>
+                                                    <td><a class="premium-button"  href="/admin/unblockCoupon?id=<%= coupons[i]._id %>">Unblock</a></td>
+
+                                                 <% } %>
+                                                  
+
+
                                                    
                                                     <!-- Adjusted toLocaleDateString() for date only -->
                                                   

@@ -19,6 +19,128 @@
     <link rel="stylesheet" href="assets/css/maind134.css?v=3.4">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
+
+
+    <style>
+        .premium-toggle-info {
+    margin-bottom: 20px;
+    font-size: 18px;
+    color: #555;
+}
+
+.premium-toggle-info a {
+    color: #203f2c;
+    text-decoration: none;
+}
+
+.premium-toggle-info a:hover {
+    text-decoration: underline;
+}
+
+.coupon-form {
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.premium-panel-body {
+    padding: 20px;
+}
+
+.premium-panel-body p {
+    margin-bottom: 30px;
+    font-size: 16px;
+    color: #777;
+}
+
+.premium-select-wrapper select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #fff;
+    font-size: 14px;
+    color: #555;
+    transition: border-color 0.3s ease;
+}
+
+.premium-select-wrapper select:focus {
+    border-color: #15423e;
+    outline: none;
+}
+
+.premium-btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #1c4437;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.premium-btn:hover {
+    background-color: #397468;
+}
+
+
+
+
+/* === coupon */
+
+
+.coupon {
+    width: 200px;
+    background-color: #f5f5f5;
+    border: 2px dashed #cccccc;
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+}
+
+.coupon-content {
+    color: #333333;
+}
+
+.coupon-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.coupon-code {
+    font-size: 24px;
+    color: #ff0000;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.coupon-description {
+    font-size: 14px;
+}
+
+
+.coupon-content {
+    border: 2px solid #6c757d;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.coupon-content:hover {
+    border-color: #007bff;
+}
+
+
+
+/* ==== */
+
+
+
+    </style>
 </head>
 
 <body>
@@ -778,6 +900,9 @@
                         <%}%>
                        
                     </div>
+                    <!-- -------------- -->
+ 
+                    <!-- ---------- -->
                     <div class="col-md-6">
                         <div class="order_review">
                             <div class="mb-20">
@@ -813,17 +938,21 @@
                                        
                                         <%})%>
                                         <tr>
-                                            <th>SubTotal</th>
+                                            <th>Total</th>
                                             <td class="product-subtotal" colspan="2">₹ <%=total%></td>
                                         </tr>
                                        
                                         <tr>
-                                            <th>Shipping</th>
-                                            <td colspan="2"><em>Free Shipping</em></td>
+                                            <th>Coupon</th>
+                                            <td colspan="2" id="couponName"><em></em></td>
                                         </tr>
                                         <tr>
-                                            <th>Total</th>
-                                            <td colspan="2"  class="product-subtotal"><span class="font-xl text-brand fw-900">₹</span><span id="totalAmount" class="font-xl text-brand fw-900"> <%=total%></span></td>
+                                            <th>Discount</th>
+                                            <td colspan="2"  class="product-subtotal"><span class="font-xl text-brand fw-900">₹</span><span id="discount" class="font-xl text-brand fw-900"> </span></td>
+                                        </tr>
+                                        <tr>
+                                            <th>Grand Total</th>
+                                            <td colspan="2"  class="product-subtotal"><span class="font-xl text-brand fw-900">₹</span><span id="GrandTotal" class="font-xl text-brand fw-900"> <%=total%></span></td>
                                         </tr>
                                         <%}%>
                                
@@ -867,32 +996,41 @@
                                     </div>
 
                                    </div>
-                                    
+                                   <div class="col-lg-6 m-5 mt-0">
+                                    <div class="premium-toggle-info">
+                                        <span><i class="fi-rs-label mr-10"></i><span class="text-muted">Have a coupon?</span> <a href="#coupon" data-bs-toggle="collapse" class="collapsed" aria-expanded="false">Apply now</a></span>
+                                    </div>
+                                
+                                    <div class="premium-panel-collapse collapse coupon-form" id="coupon">
+                                        <div class="premium-panel-body">
 
+                                                <div class="container mt-5">
 
-                                    <div class="col-lg-6 m-5 mt-0">
-                                        <div class="toggle_info">
-                                            <span><i class="fi-rs-label mr-10"></i><span class="text-muted">Have a coupon?</span> <a href="#coupon" data-bs-toggle="collapse" class="collapsed" aria-expanded="false">Click here to enter your code</a></span>
-                                        </div>
-                                        <div class="panel-collapse collapse coupon_form " id="coupon">
-                                            <div class="panel-body">
-                                                <p class="mb-30 font-sm">If you have a coupon code, please apply it below.</p>
-                                                <form method="post">
-                                                    <div class="form-group">
-                                                        <input type="text" placeholder="Enter Coupon Code...">
-                                                    </div>
-                                                    <div class="form-group">
-                                                        <button class="btn  btn-md" name="login">Apply Coupon</button>
-                                                    </div>
-                                                </form>
-                                            </div>
+                                                    <%if(locals.coupons){%>
+                                                        <%for(let i=0;i<coupons.length;i++){%>
+                                                            <br>
+                                                            <div class="coupon-content">
+                                                                <span class="coupon-title"><%=coupons[i].name%></span>
+                                                                <span class="coupon-code"><%=coupons[i].code%></span>
+                                                                <span class="coupon-description">Use this coupon code to get <%=coupons[i].discountpercentage%> % off your purchase!</span>
+                                                                <button onclick="applyCoupon(`<%=coupons[i]._id%>`)" type="button" class="btn btn-md premium-btn" name="login">Apply</button>
+                                                            </div>
+                                                            
+
+                                                       <% } %>
+                                                       
+                                                    <%}%>     
+                                                </div>
+                                               
+                                               
+                                           
                                         </div>
                                     </div>
-
-
-
                                     
                                 </div>
+                                
+                                    
+                              </div>
                             </div>
                             <button onclick="placeOrder()" class="btn btn-fill-out btn-block mt-30">Place Order</button>
                         </div>
@@ -1030,21 +1168,28 @@
 
 
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 
 
     <script>
 
 function placeOrder() {
-    
+    let id ;
     console.log("place order worked")
     const selectedRadioButton = document.querySelector('input[name="payment_option"]:checked').value;
     const selectedAddress = document.querySelector('input[name="delivery_address"]:checked').value;
-    const totalAmount=document.getElementById("totalAmount").innerText
+    const totalAmount=document.getElementById("GrandTotal").innerText
+    const discountAmount=document.getElementById("discount").innerText
+    console.log("discountAmount from coupon:",discountAmount)
+
+  
 
    
     console.log(selectedRadioButton)
     console.log(selectedAddress)
     console.log(totalAmount)
+    
     // Get values from the form
 
 
@@ -1052,9 +1197,11 @@ function placeOrder() {
     const orderData ={
         paymentMethod:selectedRadioButton,
         selectedAddress:selectedAddress,
-        amount:totalAmount
-        
+        amount:totalAmount,
+        couponDiscount:discountAmount,    
     }
+
+    
     console.log("Data :",orderData)
     console.log("Amount:",totalAmount)
 
@@ -1075,11 +1222,14 @@ function placeOrder() {
         .then(response=>response.json())
         .then(data=>{
             const orderId= data.razOrder
+            id = data.id
+            console.log("orderId:",orderId)
             //const user = data.userData
 
             console.log('inside');
 
             initiatePayment(orderId)
+            
 
         })
 
@@ -1119,35 +1269,23 @@ function placeOrder() {
 };
 var rzp1 = new Razorpay(options);
 rzp1.on('payment.failed', function (response){
-        alert(response.error.code);
-        alert(response.error.description);
-        alert(response.error.source);
-        alert(response.error.step);
-        alert(response.error.reason);
-        alert(response.error.metadata.order_id);
-        alert(response.error.metadata.payment_id);
+  
+     
+       window.location.href =`/changestatus?id=${id}`
+        // alert(response.error.description);
+        // alert(response.error.source);
+        // alert(response.error.step);
+        // alert(response.error.reason);
+        // alert(response.error.metadata.order_id);
+        // alert(response.error.metadata.payment_id);
 });
 
-      rzp1.open()
+rzp1.open()
         }
 
 
 
     }else{
-
-
-
-    
-
-        
-
-
-
-
-
-
-
-
 
 
 
@@ -1169,8 +1307,7 @@ rzp1.on('payment.failed', function (response){
   timer:2000
   
   });
-        // console.log('Order placed successfully:', data);
-        // Handle success (redirect, display a success message, etc.)
+        
        
     })
     .then(()=>{
@@ -1181,6 +1318,14 @@ rzp1.on('payment.failed', function (response){
         },1000)
        
     })
+
+
+    .catch(error => {
+  
+    toastr.error( "Cash on delivery is not applicable for this order!");
+    })
+
+  
     
  
     .catch(error => {
@@ -1195,6 +1340,72 @@ rzp1.on('payment.failed', function (response){
     });
 }
 }
+
+// ================================coupons====
+
+
+
+function applyCoupon(couponId){
+
+
+
+
+    fetch(`/applyCoupon?couponId=${couponId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ couponId: couponId })
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            }
+            throw new Error('Network response was not ok.');
+        })
+        .then(data => {
+            // Handle response from the server
+
+            if (!data.success) {
+                toastr.error(data.message)
+                // Use !data.success to check if success is false
+       // Access message from the response
+    } else {
+        toastr.success(data.message);
+        
+        console.log(data);
+         console.log(coupon)
+         console.log("grandtotal:",data.grandTotal)
+         document.getElementById("GrandTotal").innerText = ` ${data.grandTotal}`;
+         document.getElementById("couponName").innerText = ` ${data.coupon.name}`;
+         document.getElementById("discount").innerText = ` ${data.discountAmount}`;
+      
+         // If success, display success message
+    }
+
+    
+
+
+        })
+        .catch(error => {
+            // Handle errors
+            console.error('Error:', error);
+        });
+    }
+
+
+
+
+
+
+
+
+
+// ========coupon code====
+
+
+
+
 
 
     </script>
