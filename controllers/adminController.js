@@ -261,7 +261,7 @@ const createCoupon= async(req,res)=>{
         name:name,
         code: code,
         discountpercentage:dpercent,
-        discountAmount:maxamt,
+        // discountAmount:maxamt,
         minimumAmount:mpamt,
         validUntil:date,
         });
@@ -272,7 +272,7 @@ const createCoupon= async(req,res)=>{
         console.log("coupon details:",savedCoupon)
     
        
-        // res.status(201).json(savedCoupon);
+       
         res.redirect("/admin/Coupons")
       } catch (error) {
         

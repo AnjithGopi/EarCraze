@@ -4,6 +4,9 @@ const User=require("../models/userModel")
 const Category=require("../models/categoryModel")
 const Brand=require("../models/brandModel")
 const Order= require('../models/orderModel')
+const fs = require('fs');
+const { v4: uuidv4 } = require("uuid")
+const sharp= require('sharp')
 
 
 
@@ -42,10 +45,14 @@ const addnewProduct= async(req,res)=>{
 
         })
         const product=await productData.save()
-        console.log(product)
-        res.redirect("/admin/addproduct")
-
+        console.log("add product ::",product)
+        // res.redirect("/admin/addproduct")
         
+        if(product){
+            res.json({success:true,message:'Product added successfully '})
+        } else{
+            res.json({success:false})
+        }
     } catch (error) {
 
         console.log(error.message)
@@ -219,19 +226,68 @@ const addBrand=async(req,res)=>{
 }
 
 const addNewBrand= async(req,res)=>{
+    
     try {
 
-        const {brandName,brandDescription,image}=req.body
-        let brand = new Brand({
-            name:brandName,
-            description:brandDescription,
-            image:req.files.map((file)=>file.path)
-            })
+        // const {brandName,brandDescription,image}=req.body
+        // let brand = new Brand({
+        //     name:brandName,
+        //     description:brandDescription,
+        //     image:req.files.map((file)=>file.path)
+        //     })
         
 
-        const newBrand = await brand.save()
-        console.log(newBrand)
-        res.redirect('/admin/brand')
+        // const newBrand = await brand.save()
+        // console.log(newBrand)
+        // res.redirect('/admin/brand')
+
+        //-----------updated code-------------------
+
+
+
+        const { brandName, brandDescription } = req.body;
+
+        const imageUrls = [];
+        for (const file of req.files) {
+           
+            const filename = `${uuidv4()}.jpg`;
+            
+            await sharp(file.path)
+                .resize({ width: 300, height: 300 })
+                .toFile(`uploads/${filename}`);
+            
+           
+            const imageUrl = `uploads/${filename}`; 
+            imageUrls.push(imageUrl);
+
+           
+            fs.unlink(file.path, (err) => {
+                if (err) {
+                    console.error(`Error deleting file: ${err}`);
+                } else {
+                    console.log(`File deleted: ${file.path}`);
+                }
+            });
+        
+        }
+
+        
+        const brand = new Brand({
+            name: brandName,
+            description: brandDescription,
+            image: imageUrls
+        });
+
+        
+        const newBrand = await brand.save();
+        console.log(newBrand);
+        res.redirect('/admin/brand');
+
+
+      
+
+
+
 
 
 

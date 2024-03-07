@@ -7,6 +7,7 @@ const Address=require("../models/addressModel")
 const Cart= require("../models/cartModel")
 const Order= require("../models/orderModel")
 const bcrypt= require('bcrypt')
+const Brand= require("../models/brandModel")
 
 
 
@@ -25,11 +26,12 @@ const loadHome=async(req,res)=>{
             { title: { $regex: search, $options: 'i' } } 
         ]})
         const userId=req.session.userId;
+        const brands= await Brand.find()
         const loginData = await User.findById(userId)
         if(productData){
             // res.render("home",{product:productData})
 
-            res.render("home",{product:productData,loginData})
+            res.render("home",{product:productData,loginData,brands})
         }
    
     } catch (error) {
@@ -512,66 +514,69 @@ const  updateUserDetails= async(req,res)=>{
     try {
 
 
-        // const userId= req.session.userId
-        // const userData= await User.findById(userId)
+        const userId= req.session.userId
+        const userData= await User.findById(userId)
 
 
-        // const hashedPassword = await bcrypt.hash(req.body.password, 10);
+        const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
-        // if(userData.name==req.body.name && userData.email==req.body.email && await bcrypt.compare(req.body.password, userData.password)){
+        if(userData.name==req.body.name && userData.email==req.body.email && await bcrypt.compare(req.body.password, userData.password)){
 
-        //    if(req.body.npassword==req.body.cpassword){
+           if(req.body.npassword==req.body.cpassword){
 
-        //     const hashedNewPassword = await bcrypt.hash(req.body.npassword, 10);
+            const hashedNewPassword = await bcrypt.hash(req.body.npassword, 10);
 
-        //     userData.password = hashedNewPassword;
+            userData.password = hashedNewPassword;
 
-        //    const newUserData= await userData.save()
+           const newUserData= await userData.save()
 
-        //    if(newUserData){
-        //     const passwordChanged=true
-        //    }
+           if(newUserData){
+            const passwordChanged=true
+           }
 
-        //    if(passwordChanged){
-        //     req.flash('success', 'Password changed successfully')
-        //    }
+           if(passwordChanged){
+            req.flash('success', 'Password changed successfully')
+           }
          
-        //     res.redirect("/")
+            res.redirect("/")
 
-        //    }else{
+           }else{
 
-        //     res.render("editprofile",{message: "Passwords do not match"})
+            res.render("editprofile",{message: "Passwords do not match"})
 
-        //    }
+           }
 
-        // }else{
+        }else{
 
-        //     res.render("editprofile",{message:"Invalid Credentials"})
+            res.render("editprofile",{message:"Invalid Credentials"})
+        }
+
+        
+        // ........................................................................
+
+
+        // const userId = req.session.userId;
+        // const userData = await User.findById(userId);
+
+        // if (!userData) {
+        //     return res.status(404).send("User not found");
         // }
 
+        // const passwordsMatch = await bcrypt.compare(req.body.password, userData.password);
 
-        const userId = req.session.userId;
-        const userData = await User.findById(userId);
-
-        if (!userData) {
-            return res.status(404).send("User not found");
-        }
-
-        const passwordsMatch = await bcrypt.compare(req.body.password, userData.password);
-
-        if (userData.name === req.body.name && userData.email === req.body.email && passwordsMatch) {
-            if (req.body.newpassword === req.body.cpassword) {
-                const hashedNewPassword = await bcrypt.hash(req.body.newpassword, 10);
-                userData.password = hashedNewPassword;
-                await userData.save();
-                req.flash('success', 'Password changed successfully');
-                return res.redirect("/");
-            } else {
-                return res.render("editprofile", { message: "Passwords do not match" });
-            }
-        } else {
-            return res.render("editprofile", { message: "Invalid Credentials" });
-        }
+        // if (userData.name === req.body.name && userData.email === req.body.email && passwordsMatch) {
+        //     if (req.body.newpassword === req.body.cpassword) {
+        //         const hashedNewPassword = await bcrypt.hash(req.body.newpassword, 10);
+        //         userData.password = hashedNewPassword;
+        //         await userData.save();
+        //         req.flash('success', 'Password changed successfully');
+        //         return res.redirect("/");
+        //     } else {
+        //         return res.render("editprofile", { message: "Passwords do not match" });
+        //     }
+        // } else {
+        //     return res.render("editprofile", { message: "Invalid Credentials" });
+        // }
 
 
 
