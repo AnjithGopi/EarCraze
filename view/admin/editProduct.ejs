@@ -145,10 +145,10 @@
         <header class="main-header navbar">
             <div class="col-search">
                 <form class="searchform">
-                    <div class="input-group">
+                    <!-- <div class="input-group">
                         <input list="search_terms" type="text" class="form-control" placeholder="Search term">
                         <button class="btn btn-light bg" type="button"> <i class="material-icons md-search"></i></button>
-                    </div>
+                    </div> -->
                     <datalist id="search_terms">
                         <option value="Products">
                         <option value="New orders">
@@ -220,12 +220,7 @@
                                 <input type="text" placeholder="Product Name" class="form-control" id="product_name" value="<%=Product.title%>" name="pname" pattern="^[a-zA-Z0-9\s.,'-]*$
                                 " required>
                             </div>
-                            <!-- <div class="mb-4">
-                                <label for="product_name" class="form-label">Brand</label>
-                                <input type="text" placeholder="Product Brand" class="form-control" value="<%=Product.brand.name%>" id="product_name" name="pbrand" pattern="^[a-zA-Z0-9\s.,'-]*$
-                                " required>
-                        
-                            </div> -->
+                            
                             <div class="mb-4">
                                 <label class="form-label">Full description</label>
                                 <textarea placeholder="Product Description" class="form-control"  value=""rows="4" name="pdescription" required><%=Product.description%></textarea>
@@ -259,15 +254,22 @@
               <%}%>
                 <div class="col-lg-3">
                     <div class="card mb-4">
+                        <%if(locals.Product){%>
                         <div class="card-header">
                             <h4>Media</h4>
                         </div>
                         <div class="card-body">
                             <div class="input-upload">
-                                <img src="/admin-assets/imgs/theme/upload.svg" alt="">
+                                
                                 <input class="form-control" type="file" name="image" accept="image/*"  multiple><!---------edited-----alt=Upload image------->
                             </div>
                         </div>
+                        <div class="card-body">
+                            <div class="preview-container" id="previewContainer" >
+                                <img src="" alt="">
+                            </div>
+                        </div>
+                    <%}%>
                     </div>
                       <!-- card end// -->
                     <div class="card mb-4">

@@ -283,15 +283,6 @@ const addNewBrand= async(req,res)=>{
         console.log(newBrand);
         res.redirect('/admin/brand');
 
-
-      
-
-
-
-
-
-
-        
     } catch (error) {
         console.log(error.message)
 
@@ -305,7 +296,6 @@ const blockCategory =async(req,res)=>{
         const categoryId=req.query.id
         const categoryblock= await Category.findByIdAndUpdate(categoryId,{is_active:1})
         await Product.updateMany({ category: categoryId }, { is_active: 1 });
-
         res.redirect("/admin/categories")
         
     } catch (error) {
@@ -374,8 +364,9 @@ const blockBrand= async(req,res)=>{
         console.log("brand block")
         const brandId = req.query.id
         const brandBlocked = await Brand.findByIdAndUpdate(brandId,{is_active:1})
-        const productCat= await Product.findByIdAndUpdate(brandId,{cat_staus:1})
-        const productBrand=await Product.findByIdAndUpdate(brandId,{brand_status:1})
+        await Product.updateMany({ brand: brandId }, { is_active: 1 });
+        // const productCat= await Product.findByIdAndUpdate(brandId,{cat_staus:1})
+        // const productBrand=await Product.findByIdAndUpdate(brandId,{brand_status:1})
 
         res.redirect("/admin/brand")
     }
@@ -404,13 +395,7 @@ const unblockBrand= async(req,res)=>{
 const getOrders= async(req,res)=>{
     try {
 
-
-       
-       
         const orderList= await Order.find().sort({orderDate:-1}).populate('userId')
-
-
-
         res.render('orderList',{orderList})
         
     } catch (error) {
@@ -504,13 +489,8 @@ const adminOrderDelivered=async(req,res)=>{
 
 const adminOrderReturned=async(req,res)=>{
     try {
-
-        
-       
-
         const orderId= req.query.id
         const orderReturned= await  Order.findByIdAndUpdate(orderId,{$set:{orderStatus:'Returned'}})
-        
          res.redirect('/admin/getOrders')
 
 

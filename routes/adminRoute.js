@@ -77,6 +77,13 @@ admin_Route.get('/getCoupon',adminAuth.isLogin,adminController.getCouponCode)
 
 
 
+// --------------banner------------------
+
+admin_Route.get("/banner",adminAuth.isLogin,adminController.bannerPage)
+
+
+
+
 
 
 

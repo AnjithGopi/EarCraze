@@ -44,8 +44,10 @@ app.use(flash());
 
 
 //user routes
+ 
 const user_Route=require("./routes/userRoute")
 const admin_Route=require("./routes/adminRoute")
+
 app.use("/",user_Route)
 app.use("/admin",admin_Route)
 

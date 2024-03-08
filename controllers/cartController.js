@@ -638,6 +638,7 @@ const applyCoupon= async(req,res)=>{
 
          // Get the coupon ID from the request body
          const { couponId } = req.body;
+         console.log(req.body)
          const userId= req.session.userId
 
          const cartData= await Cart.findOne({userId:userId}).populate('products.productId')
@@ -653,6 +654,7 @@ const applyCoupon= async(req,res)=>{
 
          // Check if the coupon with the given ID exists
          const coupon = await Coupon.findById(couponId);
+         console.log('coupon :',coupon)
 
          if (!coupon) {
              return res.status(404).json({ error: 'Coupon not found' });
@@ -663,18 +665,39 @@ const applyCoupon= async(req,res)=>{
             return res.json({ success :false, message:"Coupon Cannot be applied"})    
          }
 
-         // Calculate the discount amount based on the coupon's discount percentage
-        const discountAmount = (total * coupon.discountpercentage) / 100;
+
+         // Check if the user has already redeemed the coupon
+         const redeemedCoupon = coupon.redemptionHistory.find(history => history.userId === userId);
+         if (redeemedCoupon) {
+            return res.json({ success: false, message: "Coupon already redeemed" });
+         }
+
+
+
+         // Add the user to the redemption history array in the coupon document
+           coupon.redemptionHistory.push({ userId: userId, usedOn: new Date() });
+
+         // Save the updated coupon document
+         await coupon.save();
+
+
 
         
 
-        // Subtract the discount amount from the total amount
-        const grandTotal = total - discountAmount;
+         // Calculate the discount amount based on the coupon's discount percentage
+         const discountAmount = (total * coupon.discountpercentage) / 100;
 
-        // Prepare the response with the updated grand total and coupon details
+    
+         // Subtract the discount amount from the total amount
+         const grandTotal = total - discountAmount;
+
+        
+   
+
+         // Prepare the response with the updated grand total and coupon details
        
 
-        res.json({success: true, message: 'Coupon applied successfully',coupon,grandTotal,discountAmount});
+         res.json({success: true, message: 'Coupon applied successfully',coupon,grandTotal,discountAmount});
 
         
     } catch (error) {

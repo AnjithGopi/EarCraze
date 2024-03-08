@@ -34,9 +34,11 @@ const adminLogin= async(req,res)=>{
 
 const getDashboard=async(req,res)=>{
     try {
-        const orderList= await Order.find().sort({orderDate:-1}).limit(5).populate('userId')
+        const orderList= await Order.find().sort({orderDate:-1}).populate('userId')
         const totalOrders= await Order.find().populate('userId')
         const totalProducts= await Product.find()
+        const categories= await Category.find()
+        const brands= await Brand.find()
 
 
         // most ordered Products
@@ -91,7 +93,7 @@ const getDashboard=async(req,res)=>{
 
 
 
-        res.render("dashboard",{orderList,totalOrders,totalProducts,mostOrderedProducts,topSellingCategories,topSellingBrands})
+        res.render("dashboard",{orderList,totalOrders,totalProducts,mostOrderedProducts,topSellingCategories,topSellingBrands,categories,brands})
         
     } catch (error) {
         console.log(error.message)
@@ -344,6 +346,19 @@ const createCoupon= async(req,res)=>{
 
 
 
+    const bannerPage= async(req,res)=>{
+        try {
+
+            res.render("addBanner")
+            
+        } catch (error) {
+            console.log(error.message)
+            
+        }
+    }
+
+
+
 
 
 
@@ -353,5 +368,5 @@ const createCoupon= async(req,res)=>{
 
 
 module.exports={
-    adminLogin,verifyAdmin,userList,blockUser,unblockUser,getDashboard,adminLogout,salesReport,salesReportSearch,coupon,createCoupon,blockCoupon, unblockCoupon,getCouponCode
+    adminLogin,verifyAdmin,userList,blockUser,unblockUser,getDashboard,adminLogout,salesReport,salesReportSearch,coupon,createCoupon,blockCoupon, unblockCoupon,getCouponCode,bannerPage
 }

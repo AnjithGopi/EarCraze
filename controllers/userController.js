@@ -43,6 +43,8 @@ const loadHome=async(req,res)=>{
 
 
 
+
+
 const loadRegister= async(req,res)=>{
     try {
         res.render('registration')
