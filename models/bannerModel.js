@@ -12,6 +12,7 @@ const bannerSchema= mongoose.Schema({
     endDate:{type:Date,required:true},
     image:[{type:String}],
     is_active:{type:Boolean,default:true}
+    
 
 })
 

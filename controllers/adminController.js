@@ -5,11 +5,14 @@ const Category=require("../models/categoryModel")
 const Brand=require("../models/brandModel")
 const Order= require('../models/orderModel')
 const Coupon=require('../models/couponModel')
+const Banner= require("../models/bannerModel")
 
 
 
 const PDFDocument = require('pdfkit');
 const fs = require('fs');
+const { v4: uuidv4 } = require("uuid")
+const sharp= require('sharp')
 const path = require('path');
 const filePath = path.join(__dirname, 'sales-report.pdf');
 
@@ -135,7 +138,7 @@ const verifyAdmin= async(req,res)=>{
 
 const userList= async(req,res)=>{
     try {
-        const userData= await User.find({is_admin:0})
+        const userData= await User.find({is_admin:0}).sort({date:-1})
 
         res.render("userlist",{users:userData})
         
@@ -359,6 +362,46 @@ const createCoupon= async(req,res)=>{
 
 
 
+    const addBanner= async(req,res)=>{
+        try {
+
+            const processedImages = req.processedImages || [];
+
+            const{bname,bDescription,start,end}=req.body
+    
+    
+            const bannerData= new Banner({
+
+                name:bname,
+                description:bDescription,
+                startDate:start,
+                endDate:end,
+                image:req.files.map((file)=>file.path),
+               
+            })
+            const banner=await bannerData.save()
+            console.log("banners:",banner)
+            // res.redirect("/admin/addproduct")
+            
+            if(banner){
+               res.status(200).json({success:true,message:'Banner added successfully '})
+          
+            } else{
+                res.json({success:false})
+            }
+
+
+
+
+            
+        } catch (error) {
+            console.log(error.message)
+            
+        }
+    }
+
+
+
 
 
 
@@ -368,5 +411,8 @@ const createCoupon= async(req,res)=>{
 
 
 module.exports={
-    adminLogin,verifyAdmin,userList,blockUser,unblockUser,getDashboard,adminLogout,salesReport,salesReportSearch,coupon,createCoupon,blockCoupon, unblockCoupon,getCouponCode,bannerPage
+    adminLogin,verifyAdmin,userList,blockUser,
+    unblockUser,getDashboard,adminLogout,salesReport,
+    salesReportSearch,coupon,createCoupon,blockCoupon, 
+    unblockCoupon,getCouponCode,bannerPage,addBanner
 }

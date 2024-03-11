@@ -83,6 +83,10 @@ user_Route.get('/userOrderDetails',userAuth.isLogin,userAuth.isBlocked,cartContr
 user_Route.get('/editProfile',userAuth.isLogin,userAuth.isBlocked,userController.editProfile)
 user_Route.post('/updateProfile',userAuth.isLogin,userAuth.isBlocked,userController.updateUserDetails)
 
+// ........wallet........
+
+user_Route.get("/Wallet",userAuth.isLogin,userAuth.isBlocked,cartController.walletDetails)
+
 
 
 
@@ -93,6 +97,12 @@ user_Route.post('/updateProfile',userAuth.isLogin,userAuth.isBlocked,userControl
 
 user_Route.post('/paymentByRazorpay',userAuth.isLogin,userAuth.isBlocked,cartController.onlinePayment)
 user_Route.get('/changestatus',cartController.changeStatus)
+
+
+// .........invoice...........
+
+user_Route.get("/invoicePage",userAuth.isLogin,userAuth.isBlocked,userController.invoiceShow)
+
 
 
 

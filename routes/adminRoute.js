@@ -80,6 +80,7 @@ admin_Route.get('/getCoupon',adminAuth.isLogin,adminController.getCouponCode)
 // --------------banner------------------
 
 admin_Route.get("/banner",adminAuth.isLogin,adminController.bannerPage)
+admin_Route.post("/banner",adminAuth.isLogin,upload.array('image',1),adminController.addBanner)
 
 
 

@@ -470,7 +470,6 @@ const adminOrderDelivered=async(req,res)=>{
 
     try {
 
-       
 
         const orderId= req.query.id
         const orderDelivered= await  Order.findByIdAndUpdate(orderId,{$set:{orderStatus:'Delivered'}})
@@ -515,11 +514,8 @@ const orderDetails= async(req,res)=>{
 
         const orderId=req.query.id
 
-        const orderDetails= await Order.findById(orderId).populate('userId').populate('products.productId')
-
-       
-
-
+        const orderDetails= await Order.findById(orderId).sort({orderDate:-1}).populate('userId').populate('products.productId')
+        
         res.render('orderdetails',{orderDetails})
 
 

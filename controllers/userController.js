@@ -592,6 +592,19 @@ const  updateUserDetails= async(req,res)=>{
 
 
 
+const invoiceShow=async(req,res)=>{
+    try {
+
+        res.render("invoice")
+        
+    } catch (error) {
+        console.log(error.message)
+        
+    }
+}
+
+
+
 
 
 
@@ -610,5 +623,5 @@ module.exports={
    postForgotPassword,newOtp,
    verifyNewOtp,verifyPasswords,
    loadLogout,editProfile,updateUserDetails,
-   userDash,addressForm,createAddress,
+   userDash,addressForm,createAddress,invoiceShow
 }

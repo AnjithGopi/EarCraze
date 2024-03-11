@@ -6,6 +6,7 @@ const Address=require("../models/addressModel")
 const Order=require("../models/orderModel")
 const WishList= require('../models/wishListModel')
 const Coupon= require('../models/couponModel')
+const Wallet= require("../models/walletModel")
 
 const Razorpay=require('razorpay')
 
@@ -371,10 +372,7 @@ const changeStatus = async(req,res)=>{
 const onlinePayment = async (req, res) => {
     try {
        
-       
-
-
-
+    
 
         const userId = req.session.userId
         const addressData = await Address.find({ _id: req.body.selectedAddress })
@@ -508,7 +506,46 @@ const userOrderReturn= async(req,res)=>{
         console.log("order return entered")
         const userId= req.session.userId
         const orderId=req.query.id
-       
+
+
+
+        // _____________________________
+
+
+
+        // Retrieve order details
+        const order = await Order.findById(orderId);
+
+        // Ensure the order belongs to the current user
+        if (!order || order.userId.toString() !== userId) {
+            return res.status(404).send("Order not found");
+        }
+
+
+
+        // Calculate refunded amount (assuming totalAmount is a string, convert it to a number)
+        const refundedAmount = parseFloat(order.totalAmount) 
+
+
+        // Update user's wallet balance
+        let wallet = await Wallet.findOne({ user_id: userId });
+        if (wallet) {
+            wallet.balance += refundedAmount;
+            await wallet.save();
+        } else {
+            // If the wallet doesn't exist, create a new one for the user
+            wallet = await Wallet.create({
+                user_id: userId,
+                balance: refundedAmount,
+                currency: "INR", // You may want to change this based on your currency system
+                
+                
+            });
+        }
+
+        // ______________________________
+
+
         const orderCancel = await Order.findByIdAndUpdate(orderId,{$set: {orderStatus:'Returned'}})
 
         res.redirect("/userDashboard")
@@ -517,6 +554,25 @@ const userOrderReturn= async(req,res)=>{
 
 
 
+        
+    } catch (error) {
+        console.log(error.message)
+        
+    }
+}
+
+
+
+const walletDetails= async(req,res)=>{
+    try {
+
+        const userId = req.session.userId
+        const wallet = await Wallet.findOne({ user_id: userId });
+        if (wallet) {
+            res.json({ balance: wallet.balance });
+        } else {
+            res.status(404).json({ error: 'Wallet not found' });
+        }
         
     } catch (error) {
         console.log(error.message)
@@ -726,4 +782,4 @@ const applyCoupon= async(req,res)=>{
 
 module.exports={getCart,addtoCart,deleteIteminCart,updateitemQuantity,
     checkOut,placeOrder,onlinePayment,userOrderCancel,userOrderReturn,applyCoupon,
-    userOrderDetails,getWishlist,addtoWishList,removeFromWishlist,searchInCart,changeStatus}  
+    userOrderDetails,getWishlist,addtoWishList,removeFromWishlist,searchInCart,changeStatus,walletDetails}  

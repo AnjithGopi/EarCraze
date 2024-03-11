@@ -5,9 +5,7 @@ const orderSchema= mongoose.Schema({
     userId:{type:mongoose.Schema.ObjectId,ref:'User'},
     products:[ {
         productId:{type:mongoose.Schema.ObjectId,
-          ref:"Product"},
-          quantity:{type:Number}}
-        ],
+          ref:"Product"},quantity:{type:Number}}],
 
 
     address:{
