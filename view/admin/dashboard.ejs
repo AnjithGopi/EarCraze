@@ -17,6 +17,9 @@
     <link rel="shortcut icon" type="image/x-icon" href="admin-assets/imgs/theme/favicon.svg">
     <!-- Template CSS -->
     <link href="/admin-assets/css/main.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 
     <style>
 
@@ -57,6 +60,73 @@
 }
 
 
+
+/* table design */
+
+
+
+
+        /* General styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+
+        .card {
+            background-color: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .card-header {
+            background: linear-gradient(to right, #f6f4f4, #26aefd);
+            color: #ffffff;
+            padding: 20px;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            border-radius: 10px 10px 0 0;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #00bcd4;
+            color: #ffffff;
+        }
+
+        tbody tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .custom-table-header {
+            background-color: #77aee8;
+            color: #ffffff;
+            font-weight: bold;
+        }
+
+        .custom-table-header th {
+            padding: 10px;
+        }
+
+
     
     </style>
 
@@ -88,33 +158,17 @@
                     <a class="menu-link" href="/admin/productlist"> <i class="icon material-icons md-shopping_bag"></i>
                         <span class="text">Products</span>
                     </a>
-                    <!-- <div class="submenu">
-                        <a href="page-products-list.html">Product List</a>
-                        <a href="page-products-grid.html">Product grid</a>
-                        <a href="page-products-grid-2.html">Product grid 2</a>
-                        <a href="page-categories.html">Categories</a> -->
-                    <!-- </div>  -->
-                <!-- </li> -->
+                   
                 <!-- <li class="menu-item has-submenu"> -->
                     <a class="menu-link" href="/admin/getOrders"> <i class="icon material-icons md-shopping_cart"></i>
                         <span class="text">Orders</span>
                     </a>
-                    <!-- <div class="submenu">
-                        <a href="page-orders-1.html">Order list 1</a>
-                        <a href="page-orders-2.html">Order list 2</a>
-                        <a href="page-orders-detail.html">Order detail</a>
-                    </div> -->
-                <!-- </li> -->
+                   
                 <!-- <li class="menu-item has-submenu"> -->
-                    <a class="menu-link" href="/admin/userlist"> <i class="icon material-icons md-store"></i>
+                    <a class="menu-link" href="/admin/userlist"> <i class="bi bi-person-fill"></i>
                         <span class="text">Customers</span>
                     </a>
-                     <!-- <div class="submenu">
-                        <a href="/admin/userlist">View Users</a> -->
-                        <!-- <a href="page-sellers-list.html">Sellers list</a>
-                        <a href="page-seller-detail.html">Seller profile</a> -->
-                    </div> 
-                <!-- </li> -->
+                     
                 <!-- <li class="menu-item has-submenu"> -->
                     <a class="menu-link" href="/admin/addProduct"> <i class="icon material-icons md-add_box"></i>
                         <span class="text">Add product</span>
@@ -122,19 +176,9 @@
                     <a class="menu-link" href="/admin/categories"> <i class="icon material-icons md-add_box"></i>
                         <span class="text">Catagories</span>
                     </a>
-                    <!-- <div class="submenu">
-                        <a href="/admin/addproduct">Add product </a>
-                        <a class="menu-link" href="/admin/addProduct"> <i class="icon material-icons md-add_box"></i>
-                        <span class="text">Add product</span>
-                    </a>
-                     <a class="menu-link" href="/admin/addProduct"> <i class="icon material-icons md-add_box"></i>
-                        <span class="text">Add product</span>
-                    </a> 
-                       
-                    </div> -->
-                <!-- </li> -->
+                   
                 <!-- <li class="menu-item has-submenu"> -->
-                    <a class="menu-link" href="page-transactions-1.html"> <i class="icon material-icons md-monetization_on"></i>
+                    <a class="menu-link" href="page-transactions-1.html"> <i class="fa-solid fa-people-group fa-beat-fade"></i>
                         <span class="text">Transactions</span>
                     </a>
                     <div class="submenu">
@@ -146,17 +190,29 @@
                     <a class="menu-link" href="#"> <i class="icon material-icons md-person"></i>
                         <span class="text">Account</span>
                     </a>
-                    <div class="submenu">
+                    <a class="menu-link" href="/admin/banner"> <i class="icon material-icons md-person"></i>
+                        <span class="text">Banner Management</span>
+<<<<<<< HEAD
+=======
+                    </a>
+                    <!-- <div class="submenu">
                         <a href="page-account-login.html">User login</a>
                         <a href="page-account-register.html">User registration</a>
                         <a href="page-error-404.html">Error 404</a>
-                    </div>
+                    </div> -->
                 <!-- </li> -->
                 <!-- <li class="menu-item"> -->
                     <a class="menu-link" href="page-reviews.html"> <i class="icon material-icons md-comment"></i>
                         <span class="text">Reviews</span>
+>>>>>>> a9e9b5889541a1e28216a8e038d5c0a9a857eff1
                     </a>
-                <!-- </li> -->
+                    
+                 
+                        <a class="menu-link" href="/admin/offers"> <i class="icon material-icons md-comment"></i>
+                            <span class="text">Offers</span>
+                        </a>
+                      
+                
                 <!-- <li class="menu-item"> -->
                     <a class="menu-link" href="/admin/brand"> <i class="icon material-icons md-stars"></i>
                         <span class="text">Brands</span> </a>
@@ -173,11 +229,7 @@
                     <a class="menu-link" href="#"> <i class="icon material-icons md-settings"></i>
                         <span class="text">Settings</span>
                     </a>
-                    <!-- <div class="submenu">
-                        <a href="page-settings-1.html">Setting sample 1</a>
-                        <a href="page-settings-2.html">Setting sample 2</a>
-                    </div> -->
-                <!-- </li> -->
+                    
                 <!-- <li class="menu-item"> -->
                     <a class="menu-link" href="page-blank.html"> <i class="icon material-icons md-local_offer"></i>
                         <span class="text"> Starter page </span>
@@ -294,32 +346,43 @@
                     <div class="card card-body mb-4">
                         <article class="icontext">
                             <%if(locals.totalProducts){%>
+                                
                                 <span class="icon icon-sm rounded-circle bg-warning-light"><i class="text-warning material-icons md-qr_code"></i></span>
                             <div class="text">
                                 <h6 class="mb-1 card-title">Products</h6> <span><%=totalProducts.length%></span>
-                                <span class="text-sm">
-                                    In 19 Categories
-                                </span>
+                                <%if(locals.categories){%>
+                                    <span class="text-sm">
+                                        In <%=categories.length%> Categories
+                                    </span>
+                                <%}%>
                             </div>
-
+                                       
                             <%}%>
                             
                         </article>
                     </div>
                 </div>
-                <div class="col-lg-3">
-                    <div class="card card-body mb-4">
-                        <article class="icontext">
-                            <span class="icon icon-sm rounded-circle bg-info-light"><i class="text-info material-icons md-shopping_basket"></i></span>
-                            <div class="text">
-                                <h6 class="mb-1 card-title">Monthly Earning</h6> <span>$6,982</span>
-                                <span class="text-sm">
-                                    Based in your local time.
-                                </span>
-                            </div>
-                        </article>
+                
+
+                  <%if(locals.brands){%>
+                    <div class="col-lg-3">
+                        <div class="card card-body mb-4">
+                            <article class="icontext">
+                                <span class="icon icon-sm rounded-circle bg-info-light"><i class="text-info material-icons md-shopping_basket"></i></span>
+                                <div class="text">
+                                    <h6 class="mb-1 card-title">Total Brands</h6> <span><%=brands.length%></span>
+                                    <span class="text-sm">
+                                        Based in your local time.
+                                    </span>
+                                </div>
+                            </article>
+                        </div>
                     </div>
-                </div>
+
+                  <%}%>
+              
+               
+        
             </div>
             <div class="row">
                 <div class="col-xl-8 col-lg-12">
@@ -497,7 +560,7 @@
             </div>
             <div class="card mb-4">
                 <header class="card-header">
-                    <h4 class="card-title">Top selling products </h4>
+                    <h4 class="card-title">Top Selling Products </h4>
                     
                 </header>
                 <div class="card-body">
@@ -509,7 +572,7 @@
                             <div class="table-responsive">
                                 <div class="table-responsive">
                                     <table class="table align-middle table-nowrap mb-0">
-                                        <thead>
+                                        <thead class="custom-table-header">
                                             <tr>
                                                  
                                                 <th>Product Name</th>
@@ -523,8 +586,8 @@
         
                                                    
                                                     
-                                                    <td><%= product.title %></td> <!-- Product name -->
-                                                    <td><%= product.totalQuantity %></td> <!-- Total quantity ordered -->   
+                                                    <td><%= product.title %></td> 
+                                                    <td><%= product.totalQuantity %></td>
                                                   
                                                 </tr>
                                             <% }); %>
@@ -558,7 +621,7 @@
                             <div class="table-responsive">
                                 <div class="table-responsive">
                                     <table class="table align-middle table-nowrap mb-0">
-                                        <thead>
+                                        <thead class="custom-table-header">
                                             <tr>
                                                  
                                                 <th>Category Name</th>
@@ -613,7 +676,7 @@
                             <div class="table-responsive">
                                 <div class="table-responsive">
                                     <table class="table align-middle table-nowrap mb-0">
-                                        <thead>
+                                        <thead class="custom-table-header">
                                             <tr>
                                                  
                                                 <th>Brand Name</th>

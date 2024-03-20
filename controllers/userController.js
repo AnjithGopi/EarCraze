@@ -7,6 +7,12 @@ const Address=require("../models/addressModel")
 const Cart= require("../models/cartModel")
 const Order= require("../models/orderModel")
 const bcrypt= require('bcrypt')
+const Brand= require("../models/brandModel")
+<<<<<<< HEAD
+const Category=require("../models/categoryModel")
+const Banner= require("../models/bannerModel")
+=======
+>>>>>>> a9e9b5889541a1e28216a8e038d5c0a9a857eff1
 
 
 
@@ -23,13 +29,23 @@ const loadHome=async(req,res)=>{
 
         const productData=await Product.find({is_active:0 , cat_status:0,brand_status:0,$or: [
             { title: { $regex: search, $options: 'i' } } 
-        ]})
+        ]}) .populate('category').exec();
+
+        const categories= await Category.find()
+
+        const banners= await Banner.find()
+        
         const userId=req.session.userId;
+        const brands= await Brand.find()
         const loginData = await User.findById(userId)
         if(productData){
             // res.render("home",{product:productData})
 
-            res.render("home",{product:productData,loginData})
+<<<<<<< HEAD
+            res.render("home",{product:productData,loginData,brands,banners,categories})
+=======
+            res.render("home",{product:productData,loginData,brands})
+>>>>>>> a9e9b5889541a1e28216a8e038d5c0a9a857eff1
         }
    
     } catch (error) {
@@ -37,6 +53,8 @@ const loadHome=async(req,res)=>{
         
     }
 }
+
+
 
 
 
@@ -263,7 +281,7 @@ const productDetails= async(req,res)=>{
     try {
 
         const id= req.query.id
-        const ptData= await Product.findOne({_id:id}).populate('brand')
+        const ptData= await Product.findOne({_id:id}).populate('brand').populate("category")
      
         if(ptData){
 
@@ -512,66 +530,69 @@ const  updateUserDetails= async(req,res)=>{
     try {
 
 
-        // const userId= req.session.userId
-        // const userData= await User.findById(userId)
+        const userId= req.session.userId
+        const userData= await User.findById(userId)
 
 
-        // const hashedPassword = await bcrypt.hash(req.body.password, 10);
+        const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
-        // if(userData.name==req.body.name && userData.email==req.body.email && await bcrypt.compare(req.body.password, userData.password)){
+        if(userData.name==req.body.name && userData.email==req.body.email && await bcrypt.compare(req.body.password, userData.password)){
 
-        //    if(req.body.npassword==req.body.cpassword){
+           if(req.body.npassword==req.body.cpassword){
 
-        //     const hashedNewPassword = await bcrypt.hash(req.body.npassword, 10);
+            const hashedNewPassword = await bcrypt.hash(req.body.npassword, 10);
 
-        //     userData.password = hashedNewPassword;
+            userData.password = hashedNewPassword;
 
-        //    const newUserData= await userData.save()
+           const newUserData= await userData.save()
 
-        //    if(newUserData){
-        //     const passwordChanged=true
-        //    }
+           if(newUserData){
+            const passwordChanged=true
+           }
 
-        //    if(passwordChanged){
-        //     req.flash('success', 'Password changed successfully')
-        //    }
+           if(passwordChanged){
+            req.flash('success', 'Password changed successfully')
+           }
          
-        //     res.redirect("/")
+            res.redirect("/")
 
-        //    }else{
+           }else{
 
-        //     res.render("editprofile",{message: "Passwords do not match"})
+            res.render("editprofile",{message: "Passwords do not match"})
 
-        //    }
+           }
 
-        // }else{
+        }else{
 
-        //     res.render("editprofile",{message:"Invalid Credentials"})
+            res.render("editprofile",{message:"Invalid Credentials"})
+        }
+
+        
+        // ........................................................................
+
+
+        // const userId = req.session.userId;
+        // const userData = await User.findById(userId);
+
+        // if (!userData) {
+        //     return res.status(404).send("User not found");
         // }
 
+        // const passwordsMatch = await bcrypt.compare(req.body.password, userData.password);
 
-        const userId = req.session.userId;
-        const userData = await User.findById(userId);
-
-        if (!userData) {
-            return res.status(404).send("User not found");
-        }
-
-        const passwordsMatch = await bcrypt.compare(req.body.password, userData.password);
-
-        if (userData.name === req.body.name && userData.email === req.body.email && passwordsMatch) {
-            if (req.body.newpassword === req.body.cpassword) {
-                const hashedNewPassword = await bcrypt.hash(req.body.newpassword, 10);
-                userData.password = hashedNewPassword;
-                await userData.save();
-                req.flash('success', 'Password changed successfully');
-                return res.redirect("/");
-            } else {
-                return res.render("editprofile", { message: "Passwords do not match" });
-            }
-        } else {
-            return res.render("editprofile", { message: "Invalid Credentials" });
-        }
+        // if (userData.name === req.body.name && userData.email === req.body.email && passwordsMatch) {
+        //     if (req.body.newpassword === req.body.cpassword) {
+        //         const hashedNewPassword = await bcrypt.hash(req.body.newpassword, 10);
+        //         userData.password = hashedNewPassword;
+        //         await userData.save();
+        //         req.flash('success', 'Password changed successfully');
+        //         return res.redirect("/");
+        //     } else {
+        //         return res.render("editprofile", { message: "Passwords do not match" });
+        //     }
+        // } else {
+        //     return res.render("editprofile", { message: "Invalid Credentials" });
+        // }
 
 
 
@@ -585,6 +606,76 @@ const  updateUserDetails= async(req,res)=>{
 
 
 
+const invoiceShow=async(req,res)=>{
+    try {
+
+<<<<<<< HEAD
+        const orderId= req.query.id
+
+        const invoice= await Order.findById(orderId).populate('userId').populate('products.productId')
+
+        res.render("invoice",{invoice})
+=======
+        res.render("invoice")
+>>>>>>> a9e9b5889541a1e28216a8e038d5c0a9a857eff1
+        
+    } catch (error) {
+        console.log(error.message)
+        
+    }
+}
+
+
+
+<<<<<<< HEAD
+const shop= async(req,res)=>{
+    try {
+
+        
+        const products= await Product.find({is_active:0}).populate('category')
+        res.render("shop",{products})
+
+        
+
+        
+    } catch (error) {
+        console.log(error.message)
+        
+    }
+}
+
+
+const filterProdutcs = async(req,res)=>{
+    try {
+
+
+        const categoryId = req.query.id; // Get the category ID from query parameter
+        const categories= await Category.find()
+        if (!categoryId) {
+            return res.status(400).json({ error: 'Category ID is required' });
+        }
+
+        // Assuming you have a Product model imported and set up
+        const product = await Product.find({category:categoryId}).exec();
+
+        if (!product || product.length === 0) {
+            return res.status(404).json({ error: 'No products found for the category' });
+        }
+
+        res.render("home",{product,categories})
+        
+    } catch (error) {
+
+
+        console.log(error.message)
+        
+    }
+}
+
+
+
+=======
+>>>>>>> a9e9b5889541a1e28216a8e038d5c0a9a857eff1
 
 
 
@@ -603,5 +694,9 @@ module.exports={
    postForgotPassword,newOtp,
    verifyNewOtp,verifyPasswords,
    loadLogout,editProfile,updateUserDetails,
-   userDash,addressForm,createAddress,
+<<<<<<< HEAD
+   userDash,addressForm,createAddress,invoiceShow,shop,filterProdutcs
+=======
+   userDash,addressForm,createAddress,invoiceShow
+>>>>>>> a9e9b5889541a1e28216a8e038d5c0a9a857eff1
 }

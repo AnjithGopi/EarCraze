@@ -19,6 +19,75 @@
     <link rel="stylesheet" href="assets/css/maind134.css?v=3.4">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-*****************" crossorigin="anonymous" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        .brand-image {
+    width: 200px; /* Adjust width as needed */
+    height: auto; /* This will maintain aspect ratio */
+}
+.brand-card {
+    width: 200px; /* Adjust width as needed */
+    height: auto; /* This will maintain aspect ratio */
+    margin-right: 10px; /* Add spacing between cards */
+    margin-left: 10px;
+    display: inline-block; /* Ensure inline display to create a horizontal row */
+    vertical-align: top; /* Align cards to the top of the container */
+}
+
+
+/* Red-themed stylings */
+
+       
+    
+    .hero-slider-content-2 h4,
+    .hero-slider-content-2 h3,
+    .hero-slider-content-2 h2,
+    .hero-slider-content-2 p {
+        color: #ff0000; /* Red text color */
+    }
+    .btn-brush.btn-brush-3 {
+        background-color: #ff0000; /* Red button background color */
+        border-color: #ff0000; /* Red button border color */
+        color: #ffffff; /* White text color for the button */
+    }
+    /* Styling for the div containing the image */
+    .single-slider-img {
+        background-color: #000000; /* Black background */
+        padding: 20px; /* Add padding to create space around the image */
+        border-radius: 10px; /* Add border radius for rounded corners */
+    }
+    .hero-slider-content-2 {
+        background-color: #000000; /* Black background */
+        padding: 20px; /* Add padding to create space around the titles */
+        border-radius: 10px; /* Add border radius for rounded corners */
+    }
+    .container1{
+        background-color: #000000;
+
+    }
+   
+
+    
+
+    </style>
+
+    <style>
+        .brand-image {
+    width: 200px; /* Adjust width as needed */
+    height: auto; /* This will maintain aspect ratio */
+}
+.brand-card {
+    width: 200px; /* Adjust width as needed */
+    height: auto; /* This will maintain aspect ratio */
+    margin-right: 10px; /* Add spacing between cards */
+    margin-left: 10px;
+    display: inline-block; /* Ensure inline display to create a horizontal row */
+    vertical-align: top; /* Align cards to the top of the container */
+}
+
+
+    </style>
 
 </head>
 
@@ -531,7 +600,7 @@
                                     <li>
                                         <a href="page-about.html">About</a>
                                     </li>
-                                    <li><a href="shop-grid-right.html">Shop <i class="fi-rs-angle-down"></i></a>
+                                    <li><a href="/shop">Shop <i class="fi-rs-angle-down"></i></a>
                                         <!-- <ul class="sub-menu">
                                             <li><a href="shop-grid-right.html">Shop Grid – Right Sidebar</a></li>
                                             <li><a href="shop-grid-left.html">Shop Grid – Left Sidebar</a></li>
@@ -874,30 +943,34 @@
         </div>
     </div>
     <main class="main">
-        <section class="home-slider position-relative mb-30">
-            <div class="container">
-                <div class="home-slide-cover bg-grey-10 mt-30">
-                    <div class="hero-slider-1 style-4 dot-style-1 dot-style-1-position-1">
-                        <div class="single-hero-slider single-animation-wrap">
-                            <div class="container">
+
+        <!-- _____________________title Banners________________________________ -->
+
+        <section  class="home-slider position-relative mb-30">
+            <div  class="container">
+                <div  class="home-slide-cover bg-grey-10 mt-30">
+                    <div  class="hero-slider-1 style-4 dot-style-1 dot-style-1-position-1">
+                        <div  class="single-hero-slider  single-animation-wrap">
+                            <div class="container1">
                                 <div class="row align-items-center slider-animated-1">
                                     <div class="col-lg-5 col-md-6">
                                         <div class="hero-slider-content-2">
                                             <h4 class="animated">Trade-In Offer</h4>
                                             <h3 class="animated fw-900">Supper Value Deals</h3>
-                                            <h2 class="animated fw-900 text-brand">On All Products</h2>
+                                            <h2  class="animated fw-900 text-brand">On All Products</h2>
                                             <p class="animated">Save more with coupons & up to 70% off</p>
                                             <a class="animated btn btn-brush btn-brush-3" href="shop-product-right.html" tabindex="0"> Shop Now </a>
                                         </div>
                                     </div>
                                     <div class="col-lg-7 col-md-6">
                                         <div class="single-slider-img single-slider-img-1">
-                                            <img class="animated" src="assets/imgs/slider/slider-6.png" alt="">
+                                            <img class="animated" src="" alt="">
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        
                         <div class="single-hero-slider single-animation-wrap">
                             <div class="container">
                                 <div class="row align-items-center slider-animated-1">
@@ -923,6 +996,7 @@
                 </div>
             </div>
         </section>
+        <!-- ___________________________________________title Banners________________________________________________________________________________________________ -->
         <section class="banners mb-20">
             <div class="container">
                 <div class="row">
@@ -964,22 +1038,32 @@
                 <div class="row">
                     <div class="col-lg-3">
                         <div class="widget-category mb-30">
-                            <h5 class="section-title style-1 mb-30 wow fadeIn animated">Category</h5>
-                            <ul class="categories">
-                                <li><a href="shop-grid-right.html">Shoes & Bags</a></li>
-                                <li><a href="shop-grid-right.html">Blouses & Shirts</a></li>
-                                <li><a href="shop-grid-right.html">Dresses</a></li>
-                                <li><a href="shop-grid-right.html">Swimwear</a></li>
-                                <li><a href="shop-grid-right.html">Beauty</a></li>
-                                <li><a href="shop-grid-right.html">Jewelry & Watch</a></li>
-                                <li><a href="shop-grid-right.html">Accessories</a></li>
-                            </ul>
+                            <!-- ==========================Categories================================= -->
+
+                            <h5 class="section-title style-1 mb-30 wow fadeIn animated">Categories</h5>
+
+                          <%  if(locals.categories){%>
+                                <ul class="categories">
+
+                                    <%for(let i=0;i<categories.length;i++){%>
+                                        <li style="color: black; font-weight: bold;"><a href="/filterProducts?id=<%=categories[i]._id%>"><%= categories[i].name %></a></li>
+
+                                   <% } %>
+                                </ul>
+                                <% }%>
+                                
+                          
+
+
+                          
+
+            
+                           
                         </div>
-                        <div class="widget-category mb-30">
-                            <h5 class="section-title style-1 mb-30 wow fadeIn animated">Sort by</h5>
+                        <!-- <div class="widget-category mb-30">
+                            <h5 class="section-title style-1 mb-30 wow fadeIn animated">Sort</h5>
                             <ul class="categories">
-                                <li><a href="shop-grid-right.html">Popularity</a></li>
-                                <li><a href="shop-grid-right.html">Average rating</a></li>
+                               
                                 <li><a href="shop-grid-right.html">Price: Low to High</a></li>
                                 <li><a href="shop-grid-right.html">Price: High to Low</a></li>
                             </ul>
@@ -993,32 +1077,50 @@
                                 <li><a href="shop-grid-right.html">$600-$800</a></li>
                                 <li><a href="shop-grid-right.html">800$+</a></li>
                             </ul>
-                        </div>
-                        <div class="banner-img wow fadeIn mb-45mb-lg-0 animated d-lg-block d-none">
-                            <img src="assets/imgs/banner/banner-11.jpg" alt="">
-                            <div class="banner-text">
-                                <span>Women Zone</span>
-                                <h4>Save 17% on <br>Office Dress</h4>
-                                <a href="shop-grid-right.html">Shop Now <i class="fi-rs-arrow-right"></i></a>
+                        </div> -->
+                        <!-- ____________________Banner 1________________________ -->
+
+                        <%if(locals.banners){%>
+
+                            
+                            <div class="banner-img wow fadeIn mb-45mb-lg-0 animated d-lg-block d-none">
+                                <img src="/<%=banners[0].image[0]%>" alt="">
+                                <!-- <div class="banner-text">
+                                    <span></span>
+                                    <h4>Save 17% on <br>Office Dress</h4>
+                                    <a href="shop-grid-right.html">Shop Now <i class="fi-rs-arrow-right"></i></a>
+                                </div> -->
+                                <div class="banner-text" style="color: white;">
+                                    <span></span>
+                                    <h4 style="color: white;"><%=banners[0].description%> 
+                                    <a href="shop-grid-right.html" style="color: rgb(195, 211, 10);">Shop Now <i class="fi-rs-arrow-right"></i></a>
+                                </div>
+                                
                             </div>
-                        </div>
+
+                        <%}%>
+
+                     
+                        <!-- __________________title Banner 1 ends____________________ -->
                     </div>
                     <div class="col-lg-9">
                         <div class="tab-header">
                             <ul class="nav nav-tabs" id="myTab" role="tablist">
-                                <li class="nav-item" role="presentation">
+                                <!-- <li class="nav-item" role="presentation">
                                     <button class="nav-link active" id="nav-tab-one" data-bs-toggle="tab" data-bs-target="#tab-one" type="button" role="tab" aria-controls="tab-one" aria-selected="true">Featured</button>
                                 </li>
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link" id="nav-tab-two" data-bs-toggle="tab" data-bs-target="#tab-two" type="button" role="tab" aria-controls="tab-two" aria-selected="false">Popular</button>
-                                </li>
+                                </li> -->
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link" id="nav-tab-three" data-bs-toggle="tab" data-bs-target="#tab-three" type="button" role="tab" aria-controls="tab-three" aria-selected="false">New added</button>
+                                    <button class="nav-link" id="nav-tab-three" data-bs-toggle="tab" data-bs-target="#tab-three" type="button" role="tab" aria-controls="tab-three" aria-selected="false">Newly Added Products</button>
                                 </li>
                             </ul>
-                            <a href="#" class="view-more d-none d-md-flex">View More<i class="fi-rs-angle-double-small-right"></i></a>
+                            <!-- <a href="#" class="view-more d-none d-md-flex">View More<i class="fi-rs-angle-double-small-right"></i></a> -->
                         </div>
-           <!------------------End nav-tabs------------------------Product ForLoop------------------------------------------------------------------------------------------------>
+           <!------------------End nav-tabs--------
+            ----------------Product ForLoop------------------------------------------------------------------------------------------------>
+
                         <div class="tab-content wow fadeIn animated" id="myTabContent">
                             <div class="tab-pane fade show active" id="tab-one" role="tabpanel" aria-labelledby="tab-one">
                                 <div class="row product-grid-4">
@@ -1030,45 +1132,52 @@
                                             <div class="product-img-action-wrap">
                                                 <div class="product-img product-img-zoom">
                                                     <a href="/productDetails?id=<%=product[i]._id%>">
-                                                        <img class="default-img" src="<%=product[i].image[0]%>" alt="">
-                                                        <img class="hover-img" src="<%=product[i].image[0]%>" alt="">
+                                                        <img class="default-img" src="/uploads/<%=product[i].image[0]%>" alt="">
+                                                        <img class="hover-img" src="/uploads/<%=product[i].image[1]%>" alt="">
                                                     </a>
                                                 </div>
-                                                <div class="product-action-1">
-                                                    <%if(locals.loginData){%>
-                                                        <a aria-label="Quick view" class="action-btn hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal"><i class="fi-rs-eye"></i></a>
-                                                    <a aria-label="Add To Wishlist" class="action-btn hover-up" href="/wishList"><i class="fi-rs-heart"></i></a>
-                                                    <a aria-label="Compare" class="action-btn hover-up" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
-
-                                                    <%}else{%>
-                                                        <a aria-label="Quick view" class="action-btn hover-up" data-bs-toggle="modal" data-bs-target="#quickViewModal"><i class="fi-rs-eye"></i></a>
-                                                        <a aria-label="Add To Wishlist" class="action-btn hover-up" href="#"><i class="fi-rs-heart"></i></a>
-                                                        <a aria-label="Compare" class="action-btn hover-up" href="shop-compare.html"><i class="fi-rs-shuffle"></i></a>
-
-                                                   <%}%>
-                                                    
-                                                </div>
-                                                <div class="product-badges product-badges-position product-badges-mrg">
+                                               
+                                                <!-- <div class="product-badges product-badges-position product-badges-mrg">
                                                     <span class="hot">Hot</span>
-                                                </div>
+                                                </div> -->
                                             </div>
                                             <div class="product-content-wrap">
                                                 <div class="product-category">
-                                                    <a href="shop-grid-right.html">HeadPhones</a>
+                                                    <a href="shop-grid-right.html"><%=product[i].category.name%></a>
                                                 </div>
-                                                <h2><a href="shop-product-right.html"><%=product[i].title%></a></h2>
-                                                <div class="rating-result" title="90%">
+                                                <h2><a href="/productDetails?id=<%=product[i]._id%>"><%=product[i].title%></a></h2>
+                                                <!-- <div class="rating-result" title="90%">
                                                     <span>
                                                         <span>90%</span>
                                                     </span>
-                                                </div>
-                                                <div class="product-price">
-                                                    <span>₹<%=product[i].salesprice%></span>
-                                                    <span class="old-price">₹<%=product[i].regularprice%></span>
-                                                </div>
+                                                </div> -->
+                                               <% if(product[i].category.offerPercent==0){%>
+                                                    <div class="product-price">
+                                                        <span>₹<%=product[i].salesprice%></span>
+                                                    </div>
+                                               <% }else{%>
+                                                    <div class="product-price">
+                                                        <span>₹<%=product[i].salesprice%></span>
+                                                        <span class="old-price" style="color: #ff0000;">₹<%=product[i].regularprice%></span>
+                                                    </div>
+                                                    
+
+                                               <% } %>
+                                                
+
+
+                                                   
+                                                
+                                                <!-- <div class="product-action-1 show">
+                                                    <a aria-label="Add To Cart" class="action-btn hover-up" href=""><i class="fi-rs-shopping-bag-add"></i></a>
+                                                </div> -->
                                                 <div class="product-action-1 show">
-                                                    <a aria-label="Add To Cart" class="action-btn hover-up" href="shop-cart.html"><i class="fi-rs-shopping-bag-add"></i></a>
+                                                    <a aria-label="Add To Cart" class="action-btn hover-up" href="#" onclick="addToCart('<%=product[i]._id%>')">
+                                                       
+                                                        <i class="fi-rs-shopping-bag-add"></i>
+                                                    </a>
                                                 </div>
+                                                
                                             </div>
                                         </div>
                                     </div>
@@ -1091,76 +1200,47 @@
                 </div>
             </div>
         </section>
+        <!-- _______________________Banner 2_____________________________________ -->
+        
         <section class="banner-2 section-padding pb-0">
             <div class="container">
                 <div class="banner-img banner-big wow fadeIn animated f-none">
-                    <img src="assets/imgs/banner/banner-4.png" alt="">
+                    <img src="" alt="">
                     <div class="banner-text d-md-block d-none">
-                        <h4 class="mb-15 mt-40 text-brand">Repair Services</h4>
-                        <h1 class="fw-600 mb-20">We're an Apple <br>Authorised Service Provider</h1>
-                        <a href="shop-grid-right.html" class="btn">Learn More <i class="fi-rs-arrow-right"></i></a>
+                        <h4 style="color: white;">
+                        <h1 class="fw-600 mb-20" style="color: rgba(246, 245, 245, 0.57);">New Product <br><span style="color: rgba(243, 241, 134, 0.511);"> </span></h1>
+                        <!-- <a href="shop-grid-right.html" class="btn">Learn More <i class="fi-rs-arrow-right"></i></a> -->
+                       
+
                     </div>
                 </div>
             </div>
         </section>
+
+        <!-- ___________________banner 2 ends______________________________________ -->
         <section class="popular-categories section-padding mt-15">
             <div class="container wow fadeIn animated">
-                <h3 class="section-title mb-20"><span>Popular</span> Categories</h3>
+                <h3 class="section-title mb-20"><span>Our</span> Brands</h3>
+                <% if(locals.brands) { %>
                 <div class="carausel-6-columns-cover position-relative">
                     <div class="slider-arrow slider-arrow-2 carausel-6-columns-arrow" id="carausel-6-columns-arrows"></div>
                     <div class="carausel-6-columns" id="carausel-6-columns">
-                        <div class="card-1">
-                            <figure class=" img-hover-scale overflow-hidden">
-                                <a href="shop-grid-right.html"><img src="assets/imgs/shop/category-thumb-1.jpg" alt=""></a>
+                        <% for(let i=0; i < brands.length; i++) { %>
+                        <div class="card-1 brand-card">
+                            <figure class="img-hover-scale overflow-hidden">
+                                <a href="shop-grid-right.html">
+                                    <img src="/<%= brands[i].image[0] %>" alt="" class="brand-image">
+                                </a>
                             </figure>
-                            <h5><a href="shop-grid-right.html">T-Shirt</a></h5>
+                            <h5><a href="shop-grid-right.html"><%= brands[i].name %></a></h5>
                         </div>
-                        <div class="card-1">
-                            <figure class=" img-hover-scale overflow-hidden">
-                                <a href="shop-grid-right.html"> <img src="assets/imgs/shop/category-thumb-2.jpg" alt=""></a>
-                            </figure>
-                            <h5><a href="shop-grid-right.html">Bags</a></h5>
-                        </div>
-                        <div class="card-1">
-                            <figure class=" img-hover-scale overflow-hidden">
-                                <a href="shop-grid-right.html"><img src="assets/imgs/shop/category-thumb-3.jpg" alt=""></a>
-                            </figure>
-                            <h5><a href="shop-grid-right.html">Sandan</a></h5>
-                        </div>
-                        <div class="card-1">
-                            <figure class=" img-hover-scale overflow-hidden">
-                                <a href="shop-grid-right.html"><img src="assets/imgs/shop/category-thumb-4.jpg" alt=""></a>
-                            </figure>
-                            <h5><a href="shop-grid-right.html">Scarf Cap</a></h5>
-                        </div>
-                        <div class="card-1">
-                            <figure class=" img-hover-scale overflow-hidden">
-                                <a href="shop-grid-right.html"><img src="assets/imgs/shop/category-thumb-5.jpg" alt=""></a>
-                            </figure>
-                            <h5><a href="shop-grid-right.html">Shoes</a></h5>
-                        </div>
-                        <div class="card-1">
-                            <figure class=" img-hover-scale overflow-hidden">
-                                <a href="shop-grid-right.html"><img src="assets/imgs/shop/category-thumb-6.jpg" alt=""></a>
-                            </figure>
-                            <h5><a href="shop-grid-right.html">Pillowcase</a></h5>
-                        </div>
-                        <div class="card-1">
-                            <figure class=" img-hover-scale overflow-hidden">
-                                <a href="shop-grid-right.html"><img src="assets/imgs/shop/category-thumb-7.jpg" alt=""></a>
-                            </figure>
-                            <h5><a href="shop-grid-right.html">Jumpsuits</a></h5>
-                        </div>
-                        <div class="card-1">
-                            <figure class=" img-hover-scale overflow-hidden">
-                                <a href="shop-grid-right.html"><img src="assets/imgs/shop/category-thumb-8.jpg" alt=""></a>
-                            </figure>
-                            <h5><a href="shop-grid-right.html">Hats</a></h5>
-                        </div>
+                        <% } %>
                     </div>
                 </div>
+                <% } %>
             </div>
         </section>
+        
         <section class="deals section-padding">
             <div class="container">
                 <div class="row">
@@ -1176,7 +1256,7 @@
                             </div>
                             <div class="deal-bottom">
                                 <p>Hurry Up! Offer End In:</p>
-                                <div class="deals-countdown" data-countdown="2025/03/25 00:00:00"></div>
+                                <div class="deals-countdown" data-countdown="2024/03/7 00:00:00"></div>
                                 <a href="shop-grid-right.html" class="btn hover-up">Shop Now <i class="fi-rs-arrow-right"></i></a>
                             </div>
                         </div>
@@ -2506,6 +2586,69 @@
             </div>
         </div>
     </div>
+    <script>
+        function addToCart(productId) {
+    event.preventDefault(); // Prevent the default action of the link
+
+
+   
+
+   
+
+    //  AJAX request using Fetch API
+    fetch('/addtoCart', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            productId, // You can get the product ID dynamically based on your HTML structure or using data attributes
+            quantity: 1 // You can adjust the quantity as needed
+        })
+    })
+    .then(response => {
+
+        if (!response.ok) {
+        throw new Error(`Failed to add item to cart. Status: ${response.status}`);
+    }
+       return response.json()
+       
+    })
+
+
+    .then(data=>{
+        if(!data.success){
+            toastr.error(data.message)
+        }else{
+            toastr.success(data.message)
+        }
+        
+    })
+
+    
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
+
+
+
+
+
+
+
+
+    </script>
+    <!-- CSS -->
+
+
+<!-- JavaScript -->
+
+
+
+
+
     <!-- Vendor JS-->
     <script src="assets/js/vendor/modernizr-3.6.0.min.js"></script>
     <script src="assets/js/vendor/jquery-3.6.0.min.js"></script>
@@ -2530,6 +2673,7 @@
     <!-- Template  JS -->
     <script src="assets/js/maind134.js?v=3.4"></script>
     <script src="assets/js/shopd134.js?v=3.4"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 </body>
 
 

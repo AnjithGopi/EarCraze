@@ -6,6 +6,7 @@ const Address=require("../models/addressModel")
 const Order=require("../models/orderModel")
 const WishList= require('../models/wishListModel')
 const Coupon= require('../models/couponModel')
+const Wallet= require("../models/walletModel")
 
 const Razorpay=require('razorpay')
 
@@ -274,9 +275,14 @@ const placeOrder= async(req,res)=>{
         console.log("addressData:",addressData)
         console.log("amount:",req.body.amount)
 
-        if(parseInt(req.body.amount)>1000){
-            console.log("no cod")
+        // Check if the cart is empty
+        
+        if (!cartData || cartData.products.length == 0) {
+            return res.status(400).json();
+        }
 
+        if(parseInt(req.body.amount)>1000){
+            
             res.status(400).json()
         }else{
 
@@ -317,6 +323,15 @@ const placeOrder= async(req,res)=>{
         
 
       const newOrder=  await orderData.save()
+
+    
+
+        // Update product quantities
+       for (const item of cartData.products) {
+        const product = await Product.findById(item.productId);
+        product.quantity -= item.quantity;
+        await product.save();
+        }
 
         
         if(newOrder){
@@ -371,10 +386,7 @@ const changeStatus = async(req,res)=>{
 const onlinePayment = async (req, res) => {
     try {
        
-       
-
-
-
+    
 
         const userId = req.session.userId
         const addressData = await Address.find({ _id: req.body.selectedAddress })
@@ -434,6 +446,19 @@ const onlinePayment = async (req, res) => {
             
         
           const newOrder=  await orderData.save()
+
+
+          
+          // Update product quantities
+
+          for (const item of cartData.products) {
+          const product = await Product.findById(item.productId);
+          product.quantity -= item.quantity;
+          await product.save();
+          }
+
+
+
           const id = newOrder._id;
           if(newOrder){
             const result = await Cart.updateOne(
@@ -508,7 +533,46 @@ const userOrderReturn= async(req,res)=>{
         console.log("order return entered")
         const userId= req.session.userId
         const orderId=req.query.id
-       
+
+
+
+        // _____________________________
+
+
+
+        // Retrieve order details
+        const order = await Order.findById(orderId);
+
+        // Ensure the order belongs to the current user
+        if (!order || order.userId.toString() !== userId) {
+            return res.status(404).send("Order not found");
+        }
+
+
+
+        // Calculate refunded amount (assuming totalAmount is a string, convert it to a number)
+        const refundedAmount = parseFloat(order.totalAmount) 
+
+
+        // Update user's wallet balance
+        let wallet = await Wallet.findOne({ user_id: userId });
+        if (wallet) {
+            wallet.balance += refundedAmount;
+            await wallet.save();
+        } else {
+            // If the wallet doesn't exist, create a new one for the user
+            wallet = await Wallet.create({
+                user_id: userId,
+                balance: refundedAmount,
+                currency: "INR", // You may want to change this based on your currency system
+                
+                
+            });
+        }
+
+        // ______________________________
+
+
         const orderCancel = await Order.findByIdAndUpdate(orderId,{$set: {orderStatus:'Returned'}})
 
         res.redirect("/userDashboard")
@@ -517,6 +581,25 @@ const userOrderReturn= async(req,res)=>{
 
 
 
+        
+    } catch (error) {
+        console.log(error.message)
+        
+    }
+}
+
+
+
+const walletDetails= async(req,res)=>{
+    try {
+
+        const userId = req.session.userId
+        const wallet = await Wallet.findOne({ user_id: userId });
+        if (wallet) {
+            res.json({ balance: wallet.balance });
+        } else {
+            res.status(404).json({ error: 'Wallet not found' });
+        }
         
     } catch (error) {
         console.log(error.message)
@@ -555,7 +638,7 @@ const getWishlist= async(req,res)=>{
 
 
         const wishListData= await WishList.findOne({userId:userId}).populate('products.productId')
-        console.log('wishList----------------------------------------------------------------' ,userId);
+       
        
 
         res.render("wishList",{wishListData})
@@ -638,6 +721,7 @@ const applyCoupon= async(req,res)=>{
 
          // Get the coupon ID from the request body
          const { couponId } = req.body;
+         console.log(req.body)
          const userId= req.session.userId
 
          const cartData= await Cart.findOne({userId:userId}).populate('products.productId')
@@ -653,6 +737,7 @@ const applyCoupon= async(req,res)=>{
 
          // Check if the coupon with the given ID exists
          const coupon = await Coupon.findById(couponId);
+         console.log('coupon :',coupon)
 
          if (!coupon) {
              return res.status(404).json({ error: 'Coupon not found' });
@@ -663,18 +748,39 @@ const applyCoupon= async(req,res)=>{
             return res.json({ success :false, message:"Coupon Cannot be applied"})    
          }
 
-         // Calculate the discount amount based on the coupon's discount percentage
-        const discountAmount = (total * coupon.discountpercentage) / 100;
+
+         // Check if the user has already redeemed the coupon
+         const redeemedCoupon = coupon.redemptionHistory.find(history => history.userId === userId);
+         if (redeemedCoupon) {
+            return res.json({ success: false, message: "Coupon already redeemed" });
+         }
+
+
+
+         // Add the user to the redemption history array in the coupon document
+           coupon.redemptionHistory.push({ userId: userId, usedOn: new Date() });
+
+         // Save the updated coupon document
+         await coupon.save();
+
+
 
         
 
-        // Subtract the discount amount from the total amount
-        const grandTotal = total - discountAmount;
+         // Calculate the discount amount based on the coupon's discount percentage
+         const discountAmount = (total * coupon.discountpercentage) / 100;
 
-        // Prepare the response with the updated grand total and coupon details
+    
+         // Subtract the discount amount from the total amount
+         const grandTotal = total - discountAmount;
+
+        
+   
+
+         // Prepare the response with the updated grand total and coupon details
        
 
-        res.json({success: true, message: 'Coupon applied successfully',coupon,grandTotal,discountAmount});
+         res.json({success: true, message: 'Coupon applied successfully',coupon,grandTotal,discountAmount});
 
         
     } catch (error) {
@@ -703,4 +809,4 @@ const applyCoupon= async(req,res)=>{
 
 module.exports={getCart,addtoCart,deleteIteminCart,updateitemQuantity,
     checkOut,placeOrder,onlinePayment,userOrderCancel,userOrderReturn,applyCoupon,
-    userOrderDetails,getWishlist,addtoWishList,removeFromWishlist,searchInCart,changeStatus}  
+    userOrderDetails,getWishlist,addtoWishList,removeFromWishlist,searchInCart,changeStatus,walletDetails}  

@@ -51,6 +51,10 @@ user_Route.post('/newPassword',userAuth.isLogout,userController.verifyPasswords)
 user_Route.get('/logout',userController.loadLogout)
 
 
+// ---------------Shop----
+
+user_Route.get("/shop",userAuth.isLogin,userAuth.isBlocked,userController.shop)
+
  
 //------------------Cart------------
 
@@ -83,6 +87,10 @@ user_Route.get('/userOrderDetails',userAuth.isLogin,userAuth.isBlocked,cartContr
 user_Route.get('/editProfile',userAuth.isLogin,userAuth.isBlocked,userController.editProfile)
 user_Route.post('/updateProfile',userAuth.isLogin,userAuth.isBlocked,userController.updateUserDetails)
 
+// ........wallet........
+
+user_Route.get("/Wallet",userAuth.isLogin,userAuth.isBlocked,cartController.walletDetails)
+
 
 
 
@@ -93,6 +101,23 @@ user_Route.post('/updateProfile',userAuth.isLogin,userAuth.isBlocked,userControl
 
 user_Route.post('/paymentByRazorpay',userAuth.isLogin,userAuth.isBlocked,cartController.onlinePayment)
 user_Route.get('/changestatus',cartController.changeStatus)
+
+
+// .........invoice...........
+
+user_Route.get("/invoicePage",userAuth.isLogin,userAuth.isBlocked,userController.invoiceShow)
+
+<<<<<<< HEAD
+// ----------filter products
+
+
+
+user_Route.get("/filterProducts",userController.filterProdutcs)
+
+
+
+=======
+>>>>>>> a9e9b5889541a1e28216a8e038d5c0a9a857eff1
 
 
 

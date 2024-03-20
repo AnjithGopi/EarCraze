@@ -90,10 +90,26 @@ background: #eee;
   font-family: 'Poppins', sans-serif;
 }
 body{
-  min-height: 100vh;
+   min-height: 100vh;
   width: 100%;
-  background: #f8f9f9;
+  background: #000808; 
 }
+   .bg-image{
+
+
+    min-height: 100vh;
+    width: 100%;
+    background-image: url('/public/pexels-parag-deshmukh-577769.jpg');
+    background-size: cover; /* or contain, or specify specific dimensions */
+    background-position: center; /* Center the background image */
+    background-repeat: no-repeat; /* Prevent the background image from repeating */
+    background-size: 100% 100%; /
+
+
+   }   
+     
+      
+
 .container{
   position: absolute;
   top: 50%;
@@ -174,6 +190,9 @@ body{
  
 
  </style>
+ <div class="bg-image">
+
+ 
 
  <div class="container">
   <input type="checkbox" id="check">
@@ -189,6 +208,8 @@ body{
       <a class="forget" href="/forgotPassword">Forgot password?</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="/signup">New user? Register here</a>
       <input type="submit" class="button" value="Login">
     </form>
+
+  </div>
 
 
     <script>

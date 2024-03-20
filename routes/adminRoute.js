@@ -4,7 +4,7 @@ const session=require("express-session")
 //const imageController= require('../controllers/imageController')
 const admin_Route=express()
 const multer=require('multer')
-const upload=multer({dest:"uploads/"})
+const upload=multer({dest:"uploads"})
 
 
 const adminController=require("../controllers/adminController")
@@ -31,7 +31,7 @@ admin_Route.get('/logout',adminController.adminLogin)
 //....................Products.............................................
 
 
-
+admin_Route.delete("/deleteImage",adminAuth.isLogin,productController.deleteImage)
 admin_Route.get("/addproduct",adminAuth.isLogin,productController.addProduct)
 admin_Route.post("/submitproducts",adminAuth.isLogin,upload.array('image',5),productController.addnewProduct)
 admin_Route.get("/productlist",adminAuth.isLogin,productController.productList)
@@ -75,6 +75,24 @@ admin_Route.get('/blockCoupon',adminAuth.isLogin,adminController.blockCoupon)
 admin_Route.get("/unblockCoupon",adminAuth.isLogin,adminController.unblockCoupon)
 admin_Route.get('/getCoupon',adminAuth.isLogin,adminController.getCouponCode) 
 
+
+
+// --------------banner------------------
+
+admin_Route.get("/banner",adminAuth.isLogin,adminController.bannerPage)
+admin_Route.post("/banner",adminAuth.isLogin,upload.array('image',1),adminController.addBanner)
+
+
+<<<<<<< HEAD
+// -------------offers-----------
+
+admin_Route.get("/offers",adminAuth.isLogin,adminController.offers)
+admin_Route.post("/applyOffer",adminAuth.isLogin,adminController.applyOffers)
+
+
+
+=======
+>>>>>>> a9e9b5889541a1e28216a8e038d5c0a9a857eff1
 
 
 

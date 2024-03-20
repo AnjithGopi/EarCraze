@@ -6,6 +6,7 @@ const userSchema= mongoose.Schema({
     email:{type:String,unique:true,required:true},
     mobile:{type:String,unique:true,required:true},
     password:{type:String,required:true},
+    date:{type:Date,default:Date.now},
     is_admin:{type:Number,default:0},
     is_active:{type:Number,default:0},
     otp:{type:String,default:null}

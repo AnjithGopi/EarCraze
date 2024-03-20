@@ -5,11 +5,14 @@ const Category=require("../models/categoryModel")
 const Brand=require("../models/brandModel")
 const Order= require('../models/orderModel')
 const Coupon=require('../models/couponModel')
+const Banner= require("../models/bannerModel")
 
 
 
 const PDFDocument = require('pdfkit');
 const fs = require('fs');
+const { v4: uuidv4 } = require("uuid")
+const sharp= require('sharp')
 const path = require('path');
 const filePath = path.join(__dirname, 'sales-report.pdf');
 
@@ -34,9 +37,11 @@ const adminLogin= async(req,res)=>{
 
 const getDashboard=async(req,res)=>{
     try {
-        const orderList= await Order.find().sort({orderDate:-1}).limit(5).populate('userId')
+        const orderList= await Order.find().sort({orderDate:-1}).populate('userId')
         const totalOrders= await Order.find().populate('userId')
         const totalProducts= await Product.find()
+        const categories= await Category.find()
+        const brands= await Brand.find()
 
 
         // most ordered Products
@@ -91,7 +96,7 @@ const getDashboard=async(req,res)=>{
 
 
 
-        res.render("dashboard",{orderList,totalOrders,totalProducts,mostOrderedProducts,topSellingCategories,topSellingBrands})
+        res.render("dashboard",{orderList,totalOrders,totalProducts,mostOrderedProducts,topSellingCategories,topSellingBrands,categories,brands})
         
     } catch (error) {
         console.log(error.message)
@@ -133,7 +138,7 @@ const verifyAdmin= async(req,res)=>{
 
 const userList= async(req,res)=>{
     try {
-        const userData= await User.find({is_admin:0})
+        const userData= await User.find({is_admin:0}).sort({date:-1})
 
         res.render("userlist",{users:userData})
         
@@ -221,9 +226,11 @@ const salesReportSearch= async(req,res)=>{
         
 
         const { start, end } = req.body; 
+        const endOfDay = new Date(end);
+endOfDay.setHours(23, 59, 59, 999);
        
         const orderList = await Order.find({
-            orderDate: { $gte: new Date(start), $lte: new Date(end) }
+            orderDate: { $gte: new Date(start), $lte: endOfDay }
         }).populate('userId');
 
        
@@ -261,7 +268,7 @@ const createCoupon= async(req,res)=>{
         name:name,
         code: code,
         discountpercentage:dpercent,
-        discountAmount:maxamt,
+        // discountAmount:maxamt,
         minimumAmount:mpamt,
         validUntil:date,
         });
@@ -272,7 +279,7 @@ const createCoupon= async(req,res)=>{
         console.log("coupon details:",savedCoupon)
     
        
-        // res.status(201).json(savedCoupon);
+       
         res.redirect("/admin/Coupons")
       } catch (error) {
         
@@ -344,6 +351,145 @@ const createCoupon= async(req,res)=>{
 
 
 
+    const bannerPage= async(req,res)=>{
+        try {
+
+            res.render("addBanner")
+            
+        } catch (error) {
+            console.log(error.message)
+            
+        }
+    }
+
+
+
+    const addBanner= async(req,res)=>{
+        try {
+
+            const processedImages = req.processedImages || [];
+
+            const{bname,bDescription,start,end}=req.body
+    
+    
+            const bannerData= new Banner({
+
+                name:bname,
+                description:bDescription,
+                startDate:start,
+                endDate:end,
+                image:req.files.map((file)=>file.path),
+               
+            })
+            const banner=await bannerData.save()
+            console.log("banners:",banner)
+            // res.redirect("/admin/addproduct")
+            
+            if(banner){
+               res.status(200).json({success:true,message:'Banner added successfully '})
+          
+            } else{
+                res.json({success:false})
+            }
+
+
+
+
+            
+        } catch (error) {
+            console.log(error.message)
+            
+        }
+    }
+
+
+
+<<<<<<< HEAD
+    const offers= async(req,res)=>{
+        try {
+
+            const categories= await Category.find()
+
+            res.render("offers",{categories})
+            
+        } catch (error) {
+            console.log(error.message)
+            
+        }
+    }
+
+
+
+
+    const applyOffers= async(req,res)=>{
+
+
+        try {
+
+            const { categoryId, discount, expiry } = req.body;
+
+
+            // Find the category by categoryId and update its offer details
+            const updatedCategory = await Category.findByIdAndUpdate(
+              categoryId,
+              { offerPercent: discount, expiry: expiry, offerActive: true },
+              { new: true } // To return the updated document
+            );
+
+
+        
+            if (!updatedCategory) {
+              return res.status(404).json({ message: 'Category not found' });
+            }
+
+
+
+            // Get all products in the corresponding category
+
+            const productsToUpdate = await Product.find({ category: categoryId });
+
+            
+
+            // Apply the discount to each product's sales price
+
+           
+            for (const product of productsToUpdate) {
+            const updatedPrice = product.salesprice * ((100 - discount) / 100);
+            product.salesprice = updatedPrice;
+            await product.save();
+           }
+
+
+           // Set a timeout to revert prices back after expiry date
+
+         if (expiry) {
+            const currentDate = new Date();
+            const expiryDate = new Date(expiry);
+            console.log("date current=",currentDate)
+
+            if (expiryDate > currentDate) {
+                const timeDifference = expiryDate.getTime() - currentDate.getTime();
+                setTimeout(async () => {
+                    
+                    await Product.updateMany(
+                        { category: categoryId },
+                        { $set: { salesprice: '$regularprice' } }
+                    );
+                }, timeDifference);
+            }
+        }
+            res.status(200).json({ message: 'Offer applied successfully', category: updatedCategory });
+            
+        } catch (error) {
+            console.log(error.message)
+            
+        }
+    }
+
+
+
+=======
+>>>>>>> a9e9b5889541a1e28216a8e038d5c0a9a857eff1
 
 
 
@@ -353,5 +499,12 @@ const createCoupon= async(req,res)=>{
 
 
 module.exports={
-    adminLogin,verifyAdmin,userList,blockUser,unblockUser,getDashboard,adminLogout,salesReport,salesReportSearch,coupon,createCoupon,blockCoupon, unblockCoupon,getCouponCode
+    adminLogin,verifyAdmin,userList,blockUser,
+    unblockUser,getDashboard,adminLogout,salesReport,
+    salesReportSearch,coupon,createCoupon,blockCoupon, 
+<<<<<<< HEAD
+    unblockCoupon,getCouponCode,bannerPage,addBanner,offers,applyOffers
+=======
+    unblockCoupon,getCouponCode,bannerPage,addBanner
+>>>>>>> a9e9b5889541a1e28216a8e038d5c0a9a857eff1
 }

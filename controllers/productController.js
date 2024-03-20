@@ -4,6 +4,13 @@ const User=require("../models/userModel")
 const Category=require("../models/categoryModel")
 const Brand=require("../models/brandModel")
 const Order= require('../models/orderModel')
+const fs = require('fs');
+<<<<<<< HEAD
+const path = require('path');
+=======
+>>>>>>> a9e9b5889541a1e28216a8e038d5c0a9a857eff1
+const { v4: uuidv4 } = require("uuid")
+const sharp= require('sharp')
 
 
 
@@ -25,7 +32,7 @@ const addnewProduct= async(req,res)=>{
     try {
         const processedImages = req.processedImages || [];
 
-        const{pname,pbrand,pdescription,regularPrice,salesPrice,image,pcategory,tags, is_active,quantity}=req.body
+        const{pname,pbrand,pdescription,regularPrice,image,pcategory,tags, is_active,quantity}=req.body
 
 
         const productData= new Product({
@@ -33,8 +40,7 @@ const addnewProduct= async(req,res)=>{
             brand:pbrand,
             description:pdescription,
             regularprice:regularPrice,
-            salesprice:salesPrice,
-            image:req.files.map((file)=>file.path),
+            image:req.files.map((file)=>file.filename),
             category:pcategory,
             tags:tags,
             is_active:is_active,
@@ -42,10 +48,14 @@ const addnewProduct= async(req,res)=>{
 
         })
         const product=await productData.save()
-        console.log(product)
-        res.redirect("/admin/addproduct")
-
+        console.log("add product ::",product)
+        // res.redirect("/admin/addproduct")
         
+        if(product){
+            res.json({success:true,message:'Product added successfully '})
+        } else{
+            res.json({success:false})
+        }
     } catch (error) {
 
         console.log(error.message)
@@ -59,6 +69,7 @@ const productList= async(req,res)=>{
         const productDetails= await Product.find({}).sort({date:-1})
       
 
+console.log('products',productDetails)
         res.render("productlist",{product:productDetails})
         
     } catch (error) {
@@ -77,7 +88,7 @@ const editProductLoad =async(req,res)=>{
         const productDetails=await Product.findById({_id:id}).populate('brand')
         const category= await Category.find({})
         const brand= await Brand.find({})
-       
+       console.log("Edit product",productDetails)
         if(productDetails){
             res.render("editProduct",{Product:productDetails,category,brand})
         }else{
@@ -120,6 +131,48 @@ const updateProduct= async(req,res)=>{
         
     }
 }
+
+
+
+const deleteImage=async (req, res) => {
+
+
+   
+
+    try {
+
+        
+        const { imageUrl, productId } = req.body;
+        console.log("Image URL:", imageUrl);
+        console.log("Product ID:", productId);
+
+        // Find the product by ID and update to remove the image from the array
+        const product = await Product.findByIdAndUpdate(
+            productId,
+            { $pull: { image: imageUrl } },
+            { new: true }
+        );
+
+        console.log("Updated product:", product); // Log the updated product for debugging
+
+        if (!product) {
+            return res.status(404).json({ error: 'Product not found' });
+        }
+
+        return res.status(200).json({ message: 'Image deleted successfully', product })
+
+    
+
+       
+    } catch (error) {
+        console.error('Error deleting image:', error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+
+
+
 
 const blockProduct=async(req,res)=>{
     try {
@@ -219,23 +272,63 @@ const addBrand=async(req,res)=>{
 }
 
 const addNewBrand= async(req,res)=>{
+    
     try {
 
-        const {brandName,brandDescription,image}=req.body
-        let brand = new Brand({
-            name:brandName,
-            description:brandDescription,
-            image:req.files.map((file)=>file.path)
-            })
+        // const {brandName,brandDescription,image}=req.body
+        // let brand = new Brand({
+        //     name:brandName,
+        //     description:brandDescription,
+        //     image:req.files.map((file)=>file.path)
+        //     })
         
 
-        const newBrand = await brand.save()
-        console.log(newBrand)
-        res.redirect('/admin/brand')
+        // const newBrand = await brand.save()
+        // console.log(newBrand)
+        // res.redirect('/admin/brand')
+
+        //-----------updated code-------------------
 
 
+
+        const { brandName, brandDescription } = req.body;
+
+        const imageUrls = [];
+        for (const file of req.files) {
+           
+            const filename = `${uuidv4()}.jpg`;
+            
+            await sharp(file.path)
+                .resize({ width: 300, height: 300 })
+                .toFile(`uploads/${filename}`);
+            
+           
+            const imageUrl = `uploads/${filename}`; 
+            imageUrls.push(imageUrl);
+
+           
+            fs.unlink(file.path, (err) => {
+                if (err) {
+                    console.error(`Error deleting file: ${err}`);
+                } else {
+                    console.log(`File deleted: ${file.path}`);
+                }
+            });
+        
+        }
 
         
+        const brand = new Brand({
+            name: brandName,
+            description: brandDescription,
+            image: imageUrls
+        });
+
+        
+        const newBrand = await brand.save();
+        console.log(newBrand);
+        res.redirect('/admin/brand');
+
     } catch (error) {
         console.log(error.message)
 
@@ -243,13 +336,16 @@ const addNewBrand= async(req,res)=>{
     }
 }
 
+
+
+
+
 const blockCategory =async(req,res)=>{
     try {
        
         const categoryId=req.query.id
         const categoryblock= await Category.findByIdAndUpdate(categoryId,{is_active:1})
         await Product.updateMany({ category: categoryId }, { is_active: 1 });
-
         res.redirect("/admin/categories")
         
     } catch (error) {
@@ -318,8 +414,9 @@ const blockBrand= async(req,res)=>{
         console.log("brand block")
         const brandId = req.query.id
         const brandBlocked = await Brand.findByIdAndUpdate(brandId,{is_active:1})
-        const productCat= await Product.findByIdAndUpdate(brandId,{cat_staus:1})
-        const productBrand=await Product.findByIdAndUpdate(brandId,{brand_status:1})
+        await Product.updateMany({ brand: brandId }, { is_active: 1 });
+        // const productCat= await Product.findByIdAndUpdate(brandId,{cat_staus:1})
+        // const productBrand=await Product.findByIdAndUpdate(brandId,{brand_status:1})
 
         res.redirect("/admin/brand")
     }
@@ -348,13 +445,7 @@ const unblockBrand= async(req,res)=>{
 const getOrders= async(req,res)=>{
     try {
 
-
-       
-       
         const orderList= await Order.find().sort({orderDate:-1}).populate('userId')
-
-
-
         res.render('orderList',{orderList})
         
     } catch (error) {
@@ -429,7 +520,6 @@ const adminOrderDelivered=async(req,res)=>{
 
     try {
 
-       
 
         const orderId= req.query.id
         const orderDelivered= await  Order.findByIdAndUpdate(orderId,{$set:{orderStatus:'Delivered'}})
@@ -448,13 +538,8 @@ const adminOrderDelivered=async(req,res)=>{
 
 const adminOrderReturned=async(req,res)=>{
     try {
-
-        
-       
-
         const orderId= req.query.id
         const orderReturned= await  Order.findByIdAndUpdate(orderId,{$set:{orderStatus:'Returned'}})
-        
          res.redirect('/admin/getOrders')
 
 
@@ -479,11 +564,8 @@ const orderDetails= async(req,res)=>{
 
         const orderId=req.query.id
 
-        const orderDetails= await Order.findById(orderId).populate('userId').populate('products.productId')
-
-       
-
-
+        const orderDetails= await Order.findById(orderId).sort({orderDate:-1}).populate('userId').populate('products.productId')
+        
         res.render('orderdetails',{orderDetails})
 
 
@@ -505,7 +587,7 @@ const orderDetails= async(req,res)=>{
 
 
 
-module.exports={addProduct,addnewProduct,
+module.exports={addProduct,addnewProduct,deleteImage,
     productList,editProductLoad,blockProduct,
     unblockProduct,updateProduct,getCatagories,
     addCatagories, brand,addBrand,addNewBrand,blockCategory,

@@ -7,11 +7,12 @@ const productSchema= mongoose.Schema({
     title:{type:String,required:true},
     brand:{type:mongoose.Schema.Types.ObjectId,ref:'brand'},
     description:{type:String,required:true},
-    category:{type: mongoose.Schema.Types.ObjectId,ref:'categories'},
+    category:{type: mongoose.Schema.Types.ObjectId,ref:'category'},
     date:{type:Date,default:Date.now},
-   // brand:{type:String,required:true},
     regularprice:{type:Number,required:true},
-    salesprice:{type:Number,required:true},
+    salesprice:{type:Number,default: function () {
+      return this.regularprice; // Set salesprice equal to regularprice by default
+  }},
     image:[{ type:String}],
     tags:{type:String},
     is_active:{type:Number,default:0},
