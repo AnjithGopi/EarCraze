@@ -16,7 +16,7 @@ const port=9000
 const multer=require("multer")
 const storage=multer.memoryStorage()
 app.use("/uploads",express.static("uploads"))
-const PDFDocument = require('pdfkit');
+const PDFDocument = require('pdfkit');7
 const fs = require('fs');
 const path = require('path');
 
@@ -53,6 +53,14 @@ const admin_Route=require("./routes/adminRoute")
 
 app.use("/",user_Route)
 app.use("/admin",admin_Route)
+
+
+app.use("*",(req,res)=>{
+
+
+    res.send("404 page not found")
+
+})
 
 app.listen(port,()=>{
     console.log(`server running at http://localhost:${port}`)

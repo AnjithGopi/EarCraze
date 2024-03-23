@@ -8,11 +8,8 @@ const Cart= require("../models/cartModel")
 const Order= require("../models/orderModel")
 const bcrypt= require('bcrypt')
 const Brand= require("../models/brandModel")
-<<<<<<< HEAD
 const Category=require("../models/categoryModel")
 const Banner= require("../models/bannerModel")
-=======
->>>>>>> a9e9b5889541a1e28216a8e038d5c0a9a857eff1
 
 
 
@@ -29,7 +26,8 @@ const loadHome=async(req,res)=>{
 
         const productData=await Product.find({is_active:0 , cat_status:0,brand_status:0,$or: [
             { title: { $regex: search, $options: 'i' } } 
-        ]}) .populate('category').exec();
+        ]}) .populate('category').sort({ date: -1 }) // Sort by date in descending order (newest first)
+        .limit(9).exec();
 
         const categories= await Category.find()
 
@@ -41,11 +39,7 @@ const loadHome=async(req,res)=>{
         if(productData){
             // res.render("home",{product:productData})
 
-<<<<<<< HEAD
             res.render("home",{product:productData,loginData,brands,banners,categories})
-=======
-            res.render("home",{product:productData,loginData,brands})
->>>>>>> a9e9b5889541a1e28216a8e038d5c0a9a857eff1
         }
    
     } catch (error) {
@@ -281,11 +275,13 @@ const productDetails= async(req,res)=>{
     try {
 
         const id= req.query.id
+        const userId= req.session.userId
+        const loginData= await User.findById(userId)
         const ptData= await Product.findOne({_id:id}).populate('brand').populate("category")
      
         if(ptData){
 
-            res.render("productDetails" ,{products:ptData})
+            res.render("productDetails" ,{products:ptData,loginData})
         }
         
         
@@ -609,15 +605,11 @@ const  updateUserDetails= async(req,res)=>{
 const invoiceShow=async(req,res)=>{
     try {
 
-<<<<<<< HEAD
         const orderId= req.query.id
 
         const invoice= await Order.findById(orderId).populate('userId').populate('products.productId')
 
         res.render("invoice",{invoice})
-=======
-        res.render("invoice")
->>>>>>> a9e9b5889541a1e28216a8e038d5c0a9a857eff1
         
     } catch (error) {
         console.log(error.message)
@@ -627,13 +619,29 @@ const invoiceShow=async(req,res)=>{
 
 
 
-<<<<<<< HEAD
 const shop= async(req,res)=>{
     try {
 
+
+
+
+        const userId= req.session.userId
+        const loginData = await User.findById(userId)
+
+        var search = ""
+        if( req.body.search){
+            search= req.body.search
+        }
+
+        const products=await Product.find({is_active:0 , cat_status:0,brand_status:0,$or: [
+            { title: { $regex: search, $options: 'i' } } 
+        ]}) .populate('category').sort({ date: -1 }) // Sort by date in descending order (newest first)
+        .exec();
+
+
+       
         
-        const products= await Product.find({is_active:0}).populate('category')
-        res.render("shop",{products})
+        res.render("shop",{products,loginData})
 
         
 
@@ -643,6 +651,81 @@ const shop= async(req,res)=>{
         
     }
 }
+
+
+
+const lowtohigh= async(req,res)=>{
+
+
+    try {
+
+
+        const userId= req.session.userId
+        const loginData = await User.findById(userId)
+
+        var search = ""
+        if( req.body.search){
+            search= req.body.search
+        }
+
+        const products=await Product.find({is_active:0 , cat_status:0,brand_status:0,$or: [
+            { title: { $regex: search, $options: 'i' } } 
+        ]}) .populate('category').sort({ salesprice: 1 }) // Sort by price in Ascending order (newest first)
+        .exec();
+
+
+       
+        
+        res.render("shop",{products,loginData})
+
+
+        
+    } catch (error) {
+        console.log(error.message)
+        
+    }
+}
+
+
+
+const hightoLow= async(req,res)=>{
+    try {
+
+        const userId= req.session.userId
+        const loginData = await User.findById(userId)
+
+        var search = ""
+        if( req.body.search){
+            search= req.body.search
+        }
+
+        const products=await Product.find({is_active:0 , cat_status:0,brand_status:0,$or: [
+            { title: { $regex: search, $options: 'i' } } 
+        ]}) .populate('category').sort({ salesprice: -1 }) // Sort by price in descending order (newest first)
+        .exec();
+
+
+       
+        
+        res.render("shop",{products,loginData})
+
+
+
+
+        
+    } catch (error) {
+        console.log(error.message)
+        
+    }
+}
+
+
+
+
+
+
+
+
 
 
 const filterProdutcs = async(req,res)=>{
@@ -650,19 +733,24 @@ const filterProdutcs = async(req,res)=>{
 
 
         const categoryId = req.query.id; // Get the category ID from query parameter
+        const userId=req.session.userId;
         const categories= await Category.find()
+        const banners= await Banner.find()
+        const loginData = await User.findById(userId)
+
+        const brands= await Brand.find()
         if (!categoryId) {
             return res.status(400).json({ error: 'Category ID is required' });
         }
 
         // Assuming you have a Product model imported and set up
-        const product = await Product.find({category:categoryId}).exec();
+        const product = await Product.find({category:categoryId}).populate("category").exec();
 
         if (!product || product.length === 0) {
             return res.status(404).json({ error: 'No products found for the category' });
         }
 
-        res.render("home",{product,categories})
+        res.render("home",{product,categories,brands,banners,loginData})
         
     } catch (error) {
 
@@ -673,9 +761,51 @@ const filterProdutcs = async(req,res)=>{
 }
 
 
+const sortBrand= async(req,res)=>{
+    try {
 
-=======
->>>>>>> a9e9b5889541a1e28216a8e038d5c0a9a857eff1
+        const brandId= req.query.id
+        const userId=req.session.userId;
+        const categories= await Category.find()
+        const brands= await Brand.find()
+        const banners= await Banner.find()
+        const product= await Product.find({brand:brandId}).populate("category")
+        const loginData = await User.findById(userId)
+        
+        if (!product || product.length === 0) {
+            return res.status(404).json({ error: 'No products found for the category' });
+        }
+
+        res.render("home",{product,categories,brands,banners,loginData})
+        
+
+        
+    } catch (error) {
+
+        console.log(error.message)
+        
+    }
+}
+
+
+const contact= async(req,res)=>{
+
+    try {
+
+
+        res.render("contact")
+
+
+        
+    } catch (error) {
+
+        console.log(error.message)
+        
+    }
+}
+
+
+
 
 
 
@@ -694,9 +824,6 @@ module.exports={
    postForgotPassword,newOtp,
    verifyNewOtp,verifyPasswords,
    loadLogout,editProfile,updateUserDetails,
-<<<<<<< HEAD
-   userDash,addressForm,createAddress,invoiceShow,shop,filterProdutcs
-=======
-   userDash,addressForm,createAddress,invoiceShow
->>>>>>> a9e9b5889541a1e28216a8e038d5c0a9a857eff1
+   userDash,addressForm,createAddress,invoiceShow,shop,
+   filterProdutcs,sortBrand,contact,lowtohigh,hightoLow
 }

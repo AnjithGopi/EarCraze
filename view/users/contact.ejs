@@ -1,8 +1,8 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html class="no-js" lang="en">
 
 
-<!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/shop-cart.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 15 Jul 2023 10:10:07 GMT -->
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/page-contact.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 15 Jul 2023 10:10:05 GMT -->
 <head>
     <meta charset="utf-8">
     <title>Evara - eCommerce HTML Template</title>
@@ -17,39 +17,13 @@
     <link rel="shortcut icon" type="image/x-icon" href="assets/imgs/theme/favicon.svg">
     <!-- Template CSS -->
     <link rel="stylesheet" href="assets/css/maind134.css?v=3.4">
-
-
-    <style>
-
-.cart-action {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 20px; /* Adjust margin as needed */
-}
-
-.cart-action .btn {
-    margin-left: 10px; /* Adjust margin as needed */
-}
-
-/* Media query for mobile responsiveness */
-@media screen and (max-width: 768px) {
-    .cart-action {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .cart-action .btn {
-        margin: 10px 0;
-    }
-}
-
-    </style>
-
-
+    <!--leaflet map-->
+    <link rel="stylesheet" href="../../../../unpkg.com/leaflet%401.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
+    <script src="../../../../unpkg.com/leaflet%401.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
 </head>
 
 <body>
-    <header class="header-area header-style-1 header-height-2">
+    <header class="header-area header-style-5">
         <div class="header-top header-top-ptb-1 d-none d-lg-block">
             <div class="container">
                 <div class="row align-items-center">
@@ -83,85 +57,171 @@
                                         <li><a href="#"><img src="assets/imgs/theme/flag-ru.png" alt="">Pусский</a></li>
                                     </ul>
                                 </li>
-
-                                <%if(locals.loginData){%>
-                                    <li><i class="fi-rs-user"></i><a href="#"><%=loginData.name%></a></li>
-
-                               <% }else{%>
-                                    <li><i class="fi-rs-user"></i><a href="/login
-                                        ">Log In </a></li>
-
-                               <% } %>
-                                
+                                <li><i class="fi-rs-user"></i><a href="page-login-register.html">Log In / Sign Up</a></li>
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="header-middle header-middle-ptb-1 d-none d-lg-block">
-            <div class="container">
-                <div class="header-wrap">
-                    <div class="logo logo-width-1">
-                        <a href="index.html"><img src="assets/imgs/theme/logo.png" alt="logo"></a>
-                    </div>
-                    <div class="header-right">
-                        <div class="search-style-premium">
-                            <form id="searchForm" action="#">
-                                <input id="searchInput" type="text" placeholder="🔍 Search">
-                            </form>
-                        </div>
-                        
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="header-bottom header-bottom-bg-color sticky-bar">
+        <div class="header-bottom sticky-bar sticky-white-bg">
             <div class="container">
                 <div class="header-wrap header-space-between position-relative">
-                    <div class="logo logo-width-1 d-block d-lg-none">
-                        <a href="index.html"><img src="assets/imgs/theme/logo.png" alt="logo"></a>
+                    <div class="logo logo-width-1">
+                        <a href="index.html"><img src="assets/imgs/theme/logo.svg" alt="logo"></a>
                     </div>
-                    <div class="header-nav d-none d-lg-flex">
-                        
-                        <div class="main-menu main-menu-padding-1 main-menu-lh-2 d-none d-lg-block">
-                            <nav>
-                                <ul>
-                                    <li><a class="active" href="/">Home </i></a>
-                                        
-                                    </li>
-                                    
-                                    <li><a href="/shop">Shop </a>
-                                        
-                                    </li>
-                                    <li class="position-static"><a href="/">Mega menu </a>
-                                        
-                                    </li>
-                                    
-                                   
-                                    <li>
-                                        <a href="/contact">Contact</a>
-                                    </li>
-                                </ul>
-                            </nav>
+                    <div class="main-menu main-menu-grow main-menu-padding-1 main-menu-lh-1 main-menu-mrg-1 hm3-menu-padding d-none d-lg-block hover-boder">
+                        <nav>
+                            <ul>
+                                <li><a class="active" href="index.html">Home <i class="fi-rs-angle-down"></i></a>
+                                    <ul class="sub-menu">
+                                        <li><a href="index.html">Home 1</a></li>
+                                        <li><a href="index-2.html">Home 2</a></li>
+                                        <li><a href="index-3.html">Home 3</a></li>
+                                        <li><a href="index-4.html">Home 4</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="shop-grid-right.html">Shop <i class="fi-rs-angle-down"></i></a>
+                                    <ul class="sub-menu">
+                                        <li><a href="shop-grid-right.html">Shop Grid – Right Sidebar</a></li>
+                                        <li><a href="shop-grid-left.html">Shop Grid – Left Sidebar</a></li>
+                                        <li><a href="shop-list-right.html">Shop List – Right Sidebar</a></li>
+                                        <li><a href="shop-list-left.html">Shop List – Left Sidebar</a></li>
+                                        <li><a href="shop-fullwidth.html">Shop - Wide</a></li>
+                                        <li><a href="#">Single Product <i class="fi-rs-angle-right"></i></a>
+                                            <ul class="level-menu">
+                                                <li><a href="shop-product-right.html">Product – Right Sidebar</a></li>
+                                                <li><a href="shop-product-left.html">Product – Left Sidebar</a></li>
+                                                <li><a href="shop-product-full.html">Product – No sidebar</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="shop-filter.html">Shop – Filter</a></li>
+                                        <li><a href="shop-wishlist.html">Shop – Wishlist</a></li>
+                                        <li><a href="shop-cart.html">Shop – Cart</a></li>
+                                        <li><a href="shop-checkout.html">Shop – Checkout</a></li>
+                                        <li><a href="shop-compare.html">Shop – Compare</a></li>
+                                    </ul>
+                                </li>
+                                <li class="position-static"><a href="#">Mega <i class="fi-rs-angle-down"></i></a>
+                                    <ul class="mega-menu">
+                                        <li class="sub-mega-menu sub-mega-menu-width-22">
+                                            <a class="menu-title" href="#">Women's Fashion</a>
+                                            <ul>
+                                                <li><a href="shop-product-right.html">Dresses</a></li>
+                                                <li><a href="shop-product-right.html">Blouses & Shirts</a></li>
+                                                <li><a href="shop-product-right.html">Hoodies & Sweatshirts</a></li>
+                                                <li><a href="shop-product-right.html">Wedding Dresses</a></li>
+                                                <li><a href="shop-product-right.html">Prom Dresses</a></li>
+                                                <li><a href="shop-product-right.html">Cosplay Costumes</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="sub-mega-menu sub-mega-menu-width-22">
+                                            <a class="menu-title" href="#">Men's Fashion</a>
+                                            <ul>
+                                                <li><a href="shop-product-right.html">Jackets</a></li>
+                                                <li><a href="shop-product-right.html">Casual Faux Leather</a></li>
+                                                <li><a href="shop-product-right.html">Genuine Leather</a></li>
+                                                <li><a href="shop-product-right.html">Casual Pants</a></li>
+                                                <li><a href="shop-product-right.html">Sweatpants</a></li>
+                                                <li><a href="shop-product-right.html">Harem Pants</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="sub-mega-menu sub-mega-menu-width-22">
+                                            <a class="menu-title" href="#">Technology</a>
+                                            <ul>
+                                                <li><a href="shop-product-right.html">Gaming Laptops</a></li>
+                                                <li><a href="shop-product-right.html">Ultraslim Laptops</a></li>
+                                                <li><a href="shop-product-right.html">Tablets</a></li>
+                                                <li><a href="shop-product-right.html">Laptop Accessories</a></li>
+                                                <li><a href="shop-product-right.html">Tablet Accessories</a></li>
+                                            </ul>
+                                        </li>
+                                        <li class="sub-mega-menu sub-mega-menu-width-34">
+                                            <div class="menu-banner-wrap">
+                                                <a href="shop-product-right.html"><img src="assets/imgs/banner/menu-banner.jpg" alt="Evara"></a>
+                                                <div class="menu-banner-content">
+                                                    <h4>Hot deals</h4>
+                                                    <h3>Don't miss<br> Trending</h3>
+                                                    <div class="menu-banner-price">
+                                                        <span class="new-price text-success">Save to 50%</span>
+                                                    </div>
+                                                    <div class="menu-banner-btn">
+                                                        <a href="shop-product-right.html">Shop now</a>
+                                                    </div>
+                                                </div>
+                                                <div class="menu-banner-discount">
+                                                    <h3>
+                                                        <span>35%</span>
+                                                        off
+                                                    </h3>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li><a href="blog-category-grid.html">Blog <i class="fi-rs-angle-down"></i></a>
+                                    <ul class="sub-menu">
+                                        <li><a href="blog-category-grid.html">Blog Category Grid</a></li>
+                                        <li><a href="blog-category-list.html">Blog Category List</a></li>
+                                        <li><a href="blog-category-big.html">Blog Category Big</a></li>
+                                        <li><a href="blog-category-fullwidth.html">Blog Category Wide</a></li>
+                                        <li><a href="#">Single Post <i class="fi-rs-angle-right"></i></a>
+                                            <ul class="level-menu level-menu-modify">
+                                                <li><a href="blog-post-left.html">Left Sidebar</a></li>
+                                                <li><a href="blog-post-right.html">Right Sidebar</a></li>
+                                                <li><a href="blog-post-fullwidth.html">No Sidebar</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li><a href="#">Pages <i class="fi-rs-angle-down"></i></a>
+                                    <ul class="sub-menu">
+                                        <li><a href="page-about.html">About Us</a></li>
+                                        <li><a href="page-contact.html">Contact</a></li>
+                                        <li><a href="page-account.html">My Account</a></li>
+                                        <li><a href="page-login-register.html">login/register</a></li>
+                                        <li><a href="page-purchase-guide.html">Purchase Guide</a></li>
+                                        <li><a href="page-privacy-policy.html">Privacy Policy</a></li>
+                                        <li><a href="page-terms.html">Terms of Service</a></li>
+                                        <li><a href="page-404.html">404 Page</a></li>
+                                    </ul>
+                                </li>
+                                <li>
+                                    <a href="page-contact.html">Contact</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                    <div class="header-action-right">
+                        <div class="search-style-2">
+                            <form action="#">
+                                <select class="select-active">
+                                    <option>Search in</option>
+                                    <option>Women's Clothing</option>
+                                    <option>Men's Clothing</option>
+                                    <option>Cellphones</option>
+                                    <option>Computer & Office</option>
+                                    <option>Consumer Electronics</option>
+                                    <option>Jewelry & Accessories</option>
+                                    <option>Home & Garden</option>
+                                    <option>Luggage & Bags</option>
+                                    <option>Shoes</option>
+                                    <option>Mother & Kids</option>
+                                </select>
+                                <input type="text" placeholder="Search for items…">
+                            </form>
                         </div>
-                    </div>
-                    <div class="hotline d-none d-lg-block">
-                        <p><i class="fi-rs-headset"></i><span>Hotline</span>+91 9645341584 </p>
-                    </div>
-                    <p class="mobile-promotion">Happy <span class="text-brand">Mother's Day</span>. Big Sale Up to 40%</p>
-                    <div class="header-action-right d-block d-lg-none">
                         <div class="header-action-2">
                             <div class="header-action-icon-2">
                                 <a href="shop-wishlist.html">
-                                    <img alt="Evara" src="assets/imgs/theme/icons/icon-heart.svg">
-                                    <span class="pro-count white">4</span>
+                                    <img class="svgInject" alt="Evara" src="assets/imgs/theme/icons/icon-heart.svg">
+                                    <span class="pro-count blue">4</span>
                                 </a>
                             </div>
                             <div class="header-action-icon-2">
                                 <a class="mini-cart-icon" href="shop-cart.html">
                                     <img alt="Evara" src="assets/imgs/theme/icons/icon-cart.svg">
-                                    <span class="pro-count white">2</span>
+                                    <span class="pro-count blue">2</span>
                                 </a>
                                 <div class="cart-dropdown-wrap cart-dropdown-hm2">
                                     <ul>
@@ -179,11 +239,11 @@
                                         </li>
                                         <li>
                                             <div class="shopping-cart-img">
-                                                <a href="shop-product-right.html"><img alt="Evara" src="assets/imgs/shop/thumbnail-4.jpg"></a>
+                                                <a href="shop-product-right.html"><img alt="Evara" src="assets/imgs/shop/thumbnail-1.jpg"></a>
                                             </div>
                                             <div class="shopping-cart-title">
                                                 <h4><a href="shop-product-right.html">Macbook Pro 2022</a></h4>
-                                                <h3><span>1 × </span>$3500.00</h3>
+                                                <h3><span>1 × </span>$3200.00</h3>
                                             </div>
                                             <div class="shopping-cart-delete">
                                                 <a href="#"><i class="fi-rs-cross-small"></i></a>
@@ -192,7 +252,7 @@
                                     </ul>
                                     <div class="shopping-cart-footer">
                                         <div class="shopping-cart-total">
-                                            <h4>Total <span>$383.00</span></h4>
+                                            <h4>Total <span>$4000.00</span></h4>
                                         </div>
                                         <div class="shopping-cart-button">
                                             <a href="shop-cart.html">View cart</a>
@@ -201,8 +261,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="header-action-icon-2 d-block d-lg-none">
-                                <div class="burger-icon burger-icon-white">
+                            <div class="header-action-icon d-block d-lg-none">
+                                <div class="burger-icon">
                                     <span class="burger-icon-top"></span>
                                     <span class="burger-icon-mid"></span>
                                     <span class="burger-icon-bottom"></span>
@@ -210,8 +270,6 @@
                             </div>
                         </div>
                     </div>
-
-
                 </div>
             </div>
         </div>
@@ -220,8 +278,7 @@
         <div class="mobile-header-wrapper-inner">
             <div class="mobile-header-top">
                 <div class="mobile-header-logo">
-                    <a href="index.html"><img src="assets/imgs/theme/logo.png
-" alt="logo"></a>
+                    <a href="index.html"><img src="assets/imgs/theme/logo.svg" alt="logo"></a>
                 </div>
                 <div class="mobile-menu-close close-style-wrap close-style-position-inherit">
                     <button class="close-style search-close">
@@ -259,14 +316,14 @@
                     <!-- mobile menu start -->
                     <nav>
                         <ul class="mobile-menu">
-                            <li class="menu-item-has-children"><span class="menu-expand"></span><a href="/">Home</a>
-                                <!-- <ul class="dropdown">
+                            <li class="menu-item-has-children"><span class="menu-expand"></span><a href="index.html">Home</a>
+                                <ul class="dropdown">
                                     <li><a href="index.html">Home 1</a></li>
                                     <li><a href="index-2.html">Home 2</a></li>
                                     <li><a href="index-3.html">Home 3</a></li>
                                     <li><a href="index-4.html">Home 4</a></li>
                                 </ul>
-                            </li> -->
+                            </li>
                             <li class="menu-item-has-children"><span class="menu-expand"></span><a href="shop-grid-right.html">shop</a>
                                 <ul class="dropdown">
                                     <li><a href="shop-grid-right.html">Shop Grid – Right Sidebar</a></li>
@@ -381,155 +438,98 @@
         <div class="page-header breadcrumb-wrap">
             <div class="container">
                 <div class="breadcrumb">
-                    <a href="/" rel="nofollow">Home</a>
-                    <span></span> Shop
-                    <span></span> Your Cart
+                    <a href="index.html" rel="nofollow">Home</a>
+                    <span></span> Pages
+                    <span></span> Contact us
                 </div>
             </div>
         </div>
-        <section class="mt-50 mb-50">
+        <section class="hero-2 bg-green">
+            <div class="hero-content">
+                <div class="container">
+                    <div class="text-center">
+                        <h4 class="text-brand mb-20">Get in touch</h4>
+                        <h1 class="mb-20 wow fadeIn animated font-xxl fw-900">
+                            Let's Talk About <br>Your <span class="text-style-1">Idea</span>
+                        </h1>
+                        <p class="w-50 m-auto mb-50 wow fadeIn animated">Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum quam eius placeat, a quidem mollitia at accusantium reprehenderit pariatur provident nam ratione incidunt magnam sequi.</p>
+                        <p class="wow fadeIn animated">
+                            <a class="btn btn-brand btn-lg font-weight-bold text-white border-radius-5 btn-shadow-brand hover-up" href="page-about.html">About Us</a>
+                            <a class="btn btn-outline btn-lg btn-brand-outline font-weight-bold text-brand bg-white text-hover-white ml-15 border-radius-5 btn-shadow-brand hover-up">Support Center</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="section-border pt-50 pb-50">
+            <div class="container">
+                <div id='map-panes' class="leaflet-map mb-50"></div>
+                <div class="row">
+                    <div class="col-md-4 mb-4 mb-md-0">
+                        <h4 class="mb-15 text-brand">Office</h4>
+                        205 North Michigan Avenue, Suite 810<br>
+                        Chicago, 60601, USA<br>
+                        <abbr title="Phone">Phone:</abbr> (123) 456-7890<br>
+                        <abbr title="Email">Email: </abbr><a href="http://wp.alithemes.com/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="583b37362c393b2c181d2e392a39763b3735">[email&#160;protected]</a><br>
+                        <a class="btn btn-outline btn-sm btn-brand-outline font-weight-bold text-brand bg-white text-hover-white mt-20 border-radius-5 btn-shadow-brand hover-up"><i class="fi-rs-marker mr-10"></i>View map</a>
+                    </div>
+                    <div class="col-md-4 mb-4 mb-md-0">
+                        <h4 class="mb-15 text-brand">Studio</h4>
+                        205 North Michigan Avenue, Suite 810<br>
+                        Chicago, 60601, USA<br>
+                        <abbr title="Phone">Phone:</abbr> (123) 456-7890<br>
+                        <abbr title="Email">Email: </abbr><a href="http://wp.alithemes.com/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="ea8985849e8b899eaaaf9c8b988bc4898587">[email&#160;protected]</a><br>
+                        <a class="btn btn-outline btn-sm btn-brand-outline font-weight-bold text-brand bg-white text-hover-white mt-20 border-radius-5 btn-shadow-brand hover-up"><i class="fi-rs-marker mr-10"></i>View map</a>
+                    </div>
+                    <div class="col-md-4">
+                        <h4 class="mb-15 text-brand">Shop</h4>
+                        205 North Michigan Avenue, Suite 810<br>
+                        Chicago, 60601, USA<br>
+                        <abbr title="Phone">Phone:</abbr> (123) 456-7890<br>
+                        <abbr title="Email">Email: </abbr><a href="http://wp.alithemes.com/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="c2a1adacb6a3a1b68287b4a3b0a3eca1adaf">[email&#160;protected]</a><br>
+                        <a class="btn btn-outline btn-sm btn-brand-outline font-weight-bold text-brand bg-white text-hover-white mt-20 border-radius-5 btn-shadow-brand hover-up"> <i class="fi-rs-marker mr-10"></i> View map</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="pt-50 pb-50">
             <div class="container">
                 <div class="row">
-                    <div class="col-12">
-                        <div class="table-responsive">
-                            <table class="table shopping-summery text-center clean">
-                                <thead>
-                                    <tr class="main-heading">
-                                        <th scope="col">Image</th>
-                                        <th scope="col">Name</th>
-                                        <th scope="col">Price</th>
-                                        <th scope="col">Quantity</th>
-                                        <th scope="col">Subtotal</th>
-                                        <th scope="col">Remove</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="productTableBody">
-                                    <%let Total =0%>
-                                    <!-- ..............................loopp..................................... -->
-                                    <%if(locals.cartData){%>
-                                        <%for(let i=0;i<cartData.products.length;i++){%>
-
-                                        
-                                        
-                                    <tr>
-                                        <td class="image product-thumbnail"><img src="/uploads/<%=cartData.products[i].productId.image[0]%>" alt="#"></td>
-                                        <td class="product-des product-name">
-                                            <h5 class="product-name"><a href="shop-product-right.html"><%=cartData.products[i].productId.title%></a></h5>
-                                           
-                                            </p>
-                                        </td>
-                                        <%Total += cartData.products[i].productId.salesprice*cartData.products[i].quantity%>
-                                        <td class="price" data-title="Price"><span>₹<%=cartData.products[i].productId.salesprice%> </span></td>
-                                        <td class="text-center" data-title="Stock">
-                                            <div class="detail-qty border radius  m-auto">
-                                                <a href="#" class="qty-down" onclick="decreaseQuantity('<%= cartData.products[i].productId._id %>','<%=Total%>','<%=cartData.products[i].productId.salesprice%>')"><i class="fi-rs-angle-small-down"></i></a>
-                                                <span class="qty-val" id='qty_<%=cartData.products[i].productId._id %>' ><%=cartData.products[i].quantity%></span>
-                                                <a href="#" class="qty-up" onclick="increaseQuantity('<%= cartData.products[i].productId._id %>','<%=Total%>','<%=cartData.products[i].productId.salesprice%>')"><i class="fi-rs-angle-small-up"></i></a>
-                                            </div>
-                                        </td>
-                                        <td class="text-right" data-title="Cart">
-                                            <span id="subTotal_<%=cartData.products[i].productId._id%>">₹<%=cartData.products[i].productId.salesprice*cartData.products[i].quantity.toLocaleString()%></span>
-                                            <!-- <span id="subTotal_<%=cartData.products[i].productId._id%>">₹<%= (cartData.products[i].productId.salesprice * cartData.products[i].quantity).toLocaleString() %></span> -->
-
-                                        </td>
-                                        <!-- <td class="action" data-title="Remove"><a href="/removeFromCart" class="text-muted"><i class="fi-rs-trash"></i></a></td> -->
-                                        <td class="action" data-title="Remove">
-                                            <a  class="text-muted remove-item" onclick="removeCartItem('<%= cartData.products[i].productId._id %>')">
-                                                <i class="fi-rs-trash"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-
-                                  <%}%>
-
-
-                                    <%}%>
-                                    <script>
-    function increaseQuantity(productId, total, price) {
-    var currSubtotal = document.getElementById(`subTotal_${productId}`);
-    var currentQuantityElement = document.getElementById(`qty_${productId}`);
-    var currentQuantityValue = parseInt(currentQuantityElement.innerText);
-
-    currentQuantityValue++;
-    currentQuantityElement.innerText = currentQuantityValue;
-    currSubtotal.innerText = `₹${currentQuantityValue * price}`;
-
-    // Recalculate and update the total amount
-    
-    // Add logic to update the cart on the server when the quantity changes
-    updateCartItemQuantity(productId, 'up');
-}
-
-function decreaseQuantity(productId, total, price) {
-    var currSubtotal = document.getElementById(`subTotal_${productId}`);
-    var currentQuantityElement = document.getElementById(`qty_${productId}`);
-    var currentQuantityValue = parseInt(currentQuantityElement.innerText);
-
-    if (currentQuantityValue > 1) {
-        currentQuantityValue--;
-        currentQuantityElement.innerText = currentQuantityValue;
-        currSubtotal.innerText = `₹${currentQuantityValue * price}`;
-
-        // Recalculate and update the total amount
-       
-        // Add logic to update the cart on the server when the quantity changes
-        updateCartItemQuantity(productId, 'down');
-    }
-}
-
-
-
-                                  async function updateCartItemQuantity(productId, direction) {
-                                    console.log('hereeeee');
-                                      try {
-                                          const response = await fetch('/updateCartItemQuantity', {
-                                              method: 'POST',
-                                              headers: {
-                                                  'Content-Type': 'application/json',
-                                              },
-                                              body: JSON.stringify({ productId, direction }),
-                                          });
-                                  
-                                          if (!response.ok) {
-                                              console.error('Failed to update item quantity:', response.statusText);
-                                          } else {
-                                              const responseData = await response.json();
-                                              // Access the totalPrice here
-                                              console.log('Updated totalPrice:', response.totalPrice);
-                                              
-                                              
-                                          }
-                                      } catch (error) {
-                                          console.error('Error:', error.message);
-                                      }
-                                  }
-                                  
-                                      </script>
-<!--  loopp......ends----........................................................-->
-                                   
-                                    <!-- <tr>
-                                        <td colspan="6" class="text-end">
-                                            <a href="#" class="text-muted"> <i class="fi-rs-cross-small"></i> Clear Cart</a>
-                                        </td>
-                                    </tr> -->
-                                </tbody>
-                            </table>
-                        </div>
-                        <!-- new buttons -->
-                        <div class="cart-action text-end">
-                            <a class="btn continue-shopping-btn" href="/"><i class="fi-rs-shopping-bag mr-10"></i>Continue Shopping</a>
-                            <a href="/checkOut" class="btn proceed-to-checkout-btn"> <i class="fi-rs-box-alt mr-10"></i> Proceed To Checkout</a>
-                        </div>
-                        
-                        <!-- <div class="cart-action text-end">
-                        
-                            <a class="btn " href="/"><i class="fi-rs-shopping-bag mr-10"></i>Continue Shopping</a>
-                            <a href="/checkOut" class="btn "> <i class="fi-rs-box-alt mr-10"></i> Proceed To CheckOut</a>
-                        </div> -->
-                        <div class="divider center_icon mt-50 mb-50"><i class="fi-rs-fingerprint"></i></div>
-                        <div class="row mb-50">
-                           
-                            
+                    <div class="col-xl-8 col-lg-10 m-auto">
+                        <div class="contact-from-area padding-20-row-col wow FadeInUp">
+                            <h3 class="mb-10 text-center">Drop Us a Line</h3>
+                            <p class="text-muted mb-30 text-center font-sm">Lorem ipsum dolor sit amet consectetur.</p>
+                            <form class="contact-form-style text-center" id="contact-form" action="#" method="post">
+                                <div class="row">
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="input-style mb-20">
+                                            <input name="name" placeholder="First Name" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="input-style mb-20">
+                                            <input name="email" placeholder="Your Email" type="email">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="input-style mb-20">
+                                            <input name="telephone" placeholder="Your Phone" type="tel">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6 col-md-6">
+                                        <div class="input-style mb-20">
+                                            <input name="subject" placeholder="Subject" type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 col-md-12">
+                                        <div class="textarea-style mb-30">
+                                            <textarea name="message" placeholder="Message"></textarea>
+                                        </div>
+                                        <button class="submit submit-auto-width" type="submit">Send message</button>
+                                    </div>
+                                </div>
+                            </form>
+                            <p class="form-messege"></p>
                         </div>
                     </div>
                 </div>
@@ -568,8 +568,7 @@ function decreaseQuantity(productId, total, price) {
                     <div class="col-lg-4 col-md-6">
                         <div class="widget-about font-md mb-md-5 mb-lg-0">
                             <div class="logo logo-width-1 wow fadeIn animated">
-                                <a href="index.html"><img src="assets/imgs/theme/logo.png
-" alt="logo"></a>
+                                <a href="index.html"><img src="assets/imgs/theme/logo.svg" alt="logo"></a>
                             </div>
                             <h5 class="mt-20 mb-10 fw-600 text-grey-4 wow fadeIn animated">Contact</h5>
                             <p class="wow fadeIn animated">
@@ -649,7 +648,7 @@ function decreaseQuantity(productId, total, price) {
         </div>
     </footer>
     <!-- Preloader Start -->
-    <!-- <div id="preloader-active">
+    <div id="preloader-active">
         <div class="preloader d-flex align-items-center justify-content-center">
             <div class="preloader-inner position-relative">
                 <div class="text-center">
@@ -662,117 +661,9 @@ function decreaseQuantity(productId, total, price) {
                 </div>
             </div>
         </div>
-    </div> -->
+    </div>
     <!-- Vendor JS-->
-
-    <script>
-         async function removeCartItem(productId) {
-        try {
-            const response = await fetch('/removeFromCart', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ productId }),
-            })
-            if (response.ok) {
-                window.location.reload()
-                // Item removed successfully, you might want to update the UI accordingly
-                const rowToRemove = document.querySelector(`tr[data-product-id="${productId}"]`);
-                if (rowToRemove) {
-                    rowToRemove.remove();
-                }
-            } else {
-                console.error('Failed to remove item from cart:', response.statusText);
-            }
-        } catch (error) {
-            console.error('Error:', error.message);
-        }
-    }
-    </script>
-
-    <!-- search cart -->
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const searchInput = document.getElementById('searchInput');
-            const tableBody = document.getElementById('productTableBody');
-    
-            if (!tableBody) {
-                console.error('Table body element not found.');
-                return; // Exit the function if table body is not found
-            }
-    
-            searchInput.addEventListener('input', function() {
-                const searchTerm = searchInput.value.trim();
-                if (searchTerm.length >= 0) {
-                    searchProducts(searchTerm);
-                } else {
-                    // Clear search results or show default content
-                    clearTable();
-                }
-            });
-    
-            function searchProducts(searchTerm) {
-                fetch(`/search?term=${encodeURIComponent(searchTerm)}`)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        // Update UI with search results
-                       
-                        updateTable(data);
-                    })
-                    .catch(error => {
-                        console.error('Error searching products:', error);
-                    });
-            }
-    
-            function updateTable(products) {
-                // Clear existing products from the table
-                clearTable();
-                console.log(products);
-                // Add the new products to the table
-                products.forEach(product => {
-                    const row = document.createElement('tr');
-                       
-                    // Create and append cells for product details
-                    const imageCell = document.createElement('td');
-                    const image = document.createElement('img');
-                    image.src = product.productId.image[0]; // Adjust according to your data structure
-                    image.alt = product.productId.title; // Adjust according to your data structure
-                    imageCell.appendChild(image);
-                    row.appendChild(imageCell);
-    
-                    const nameCell = document.createElement('td');
-                    nameCell.textContent = product.productId.title; // Adjust according to your data structure
-                    row.appendChild(nameCell);
-    
-                    const priceCell = document.createElement('td');
-                    priceCell.textContent = product.productId.salesprice; // Adjust according to your data structure
-                    row.appendChild(priceCell);
-    
-                    // Append the row to the table body
-                    tableBody.appendChild(row);
-                });
-            }
-    
-            function clearTable() {
-                if (tableBody) {
-                    // Remove all rows from the table body
-                    tableBody.innerHTML = '';
-                }
-            }
-        });
-    </script>
-    
-    
-
-
- 
-    <script src="assets/js/vendor/modernizr-3.6.0.min.js"></script>
+    <script data-cfasync="false" src="../../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="assets/js/vendor/modernizr-3.6.0.min.js"></script>
     <script src="assets/js/vendor/jquery-3.6.0.min.js"></script>
     <script src="assets/js/vendor/jquery-migrate-3.3.0.min.js"></script>
     <script src="assets/js/vendor/bootstrap.bundle.min.js"></script>
@@ -790,11 +681,12 @@ function decreaseQuantity(productId, total, price) {
     <script src="assets/js/plugins/isotope.js"></script>
     <script src="assets/js/plugins/scrollup.js"></script>
     <script src="assets/js/plugins/jquery.vticker-min.js"></script>
+    <script src="assets/js/plugins/jquery.theia.sticky.js"></script>
+    <script src="assets/js/plugins/leaflet.js"></script>
     <!-- Template  JS -->
     <script src="assets/js/maind134.js?v=3.4"></script>
-    <script src="assets/js/shopd134.js?v=3.4"></script>
 </body>
 
 
-<!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/shop-cart.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 15 Jul 2023 10:10:07 GMT -->
+<!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/page-contact.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 15 Jul 2023 10:10:07 GMT -->
 </html>

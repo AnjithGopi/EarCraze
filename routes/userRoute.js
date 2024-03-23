@@ -37,6 +37,8 @@ user_Route.get("/productDetails",userAuth.isBlocked,userController.productDetail
 
 user_Route.post('/searchproduct',userController.loadHome)
 
+user_Route.post("/searchInShop",userController.shop)
+
 
 
 
@@ -107,17 +109,26 @@ user_Route.get('/changestatus',cartController.changeStatus)
 
 user_Route.get("/invoicePage",userAuth.isLogin,userAuth.isBlocked,userController.invoiceShow)
 
-<<<<<<< HEAD
 // ----------filter products
 
 
 
 user_Route.get("/filterProducts",userController.filterProdutcs)
 
+user_Route.get("/sortBrand",userController.sortBrand)
+
+// ------sort in shop------
+
+user_Route.get("/lowtoHigh",userController.lowtohigh)
+user_Route.get("/hightoLow",userController.hightoLow)
 
 
-=======
->>>>>>> a9e9b5889541a1e28216a8e038d5c0a9a857eff1
+// ----contact----
+
+user_Route.get("/contact",userController.contact)
+
+
+
 
 
 

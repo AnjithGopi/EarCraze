@@ -5,10 +5,7 @@ const Category=require("../models/categoryModel")
 const Brand=require("../models/brandModel")
 const Order= require('../models/orderModel')
 const fs = require('fs');
-<<<<<<< HEAD
 const path = require('path');
-=======
->>>>>>> a9e9b5889541a1e28216a8e038d5c0a9a857eff1
 const { v4: uuidv4 } = require("uuid")
 const sharp= require('sharp')
 
@@ -58,7 +55,7 @@ const addnewProduct= async(req,res)=>{
         }
     } catch (error) {
 
-        console.log(error.message)
+        console.error(error.message)
         
     }
 }

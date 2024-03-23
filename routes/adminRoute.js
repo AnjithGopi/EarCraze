@@ -83,7 +83,6 @@ admin_Route.get("/banner",adminAuth.isLogin,adminController.bannerPage)
 admin_Route.post("/banner",adminAuth.isLogin,upload.array('image',1),adminController.addBanner)
 
 
-<<<<<<< HEAD
 // -------------offers-----------
 
 admin_Route.get("/offers",adminAuth.isLogin,adminController.offers)
@@ -91,8 +90,6 @@ admin_Route.post("/applyOffer",adminAuth.isLogin,adminController.applyOffers)
 
 
 
-=======
->>>>>>> a9e9b5889541a1e28216a8e038d5c0a9a857eff1
 
 
 

@@ -15,6 +15,7 @@ const { v4: uuidv4 } = require("uuid")
 const sharp= require('sharp')
 const path = require('path');
 const filePath = path.join(__dirname, 'sales-report.pdf');
+const cron = require('node-cron');
 
 
 const adminLogin= async(req,res)=>{
@@ -404,7 +405,32 @@ const createCoupon= async(req,res)=>{
 
 
 
-<<<<<<< HEAD
+    const deleteExpiredBanners= async(req,res)=>{
+
+
+        try {
+
+            
+        const expiredBanners = await Banner.find({ endDate: { $lte: new Date() } });
+
+        
+        await Banner.deleteMany({ _id: { $in: expiredBanners.map(banner => banner._id) } });
+
+        console.log('Expired banners deleted successfully.');
+
+        res.redirect("/home")
+            
+        } catch (error) {
+            console.log(error.message)
+            
+        }
+    }
+
+        // Schedule the task to run every day at midnight (0:0:0)
+         cron.schedule('0 0 * * *', deleteExpiredBanners);
+
+
+
     const offers= async(req,res)=>{
         try {
 
@@ -428,29 +454,18 @@ const createCoupon= async(req,res)=>{
 
             const { categoryId, discount, expiry } = req.body;
 
-
-            // Find the category by categoryId and update its offer details
             const updatedCategory = await Category.findByIdAndUpdate(
+
               categoryId,
               { offerPercent: discount, expiry: expiry, offerActive: true },
-              { new: true } // To return the updated document
+              { new: true } 
             );
 
-
-        
             if (!updatedCategory) {
               return res.status(404).json({ message: 'Category not found' });
             }
 
-
-
-            // Get all products in the corresponding category
-
             const productsToUpdate = await Product.find({ category: categoryId });
-
-            
-
-            // Apply the discount to each product's sales price
 
            
             for (const product of productsToUpdate) {
@@ -459,25 +474,6 @@ const createCoupon= async(req,res)=>{
             await product.save();
            }
 
-
-           // Set a timeout to revert prices back after expiry date
-
-         if (expiry) {
-            const currentDate = new Date();
-            const expiryDate = new Date(expiry);
-            console.log("date current=",currentDate)
-
-            if (expiryDate > currentDate) {
-                const timeDifference = expiryDate.getTime() - currentDate.getTime();
-                setTimeout(async () => {
-                    
-                    await Product.updateMany(
-                        { category: categoryId },
-                        { $set: { salesprice: '$regularprice' } }
-                    );
-                }, timeDifference);
-            }
-        }
             res.status(200).json({ message: 'Offer applied successfully', category: updatedCategory });
             
         } catch (error) {
@@ -487,9 +483,40 @@ const createCoupon= async(req,res)=>{
     }
 
 
+     
+    const checkAndResetExpiredOffers = async () => {
+        try {
+        
+        const expiredCategories = await Category.find({ expiry: { $lte: new Date() }, offerActive: true });
 
-=======
->>>>>>> a9e9b5889541a1e28216a8e038d5c0a9a857eff1
+        for (const category of expiredCategories) {
+          
+            category.offerPercent = 0;
+            category.expiry = null;
+            category.offerActive = false;
+            await category.save();
+
+           
+            const productsToUpdate = await Product.find({ category: category._id });
+            for (const product of productsToUpdate) {
+                product.salesprice = product.regularprice;
+                await product.save();
+            }
+        }
+
+            console.log('Expired offers checked and reset successfully.');
+
+            
+        } catch (error) {
+         console.error('Error checking and resetting expired offers:', error);
+       }
+   };
+
+    // Schedule the task to run every day at midnight (0:0:0)
+     cron.schedule('0 0 * * *', checkAndResetExpiredOffers);
+
+
+
 
 
 
@@ -502,9 +529,5 @@ module.exports={
     adminLogin,verifyAdmin,userList,blockUser,
     unblockUser,getDashboard,adminLogout,salesReport,
     salesReportSearch,coupon,createCoupon,blockCoupon, 
-<<<<<<< HEAD
-    unblockCoupon,getCouponCode,bannerPage,addBanner,offers,applyOffers
-=======
-    unblockCoupon,getCouponCode,bannerPage,addBanner
->>>>>>> a9e9b5889541a1e28216a8e038d5c0a9a857eff1
+    unblockCoupon,getCouponCode,bannerPage,addBanner,offers,applyOffers,deleteExpiredBanners
 }

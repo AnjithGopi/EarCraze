@@ -27,10 +27,12 @@ const getCart= async(req,res)=>{
 
         const userId= req.session.userId
 
+        const loginData = await User.findById(userId)
+
 
         const cartData= await Cart.findOne({userId:userId}).populate('products.productId')
        
-        res.render("cart",{cartData})
+        res.render("cart",{cartData,loginData})
 
 
 
