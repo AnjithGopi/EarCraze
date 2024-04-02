@@ -5,7 +5,7 @@
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/shop-cart.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 15 Jul 2023 10:10:07 GMT -->
 <head>
     <meta charset="utf-8">
-    <title>Evara - eCommerce HTML Template</title>
+    <title>Sonic Rhythmes</title>
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,9 +14,11 @@
     <meta property="og:url" content="">
     <meta property="og:image" content="">
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="assets/imgs/theme/favicon.svg">
+    <link rel="shortcut icon" type="image/x-icon" href="assets/imgs/theme/logo.png">
     <!-- Template CSS -->
     <link rel="stylesheet" href="assets/css/maind134.css?v=3.4">
+    
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 
     <style>
@@ -43,120 +45,169 @@
     }
 }
 
+
+/* Custom CSS for black-themed header */
+body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .custom-header-top {
+            background-color: rgba(3, 3, 83, 0.98);
+            color: white;
+            padding: 10px 0;
+        }
+
+        .custom-header-info,
+        .custom-header-info-right {
+            text-align: center;
+        }
+
+        .custom-language-dropdown-active {
+            color: white;
+            text-decoration: none;
+        }
+
+       
+
+        .custom-language-dropdown li {
+            padding: 10px;
+        }
+
+        .custom-language-dropdown li a {
+            color: white;
+            text-decoration: none;
+        }
+
+        .cart-empty-message {
+    display: block;
+    padding: 10px;
+    background-color: #060709e1; /* Light background color */
+    color: #e20b0b; /* Text color */
+    
+    font-size: 25px;
+    font-weight: bolder;
+    text-align: center;
+    margin-top: 20px;
+    border: 1px solid #ddd; /* Border color */
+    border-radius: 5px; /* Rounded corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Box shadow for depth */
+}
+
+
+
+
     </style>
 
 
 </head>
 
 <body>
-    <header class="header-area header-style-1 header-height-2">
-        <div class="header-top header-top-ptb-1 d-none d-lg-block">
-            <div class="container">
-                <div class="row align-items-center">
+    <header class="header-area header-style-4 header-height-2">
+        <div class="custom-header-top custom-header-top-ptb-1 d-none d-lg-block">
+            <div class="">
+                <div class="row align-items-center" >
                     <div class="col-xl-3 col-lg-4">
-                        <div class="header-info">
-                            <ul>
-                                <li><i class="fi-rs-smartphone"></i> <a href="#">(+01) - 2345 - 6789</a></li>
-                                <li><i class="fi-rs-marker"></i><a  href="page-contact.html">Our location</a></li>
-                            </ul>
+                        <div class="custom-header-info">
+                            <!-- Content here if needed -->
                         </div>
                     </div>
                     <div class="col-xl-6 col-lg-4">
-                        <div class="text-center">
-                            <div id="news-flash" class="d-inline-block">
-                                <ul>
-                                    <li>Get great devices up to 50% off <a href="shop-grid-right.html">View details</a></li>
-                                    <li>Supper Value Deals - Save more with coupons</li>
-                                    <li>Trendy 25silver jewelry, save up 35% off today <a href="shop-grid-right.html">Shop now</a></li>
-                                </ul>
-                            </div>
-                        </div>
+                        <!-- Content here if needed -->
                     </div>
                     <div class="col-xl-3 col-lg-4">
-                        <div class="header-info header-info-right">
+                        <div class="custom-header-info custom-header-info-right">
                             <ul>
-                                <li>
-                                    <a class="language-dropdown-active" href="#"> <i class="fi-rs-world"></i> English <i class="fi-rs-angle-small-down"></i></a>
-                                    <ul class="language-dropdown">
-                                        <li><a href="#"><img src="assets/imgs/theme/flag-fr.png" alt="">Français</a></li>
-                                        <li><a href="#"><img src="assets/imgs/theme/flag-dt.png" alt="">Deutsch</a></li>
-                                        <li><a href="#"><img src="assets/imgs/theme/flag-ru.png" alt="">Pусский</a></li>
-                                    </ul>
-                                </li>
-
-                                <%if(locals.loginData){%>
-                                    <li><i class="fi-rs-user"></i><a href="#"><%=loginData.name%></a></li>
-
-                               <% }else{%>
-                                    <li><i class="fi-rs-user"></i><a href="/login
-                                        ">Log In </a></li>
-
-                               <% } %>
-                                
+                                <% if (locals.loginData) { %>
+                                    <li class="dropdown nav-item ">
+                                        <i class="fa-solid fa-user"></i>&nbsp;&nbsp;&nbsp;<a style="color: #ffffff;" href="#"><%= loginData.name %></a>
+                                        <a style="color: #ffffff;" class="dropdown-toggle" data-bs-toggle="dropdown" href="#" id="dropdownAccount" aria-expanded="false">
+                                            <!-- <img class="img-xs rounded-circle" style="height: 40px; width: 40px;" src="/admin-assets/imgs/people/avatar2.jpg" alt="User"> -->
+                                        </a>
+                                        <ul class="dropdown-menu dropdown-menu-end ">
+                                            <li><a class="dropdown-item" href="/userDashboard" onclick="closeDropdown(event)"><i class="material-icons md-settings"></i>Account</a></li>
+                                            <!-- <li><a class="dropdown-item" href="#" onclick="closeDropdown(event)"><i class="material-icons md-account_balance_wallet"></i>Wallet</a></li> -->
+                                            <li class="dropdown-divider"></li>
+                                            <li><a class="dropdown-item text-danger" href="/logout" onclick="closeDropdown(event)"><i class="material-icons md-exit_to_app"></i>Logout</a></li>
+                                        </ul>
+                                    </li>
+                                <% } else { %>
+                                    <li><i class="fa-solid fa-user"></i>&nbsp;&nbsp;&nbsp;<a style="color: #ffffff;" href="/login">Login</a></li>
+                                <% } %>
                             </ul>
                         </div>
                     </div>
+                    
                 </div>
             </div>
         </div>
-        <div class="header-middle header-middle-ptb-1 d-none d-lg-block">
-            <div class="container">
-                <div class="header-wrap">
-                    <div class="logo logo-width-1">
-                        <a href="index.html"><img src="assets/imgs/theme/logo.png" alt="logo"></a>
-                    </div>
-                    <div class="header-right">
-                        <div class="search-style-premium">
-                            <form id="searchForm" action="#">
-                                <input id="searchInput" type="text" placeholder="🔍 Search">
-                            </form>
-                        </div>
-                        
-                    </div>
-                </div>
-            </div>
-        </div>
+    <!-- </body> -->
+       
         <div class="header-bottom header-bottom-bg-color sticky-bar">
             <div class="container">
                 <div class="header-wrap header-space-between position-relative">
-                    <div class="logo logo-width-1 d-block d-lg-none">
-                        <a href="index.html"><img src="assets/imgs/theme/logo.png" alt="logo"></a>
-                    </div>
+                  
+
+                    <ul>
+                        <li class="position-static"><a href="/"><img src="assets/imgs/theme/logo.png" alt="logo" style="height: 45px;"></a>
+                                       
+                        </li>
+                    </ul>
+
+
+
+                   
                     <div class="header-nav d-none d-lg-flex">
-                        
+                        <div class="main-categori-wrap d-none d-lg-block">
+
+
+
+
+
+                           
+                        </div>
+
+                       
                         <div class="main-menu main-menu-padding-1 main-menu-lh-2 d-none d-lg-block">
                             <nav>
+                               
+                                
                                 <ul>
-                                    <li><a class="active" href="/">Home </i></a>
-                                        
+
+
+
+                                   <li class="position-static"><a href="/">Home </a>
+                                       
+                                    </li>
+                                    <li class="position-static"><a href="/cart">Cart</a></li>
+
+                                    <li class="position-static"><a href="/wishlist">Wishlist</a>
+                                       
                                     </li>
                                     
                                     <li><a href="/shop">Shop </a>
                                         
+                                       
                                     </li>
-                                    <li class="position-static"><a href="/">Mega menu </a>
-                                        
-                                    </li>
-                                    
+                                   
+                                
                                    
                                     <li>
                                         <a href="/contact">Contact</a>
                                     </li>
+                                   
                                 </ul>
                             </nav>
                         </div>
                     </div>
-                    <div class="hotline d-none d-lg-block">
-                        <p><i class="fi-rs-headset"></i><span>Hotline</span>+91 9645341584 </p>
-                    </div>
-                    <p class="mobile-promotion">Happy <span class="text-brand">Mother's Day</span>. Big Sale Up to 40%</p>
+                    
+                   
                     <div class="header-action-right d-block d-lg-none">
                         <div class="header-action-2">
                             <div class="header-action-icon-2">
                                 <a href="shop-wishlist.html">
-                                    <img alt="Evara" src="assets/imgs/theme/icons/icon-heart.svg">
-                                    <span class="pro-count white">4</span>
-                                </a>
+                                    
                             </div>
                             <div class="header-action-icon-2">
                                 <a class="mini-cart-icon" href="shop-cart.html">
@@ -195,8 +246,10 @@
                                             <h4>Total <span>$383.00</span></h4>
                                         </div>
                                         <div class="shopping-cart-button">
-                                            <a href="shop-cart.html">View cart</a>
-                                            <a href="shop-checkout.html">Checkout</a>
+                                            <%if(locals.loginData){%>
+                                            <a href="/cart">View cart</a>
+                                            <%}%>
+                                            <!-- <a href="shop-checkout.html">Checkout</a> -->
                                         </div>
                                     </div>
                                 </div>
@@ -210,12 +263,11 @@
                             </div>
                         </div>
                     </div>
-
-
                 </div>
             </div>
         </div>
     </header>
+    
     <div class="mobile-header-active mobile-header-wrapper-style">
         <div class="mobile-header-wrapper-inner">
             <div class="mobile-header-top">
@@ -392,6 +444,10 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="table-responsive">
+                            <%let Total =0%>
+                                    <!-- ..............................loopp..................................... -->
+                                  
+
                             <table class="table shopping-summery text-center clean">
                                 <thead>
                                     <tr class="main-heading">
@@ -404,11 +460,9 @@
                                     </tr>
                                 </thead>
                                 <tbody id="productTableBody">
-                                    <%let Total =0%>
-                                    <!-- ..............................loopp..................................... -->
-                                    <%if(locals.cartData){%>
+                                    <%if(locals.cartData ){%>
                                         <%for(let i=0;i<cartData.products.length;i++){%>
-
+                                    
                                         
                                         
                                     <tr>
@@ -444,6 +498,20 @@
 
 
                                     <%}%>
+
+
+
+                                       
+                                       
+
+                                    <script>
+                                        function closeDropdown(event) {
+                                            const dropdownMenu = event.target.nextElementSibling;
+                                            dropdownMenu.classList.toggle('show');
+                                        }
+                                    </script>
+
+
                                     <script>
     function increaseQuantity(productId, total, price) {
     var currSubtotal = document.getElementById(`subTotal_${productId}`);
@@ -516,10 +584,22 @@ function decreaseQuantity(productId, total, price) {
                             </table>
                         </div>
                         <!-- new buttons -->
-                        <div class="cart-action text-end">
-                            <a class="btn continue-shopping-btn" href="/"><i class="fi-rs-shopping-bag mr-10"></i>Continue Shopping</a>
-                            <a href="/checkOut" class="btn proceed-to-checkout-btn"> <i class="fi-rs-box-alt mr-10"></i> Proceed To Checkout</a>
-                        </div>
+
+                        <%if(locals.cartData && cartData.products.length>0){%>
+                            <div class="cart-action text-end">
+                                <a class="btn continue-shopping-btn" href="/" style="background-color: rgba(3, 3, 83, 0.98); color: white;"><i class="fi-rs-shopping-bag mr-10"></i>Continue Shopping</a>
+                                <a href="/checkOut" class="btn proceed-to-checkout-btn" style="background-color: rgba(3, 3, 83, 0.98); color: white;"> <i class="fi-rs-box-alt mr-10"></i> Proceed To Checkout</a>
+                            </div>
+                            
+
+                       <% } else{%>
+
+                        <span class="cart-empty-message">No Items Found In Cart</span>
+
+                      <% }%>
+
+                        
+                       
                         
                         <!-- <div class="cart-action text-end">
                         

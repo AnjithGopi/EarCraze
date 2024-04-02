@@ -4,12 +4,12 @@ const mongoose=require("mongoose")
 
 
 const productSchema= mongoose.Schema({
-    title:{type:String,required:true},
+    title:{type:String,},
     brand:{type:mongoose.Schema.Types.ObjectId,ref:'brand'},
-    description:{type:String,required:true},
+    description:{type:String},
     category:{type: mongoose.Schema.Types.ObjectId,ref:'category'},
     date:{type:Date,default:Date.now},
-    regularprice:{type:Number,required:true},
+    regularprice:{type:Number},
     salesprice:{type:Number,default: function () {
       return this.regularprice; // Set salesprice equal to regularprice by default
   }},

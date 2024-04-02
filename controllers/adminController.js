@@ -43,6 +43,7 @@ const getDashboard=async(req,res)=>{
         const totalProducts= await Product.find()
         const categories= await Category.find()
         const brands= await Brand.find()
+        const salesData= await Order.find({ paymentStatus: 'Recieved', orderStatus: 'Delivered' }).sort({orderDate:-1}).populate('userId')
 
 
         // most ordered Products
@@ -96,8 +97,29 @@ const getDashboard=async(req,res)=>{
         console.log("top selling Brands:", topSellingBrands)
 
 
+        // >>>>>>>>>>>>>>>......Chart......>>>>>>>>>>>>>>>>>>>>>>>>>>
 
-        res.render("dashboard",{orderList,totalOrders,totalProducts,mostOrderedProducts,topSellingCategories,topSellingBrands,categories,brands})
+        // Fetch orders that are delivered and payment is received
+        const deliveredOrders = await Order.find({
+            orderStatus: 'Delivered',
+            paymentStatus: 'Recieved'
+        });
+
+        // Aggregate monthly sales data
+        const monthlySalesData = new Array(12).fill(0); // Initialize array with zeros for each month
+        deliveredOrders.forEach(order => {
+            const monthIndex = new Date(order.orderDate).getMonth(); // Get month index (0-11)
+            monthlySalesData[monthIndex] += parseFloat(order.totalAmount); // Add order amount to corresponding month
+        });
+
+
+        
+
+
+
+        res.render("dashboard",{orderList,totalOrders,totalProducts,mostOrderedProducts,topSellingCategories,topSellingBrands,categories,brands,salesData,
+            monthlySalesData: JSON.stringify(monthlySalesData),
+            })
         
     } catch (error) {
         console.log(error.message)
@@ -206,7 +228,7 @@ const salesReport= async(req,res)=>{
     try {
 
 
-        const orderList= await Order.find().sort({orderDate:-1}).populate('userId')
+        const orderList= await Order.find({ paymentStatus: 'Recieved', orderStatus: 'Delivered' }).sort({orderDate:-1}).populate('userId')
 
         res.render('salesReport',{orderList})
      
@@ -228,9 +250,10 @@ const salesReportSearch= async(req,res)=>{
 
         const { start, end } = req.body; 
         const endOfDay = new Date(end);
-endOfDay.setHours(23, 59, 59, 999);
+         endOfDay.setHours(23, 59, 59, 999);
        
         const orderList = await Order.find({
+            paymentStatus: 'Recieved', orderStatus: 'Delivered',
             orderDate: { $gte: new Date(start), $lte: endOfDay }
         }).populate('userId');
 
@@ -262,32 +285,45 @@ const coupon= async(req,res)=>{
 const createCoupon= async(req,res)=>{
     try {
        
-        const {name, code, dpercent,maxamt, mpamt, date } = req.body;
-    
-      
-        const newCoupon = new Coupon({
-        name:name,
-        code: code,
-        discountpercentage:dpercent,
-        // discountAmount:maxamt,
-        minimumAmount:mpamt,
-        validUntil:date,
-        });
-    
        
-        const savedCoupon = await newCoupon.save();
 
-        console.log("coupon details:",savedCoupon)
-    
-       
-       
-        res.redirect("/admin/Coupons")
+
+
+        const { name, code, discountpercentage, minimumAmount, validUntil } = req.body;
+
+    // Validate inputs
+    if (!name || !code || !discountpercentage || !minimumAmount || !validUntil) {
+      return res.status(400).send('All fields are required.');
+    }
+
+    // Check if coupon with the same name or code already exists
+    const existingCoupon = await Coupon.findOne({ $or: [{ name }, { code }] });
+    if (existingCoupon) {
+      return res.status(400).send('Coupon with the same name or code already exists.');
+    }
+
+    // Create a new coupon
+    const newCoupon = new Coupon({
+      name,
+      code,
+      discountpercentage,
+      minimumAmount,
+      validUntil,
+    });
+
+    // Save the coupon to the database
+    await newCoupon.save();
+    res.status(201).send('Coupon created successfully.');
+
+
       } catch (error) {
         
         console.error(error);
         res.status(500).json({ error: 'Internal server error' });
       }
     }
+
+
 
 
 
@@ -518,6 +554,44 @@ const createCoupon= async(req,res)=>{
 
 
 
+     const salesData= async(req,res)=>{
+
+
+        try {
+
+           const salesData = await Order.aggregate([
+                {
+                  $match: {
+                    orderStatus: 'Delivered', // Filter by order status
+                    paymentStatus: 'Received' // Filter by payment status
+                  }
+                },
+                {
+                  $group: {
+                    _id: { $dateToString: { format: '%Y-%m', date: '$orderDate' } },
+                    totalSales: { $sum: '$totalAmount' }
+                  }
+                }
+              ]);
+
+
+              console.log("salesData:",salesData)
+            //   res.json(salesData);
+
+
+
+
+
+            
+        } catch (error) {
+            console.error(error.message)
+            
+        }
+     }
+
+
+
+
 
 
 
@@ -529,5 +603,6 @@ module.exports={
     adminLogin,verifyAdmin,userList,blockUser,
     unblockUser,getDashboard,adminLogout,salesReport,
     salesReportSearch,coupon,createCoupon,blockCoupon, 
-    unblockCoupon,getCouponCode,bannerPage,addBanner,offers,applyOffers,deleteExpiredBanners
+    unblockCoupon,getCouponCode,bannerPage,addBanner,offers,applyOffers,
+    deleteExpiredBanners,salesData,
 }

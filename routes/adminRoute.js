@@ -32,6 +32,7 @@ admin_Route.get('/logout',adminController.adminLogin)
 
 
 admin_Route.delete("/deleteImage",adminAuth.isLogin,productController.deleteImage)
+// admin_Route.post("/addImages",adminAuth.isLogin,productController.addImage)
 admin_Route.get("/addproduct",adminAuth.isLogin,productController.addProduct)
 admin_Route.post("/submitproducts",adminAuth.isLogin,upload.array('image',5),productController.addnewProduct)
 admin_Route.get("/productlist",adminAuth.isLogin,productController.productList)
@@ -71,6 +72,7 @@ admin_Route.post('/salesreportsearch',adminAuth.isLogin,adminController.salesRep
 
 admin_Route.get('/Coupons',adminAuth.isLogin,adminController.coupon)
 admin_Route.post('/createCoupon',adminAuth.isLogin,adminController.createCoupon)
+
 admin_Route.get('/blockCoupon',adminAuth.isLogin,adminController.blockCoupon)
 admin_Route.get("/unblockCoupon",adminAuth.isLogin,adminController.unblockCoupon)
 admin_Route.get('/getCoupon',adminAuth.isLogin,adminController.getCouponCode) 
@@ -87,6 +89,15 @@ admin_Route.post("/banner",adminAuth.isLogin,upload.array('image',1),adminContro
 
 admin_Route.get("/offers",adminAuth.isLogin,adminController.offers)
 admin_Route.post("/applyOffer",adminAuth.isLogin,adminController.applyOffers)
+
+
+
+
+// ---------------salesData---------
+
+
+admin_Route.get("/salesData",adminController.salesData)
+
 
 
 

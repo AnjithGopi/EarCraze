@@ -1,6 +1,6 @@
 <head>
     <meta charset="utf-8">
-    <title>Evara Dashboard</title>
+    <title>Invoice</title>
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -9,9 +9,21 @@
     <meta property="og:url" content="">
     <meta property="og:image" content="">
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="/admin-assets/imgs/theme/favicon.svg">
+    <link rel="shortcut icon" type="image/x-icon" href="/assets/imgs/theme/logo.png">
     <!-- Template CSS -->
     <link href="/admin-assets/css/main.css" rel="stylesheet" type="text/css" />
+
+
+    <style>
+        @media print {
+    .hide-on-print {
+        display: none !important;
+    }
+}
+    </style>
+
+
+
 </head>
 
 <body>
@@ -19,7 +31,7 @@
     <aside class="navbar-aside" id="offcanvas_aside">
         <div class="aside-top">
             <a href="index.html" class="brand-wrap">
-                <img src="/admin-assets/imgs/theme/logo.svg" class="logo" alt="Evara Dashboard">
+                <img src="/assets/imgs/theme/logo.png" class="logo" alt="Evara Dashboard">
             </a>
             <div>
                 <button class="btn btn-icon btn-aside-minimize"> <i class="text-muted material-icons md-menu_open"></i> </button>
@@ -35,8 +47,12 @@
             <div class="content-header">
                 <div>
                     <%if(locals.invoice){%>
-                        <h2 class="content-title card-title">Invoice</h2>
-                        <!-- <p> Order ID: <%=invoice.orderId%></p> -->
+                        
+                     
+
+                        <h1 class="content-title card-title">Invoice</h1>
+                        
+                      
 
                    <% } %>
                    
@@ -49,22 +65,25 @@
                             <div class="row align-items-center">
                                 <%if(locals.invoice){%>
                                 <div class="col-lg-6 col-md-6 mb-lg-0 mb-15">
-                                    <!-- <span>
-                                        
-                                            <i class="material-icons md-calendar_today"></i> <b><%=invoice.orderDate.toLocaleString()%></b>
 
-                                      
-                                       
-                                    </span> <br> -->
-                                    <small class="text-muted">Order ID: <%=invoice.orderId%></small>
+
+                                    <a href="#" class="brand-wrap">
+                                        <img src="/assets/imgs/theme/logo.png" class="logo" alt="Evara Dashboard" style="width: 100px; height: auto;">
+                                    </a><br><br>
+                                   
+                                    <small  class="text-muted">Order ID: <%=invoice.orderId%></small>
                                 </div>
                                 <% } %>
-                                <div class="col-lg-6 col-md-6 ms-auto text-md-end">                                   
-                                    <a class="btn btn-primary" href="#" id="print"> <i class="icon material-icons md-cloud_download mr-5"></i>Download</a>
-                                    <!-- <a class="btn btn-secondary print ms-2" href="#"><i class="icon material-icons md-print mr-5"></i>Print</a> -->
+                               
+                                <div class="col-lg-6 col-md-6 ms-auto text-md-end">
+                                    <% if(locals.invoice) { %>
+                                        <a class="btn btn-primary download-button" href="#" id="print">
+                                            <i class="icon material-icons md-cloud_download mr-5"></i>Download
+                                        </a>
+                                    <% } %>
                                 </div>
                             </div>
-                        </header> <!-- card-header end// -->
+                        </header>
                         <%if(locals.invoice){%>
 
                       
@@ -83,13 +102,13 @@
                                                 <div class="payment-info">
                                                     <div class="row">
                                                         <div class="col-sm-6">
-                                                            <span>Email:.</span>
+                                                            <span>Email :</span>
                                                             <strong><%=invoice.userId.email%></strong>
                                                         </div>
                                                         <div class="col-sm-6 text-end">
-                                                            <span>Order Date</span>
+                                                            <span>Ordered On : </span>
                                                             <strong><%=invoice.orderDate.toLocaleString()%></strong><br>
-                                                            <span>Payment: <%=invoice.paymentMethod%></span>
+                                                            <span>Payment : <%=invoice.paymentMethod%></span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -97,7 +116,7 @@
                                                 <div class="payment-details">
                                                     <div class="row">
                                                         <div class="col-sm-6">
-                                                            <span>MOB:</span>
+                                                            <span>Ph :</span>
                                                             <strong>
                                                                  <%=invoice.address.mobile%>
                                                             </strong>
@@ -151,11 +170,30 @@
             <div class="row pb-30 pt-15">
                 <div class="col-sm-6">
                     <script>
-                        document
-                          .getElementById('print')
-                          .addEventListener('click', function() {
-                            window.print();
-                          });
+
+
+                        // document
+                        //   .getElementById('print')
+                        //   .addEventListener('click', function() {
+                        //     window.print();
+                        //   });
+
+
+
+                        document.getElementById('print').addEventListener('click', function() {
+    const downloadButton = document.querySelector('.download-button');
+    if (downloadButton) {
+        downloadButton.classList.add('hide-on-print');
+    }
+    window.print();
+});
+
+
+
+                      
+
+
+
                         </script>
                     <script>
                     document.write(new Date().getFullYear())

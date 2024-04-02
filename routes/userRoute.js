@@ -32,7 +32,7 @@ user_Route.get("/login",userAuth.isLogout,userController.loadLogin)
 user_Route.post('/login',userController.verifyLogin)
 user_Route.get('/getOtp',userAuth.isLogout,userController.getOtp)
 user_Route.post("/Otp",userAuth.isLogout,userController.verifyOtp)
-user_Route.get("/productDetails",userAuth.isBlocked,userController.productDetails)
+user_Route.get("/productDetails",userAuth.isLogin,userAuth.isBlocked,userController.productDetails)
 
 
 user_Route.post('/searchproduct',userController.loadHome)

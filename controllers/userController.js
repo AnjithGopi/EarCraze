@@ -446,10 +446,11 @@ const userDash= async(req,res)=>{
        
         const userDetails= await User.findById({_id:userId})
         const showAddress= await Address.find({userId:userId})
+        const loginData= await User.findById(userId)
 
         
         const order= await Order.find({userId:userId}).sort({ orderDate:-1})
-        res.render("userDashboard",{showAddress,userDetails,order})
+        res.render("userDashboard",{showAddress,userDetails,order,loginData})
         
     } catch (error) {
         console.log(error.message)
@@ -511,7 +512,14 @@ const editProfile=async(req,res)=>{
 
 
 
-        res.render("editProfile")
+        const userId= req.session.userId
+        const loginData = await User.findById(userId)
+
+        
+
+
+
+        res.render("editProfile",{loginData})
         
     } catch (error) {
         console.log(error.message)
@@ -532,7 +540,7 @@ const  updateUserDetails= async(req,res)=>{
 
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
-        if(userData.name==req.body.name && userData.email==req.body.email && await bcrypt.compare(req.body.password, userData.password)){
+        if( await bcrypt.compare(req.body.password, userData.password)){
 
            if(req.body.npassword==req.body.cpassword){
 
@@ -564,32 +572,7 @@ const  updateUserDetails= async(req,res)=>{
         }
 
         
-        // ........................................................................
-
-
-        // const userId = req.session.userId;
-        // const userData = await User.findById(userId);
-
-        // if (!userData) {
-        //     return res.status(404).send("User not found");
-        // }
-
-        // const passwordsMatch = await bcrypt.compare(req.body.password, userData.password);
-
-        // if (userData.name === req.body.name && userData.email === req.body.email && passwordsMatch) {
-        //     if (req.body.newpassword === req.body.cpassword) {
-        //         const hashedNewPassword = await bcrypt.hash(req.body.newpassword, 10);
-        //         userData.password = hashedNewPassword;
-        //         await userData.save();
-        //         req.flash('success', 'Password changed successfully');
-        //         return res.redirect("/");
-        //     } else {
-        //         return res.render("editprofile", { message: "Passwords do not match" });
-        //     }
-        // } else {
-        //     return res.render("editprofile", { message: "Invalid Credentials" });
-        // }
-
+        
 
 
 
@@ -628,20 +611,43 @@ const shop= async(req,res)=>{
         const userId= req.session.userId
         const loginData = await User.findById(userId)
 
+        let page = parseInt(req.query.page) || 1; // Default page number is 1
+        const limit = 12; // Number of products per page
+
+
+
+
         var search = ""
         if( req.body.search){
             search= req.body.search
         }
 
+
+
+        const count = await Product.countDocuments({
+            is_active: 0,
+            cat_status: 0,
+            brand_status: 0,
+            $or: [{ title: { $regex: search, $options: 'i' } }]
+        });
+
+        const totalPages = Math.ceil(count / limit);
+        page = Math.min(totalPages, Math.max(1, page)); // Ensure page number is within valid range
+
+
+
+
         const products=await Product.find({is_active:0 , cat_status:0,brand_status:0,$or: [
             { title: { $regex: search, $options: 'i' } } 
-        ]}) .populate('category').sort({ date: -1 }) // Sort by date in descending order (newest first)
-        .exec();
+        ]}) .populate('category').sort({ date: -1 }) .skip((page - 1) * limit) // Skip records based on page number
+        .limit(limit) // Limit records per page
+        .exec(); // Sort by date in descending order (newest first)
+        
 
 
        
         
-        res.render("shop",{products,loginData})
+        res.render("shop",{products,loginData,totalPages, currentPage: page})
 
         
 
@@ -660,23 +666,50 @@ const lowtohigh= async(req,res)=>{
     try {
 
 
+       
+
+        
         const userId= req.session.userId
         const loginData = await User.findById(userId)
+
+        let page = parseInt(req.query.page) || 1; // Default page number is 1
+        const limit = 12; // Number of products per page
+
+
+
 
         var search = ""
         if( req.body.search){
             search= req.body.search
         }
 
+
+
+        const count = await Product.countDocuments({
+            is_active: 0,
+            cat_status: 0,
+            brand_status: 0,
+            $or: [{ title: { $regex: search, $options: 'i' } }]
+        });
+
+        const totalPages = Math.ceil(count / limit);
+        page = Math.min(totalPages, Math.max(1, page)); // Ensure page number is within valid range
+
+
+
+
         const products=await Product.find({is_active:0 , cat_status:0,brand_status:0,$or: [
             { title: { $regex: search, $options: 'i' } } 
-        ]}) .populate('category').sort({ salesprice: 1 }) // Sort by price in Ascending order (newest first)
-        .exec();
+        ]}) .populate('category').sort({salesprice: 1}) .skip((page - 1) * limit) // Skip records based on page number
+        .limit(limit) // Limit records per page
+        .exec(); // Sort by date in descending order (newest first)
+        
 
 
        
         
-        res.render("shop",{products,loginData})
+        res.render("shop",{products,loginData,totalPages, currentPage: page})
+
 
 
         
@@ -691,23 +724,48 @@ const lowtohigh= async(req,res)=>{
 const hightoLow= async(req,res)=>{
     try {
 
+        
         const userId= req.session.userId
         const loginData = await User.findById(userId)
+
+        let page = parseInt(req.query.page) || 1; // Default page number is 1
+        const limit = 12; // Number of products per page
+
+
+
 
         var search = ""
         if( req.body.search){
             search= req.body.search
         }
 
+
+
+        const count = await Product.countDocuments({
+            is_active: 0,
+            cat_status: 0,
+            brand_status: 0,
+            $or: [{ title: { $regex: search, $options: 'i' } }]
+        });
+
+        const totalPages = Math.ceil(count / limit);
+        page = Math.min(totalPages, Math.max(1, page)); // Ensure page number is within valid range
+
+
+
+
         const products=await Product.find({is_active:0 , cat_status:0,brand_status:0,$or: [
             { title: { $regex: search, $options: 'i' } } 
-        ]}) .populate('category').sort({ salesprice: -1 }) // Sort by price in descending order (newest first)
-        .exec();
+        ]}) .populate('category').sort({salesprice: -1}) .skip((page - 1) * limit) // Skip records based on page number
+        .limit(limit) // Limit records per page
+        .exec(); // Sort by date in descending order (newest first)
+        
 
 
        
         
-        res.render("shop",{products,loginData})
+        res.render("shop",{products,loginData,totalPages, currentPage: page})
+
 
 
 
@@ -792,8 +850,11 @@ const contact= async(req,res)=>{
 
     try {
 
+        const userId=req.session.userId
+        const loginData = await User.findById(userId)
 
-        res.render("contact")
+
+        res.render("contact",{loginData})
 
 
         

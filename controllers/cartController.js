@@ -249,6 +249,7 @@ const checkOut= async(req,res)=>{
     try {
 
         const userId=req.session.userId
+        const loginData=await User.findById(userId)
         const addressData= await Address.find({userId:userId})
         const cartData= await Cart.findOne({userId:userId}).populate("products.productId")
         const coupons= await Coupon.find({is_active:true})
@@ -256,7 +257,7 @@ const checkOut= async(req,res)=>{
 
 
 
-        res.render("checkOut",{addressData,cartData,coupons})
+        res.render("checkOut",{addressData,cartData,coupons,loginData})
         
     } catch (error) {
         console.log(error.message)
@@ -270,7 +271,7 @@ const placeOrder= async(req,res)=>{
     try {
 
        
-        console.log('adskjfhakh');
+       
         const userId=req.session.userId
         const addressData= await Address.find({_id:req.body.selectedAddress})
         const cartData= await Cart.findOne({userId:userId})
@@ -361,6 +362,10 @@ const placeOrder= async(req,res)=>{
         
     }
 }
+
+
+
+
 
 
 const changeStatus = async(req,res)=>{
@@ -637,13 +642,14 @@ const getWishlist= async(req,res)=>{
     try {
 
         const userId= req.session.userId
+        const loginData = await User.findById(userId)
 
 
         const wishListData= await WishList.findOne({userId:userId}).populate('products.productId')
        
        
 
-        res.render("wishList",{wishListData})
+        res.render("wishList",{wishListData,loginData})
 
 
         
@@ -671,7 +677,11 @@ const addtoWishList= async(req,res)=>{
                 userId,
                 products: [{ productId }]
             });
+
+
             await newWishlist.save();
+
+            
         } else {
             
             if (!wishlist.products.some(product => product.productId.equals(productId))) {

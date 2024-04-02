@@ -8,6 +8,7 @@ const fs = require('fs');
 const path = require('path');
 const { v4: uuidv4 } = require("uuid")
 const sharp= require('sharp')
+const { log } = require("console")
 
 
 
@@ -103,24 +104,72 @@ const editProductLoad =async(req,res)=>{
 const updateProduct= async(req,res)=>{
     try {
 
-        const id=req.query.id
-       
-        const{pname,pbrand,pdescription,regularPrice,salesPrice,image,category,tags, is_active,quantity}=req.body
-    
-        
-        const updateData= await Product.findByIdAndUpdate({_id:id},{$set:{
-            title:pname,
-            brand:pbrand,
-            category:category,
-            description:pdescription,
-            regularprice:regularPrice,
-            salesprice:salesPrice,
-            image: req.files.map((file)=>file.path),
-            quantity:quantity
 
-     } })
-        
+        // const { id } = req.query;
+    
+        // const product = await Product.findById(id);
+        // if (!product) {
+        //     return res.status(404).send({ success: false, message: 'Product not found.' });
+        // }
+
+        // Update product data based on the form fields (e.g., pname, pdescription, quantity, etc.)
+        // product.title = req.body.pname;
+        // product.description = req.body.pdescription;
+        // product.quantity = req.body.quantity;
+        // product.category = req.body.category;
+        // product.brand = req.body.pbrand;
+        // product.regularprice = req.body.regularPrice;
+        // product.salesprice = req.body.salesPrice;
+
+       
+
+       
+
+        // Save the updated product
+        // const updatedProduct = await product.save();
+        // res.status(200).json({ success: true, message: 'Product updated successfully.', updatedProduct });
+        // res.redirect("/admin/productlist")
+
+
+
+
+
+        const { id } = req.query;
+
+        const product = await Product.findById(id);
+        if (!product) {
+            return res.status(404).send({ success: false, message: 'Product not found.' });
+        }
+
+        // Update product data based on the form fields (e.g., pname, pdescription, quantity, etc.)
+        product.title = req.body.pname;
+        product.description = req.body.pdescription;
+        product.quantity = req.body.quantity;
+        product.category = req.body.category;
+        product.brand = req.body.pbrand;
+        product.regularprice = req.body.regularPrice;
+        // product.salesprice = req.body.salesPrice;
+
+        // Check if new images are uploaded
+
+        if (req.files || req.files.filename) {
+            console.log("image is uploaded,,,,,,,,,,,,,,,",req.files)
+            // const images = Array.isArray(req.files) ? req.files.filename : [req.files.filename];
+            console.log('//////////////////////////////////////////////')
+            const images = req.files.map(item=>item.filename)
+            console.log("images........AAAAAAAAAAAAAAAAAAAAAAAAa",images)
+            // product.image = product.image.concat(images.map(image => console.log("image:",image)));
+            product.image = product.image.concat(images);
+        }
+
+        // Save the updated product
+        const updatedProduct = await product.save();
+
+        // res.status(200).json({ success: true, message: 'Product updated successfully.', updatedProduct });
+
         res.redirect("/admin/productlist")
+
+    
 
         
     } catch (error) {
@@ -166,6 +215,12 @@ const deleteImage=async (req, res) => {
         return res.status(500).json({ error: 'Internal server error' });
     }
 };
+
+
+
+
+
+
 
 
 
@@ -272,21 +327,7 @@ const addNewBrand= async(req,res)=>{
     
     try {
 
-        // const {brandName,brandDescription,image}=req.body
-        // let brand = new Brand({
-        //     name:brandName,
-        //     description:brandDescription,
-        //     image:req.files.map((file)=>file.path)
-        //     })
-        
-
-        // const newBrand = await brand.save()
-        // console.log(newBrand)
-        // res.redirect('/admin/brand')
-
-        //-----------updated code-------------------
-
-
+      
 
         const { brandName, brandDescription } = req.body;
 
@@ -412,8 +453,7 @@ const blockBrand= async(req,res)=>{
         const brandId = req.query.id
         const brandBlocked = await Brand.findByIdAndUpdate(brandId,{is_active:1})
         await Product.updateMany({ brand: brandId }, { is_active: 1 });
-        // const productCat= await Product.findByIdAndUpdate(brandId,{cat_staus:1})
-        // const productBrand=await Product.findByIdAndUpdate(brandId,{brand_status:1})
+       
 
         res.redirect("/admin/brand")
     }
@@ -518,9 +558,27 @@ const adminOrderDelivered=async(req,res)=>{
     try {
 
 
-        const orderId= req.query.id
-        const orderDelivered= await  Order.findByIdAndUpdate(orderId,{$set:{orderStatus:'Delivered'}})
-         res.redirect('/admin/getOrders')
+        // const orderId= req.query.id
+        // const orderDelivered= await  Order.findByIdAndUpdate(orderId,{$set:{orderStatus:'Delivered'}})
+        //  res.redirect('/admin/getOrders')
+
+
+        const orderId = req.query.id;
+        const order = await Order.findById(orderId);
+
+
+        // Check if payment method is cash on delivery (COD)
+        if (order.paymentMethod === 'Cash on delivery') {
+            console.log("inside Cod")
+            const orderDelivered= await  Order.findByIdAndUpdate(orderId,{$set:{orderStatus:'Delivered',paymentStatus:"Recieved"}})
+        }else{
+
+            const orderDelivered= await  Order.findByIdAndUpdate(orderId,{$set:{orderStatus:'Delivered'}})
+
+        }
+         
+    
+        res.redirect('/admin/getOrders');
         
     } catch (error) {
 
