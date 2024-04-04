@@ -122,9 +122,9 @@ const getOtp=async(req,res)=>{
         const transporter = nodemailer.createTransport({
             service: 'Gmail',
             auth: {
-                user: 'ng.anjith444@gmail.com',
+                user: process.env.EMAIL,
                
-                pass:'vqcm bgdj rmkp wfia'
+                pass:process.env.PASS
             }
         });
 
@@ -136,7 +136,7 @@ const getOtp=async(req,res)=>{
         const {email,name}=req.session.data
         console.log(randomotp);
         const mailOptions = {
-            from: 'ng.anjith444@gmail.com',
+            from: process.env.EMAIL,
             to: email,
             subject: `Hello ${name}`,
             text: `Your verification OTP is ${randomotp}`
@@ -339,9 +339,9 @@ const newOtp= async(req,res)=>{
         const transporter = nodemailer.createTransport({
             service: 'Gmail',
             auth: {
-                user: 'ng.anjith444@gmail.com',
+                user: process.env.EMAIL,
               
-                pass:'vqcm bgdj rmkp wfia'
+                pass:process.env.PASS
             }
         });
 
@@ -355,7 +355,7 @@ const newOtp= async(req,res)=>{
        
         console.log(randomotp);
         const mailOptions = {
-            from: 'ng.anjith444@gmail.com',
+            from: process.env.EMAIL,
             to: req.session.email,
             subject: `Hello ${userData.name}`,
             text: `Your verification OTP is ${randomotp}`
@@ -533,54 +533,39 @@ const  updateUserDetails= async(req,res)=>{
 
     try {
 
+   
 
-        const userId= req.session.userId
-        const userData= await User.findById(userId)
+              const { email, password, npassword, cnpassword } = req.body;
 
+              if (npassword !== cnpassword) {
+              return res.status(400).json({ success: false, message: "Passwords do not match" });
+             }
+ 
+             const user = await User.findOne({ email });
 
-        const hashedPassword = await bcrypt.hash(req.body.password, 10);
+                if (!user) {
+               return res.status(404).json({ success: false, message: "User not found" });
+              }
 
-        if( await bcrypt.compare(req.body.password, userData.password)){
+              const isMatch = await bcrypt.compare(password, user.password);
 
-           if(req.body.npassword==req.body.cpassword){
+              if (!isMatch) {
+                    return res.status(400).json({ success: false, message: "Incorrect password" });
+                }
 
-            const hashedNewPassword = await bcrypt.hash(req.body.npassword, 10);
+              const saltRounds = 10;
+               const hashedNewPassword = await bcrypt.hash(npassword, saltRounds);
+                user.password = hashedNewPassword;
+               await user.save();
 
-            userData.password = hashedNewPassword;
-
-           const newUserData= await userData.save()
-
-           if(newUserData){
-            const passwordChanged=true
-           }
-
-           if(passwordChanged){
-            req.flash('success', 'Password changed successfully')
-           }
-         
-            res.redirect("/")
-
-           }else{
-
-            res.render("editprofile",{message: "Passwords do not match"})
-
-           }
-
-        }else{
-
-            res.render("editprofile",{message:"Invalid Credentials"})
-        }
-
-        
-        
-
+                return res.status(200).json({ success: true, message: "Password Changed Successfully" });
 
 
       
-    } catch (error) {
+       } catch (error) {
         console.log(error.message)
         
-    }
+      }
 }
 
 
@@ -867,6 +852,65 @@ const contact= async(req,res)=>{
 
 
 
+const addAddressInCheckout= async(req,res)=>{
+    try {
+
+
+        try {
+
+            res.render("checkOutAddress")
+            
+        } catch (error) {
+            console.log(error.message)
+            
+        }
+
+
+        
+    } catch (error) {
+        console.error(error.message)
+        
+    }
+}
+
+
+
+const  createAddress2= async(req,res)=>{
+
+
+    try {
+        const userId=req.session.userId
+
+        const{fname,lname,address,city,state,country,zipcode,mobile}=req.body
+
+        const addressdata= new Address({
+
+            userId:userId,
+            first_name:fname,
+            last_name: lname,
+            address:address,
+            city:city,
+            state:state,
+            country:country,
+            zipcode:zipcode,
+            mobile:mobile
+        })
+
+        const addressData= await addressdata.save()
+        res.redirect('/checkOut')
+
+       
+        
+
+
+    } catch (error) {
+        console.log(error.message)
+        
+    }
+}
+
+
+
 
 
 
@@ -886,5 +930,5 @@ module.exports={
    verifyNewOtp,verifyPasswords,
    loadLogout,editProfile,updateUserDetails,
    userDash,addressForm,createAddress,invoiceShow,shop,
-   filterProdutcs,sortBrand,contact,lowtohigh,hightoLow
+   filterProdutcs,sortBrand,contact,lowtohigh,hightoLow,addAddressInCheckout,createAddress2
 }

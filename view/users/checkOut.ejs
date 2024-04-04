@@ -5,7 +5,7 @@
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/shop-checkout.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 15 Jul 2023 10:10:07 GMT -->
 <head>
     <meta charset="utf-8">
-    <title>Evara - eCommerce HTML Template</title>
+    <title>Checkout</title>
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,7 +14,7 @@
     <meta property="og:url" content="">
     <meta property="og:image" content="">
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="assets/imgs/theme/favicon.svg">
+    <link rel="shortcut icon" type="image/x-icon" href="assets/imgs/theme/logo.png">
     <!-- Template CSS -->
     <link rel="stylesheet" href="assets/css/maind134.css?v=3.4">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -538,38 +538,7 @@ body {
         </div>
         <section class="mt-50 mb-50">
             <div class="container">
-                <!-- <div class="row"> -->
-                    <!-- <div class="col-lg-6 mb-sm-15"> -->
-                        <!-- <div class="toggle_info">
-                            <span><i class="fi-rs-user mr-10"></i><span class="text-muted">Already have an account?</span> <a href="#loginform" data-bs-toggle="collapse" class="collapsed" aria-expanded="false">Click here to login</a></span>
-                        </div> -->
-                        <!-- <div class="panel-collapse collapse login_form" id="loginform">
-                            <div class="panel-body">
-                                <p class="mb-30 font-sm">If you have shopped with us before, please enter your details below. If you are a new customer, please proceed to the Billing &amp; Shipping section.</p>
-                                <form method="post">
-                                    <div class="form-group">
-                                        <input type="text" name="email" placeholder="Username Or Email">
-                                    </div>
-                                    <div class="form-group">
-                                        <input type="password" name="password" placeholder="Password">
-                                    </div>
-                                    <div class="login_footer form-group">
-                                        <div class="chek-form">
-                                            <div class="custome-checkbox">
-                                                <input class="form-check-input" type="checkbox" name="checkbox" id="remember" value="">
-                                                <label class="form-check-label" for="remember"><span>Remember me</span></label>
-                                            </div>
-                                        </div>
-                                        <a href="#">Forgot password?</a>
-                                    </div>
-                                    <div class="form-group">
-                                        <button class="btn btn-md" name="login">Log in</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div> -->
-                    <!-- </div> -->
-                    
+               
                 <!-- </div> -->
                 <div class="row">
                     <div class="col-12">
@@ -581,7 +550,7 @@ body {
                     <div class="col-md-6">
                         
                         <div class="mb-25">
-                            <h5>Shipment details</h5><a href="/addressForm" class="btn-small">Add new Address</a>
+                            <h5>Shipment details</h5><a href="/checkOutAddress" class="btn-small">Add new Address</a>
                         </div>
                         <%if(locals.addressData){%>
 
@@ -629,8 +598,8 @@ body {
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            <th colspan="2">Product</th>
-                                            <th>Total</th>
+                                            <th colspan="2" style="font-weight: bold;">Product</th>
+                                            <th style="font-weight: bold;">Total</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -645,9 +614,9 @@ body {
                                             <tr>
                                                 <td class="image product-thumbnail"><img src="/uploads/<%=cart.productId.image[0]%>" alt="#"></td>
                                                 <td>
-                                                    <h5><a href="shop-product-full.html"><%=cart.productId.title%></a></h5> <span class="product-qty"><%=cart.quantity%> pieces</span>
+                                                    <h5><a href="shop-product-full.html"><%=cart.productId.title%></a></h5> <span class="product-qty" style="font-weight: bold;"><%=cart.quantity%> pieces</span>
                                                 </td>
-                                                <td>₹ <%=cart.productId.salesprice%></td>
+                                                <td style="font-weight: bold;">₹ <%=cart.productId.salesprice%></td>
                                             </tr>
                                           
 
@@ -655,20 +624,20 @@ body {
                                        
                                         <%})%>
                                         <tr>
-                                            <th>Total</th>
-                                            <td class="product-subtotal" colspan="2">₹ <%=total%></td>
+                                            <th style="font-weight: bold;">Total</th>
+                                            <td class="product-subtotal" style="font-weight: bold;" colspan="2">₹ <%=total%></td>
                                         </tr>
                                        
-                                        <tr>
-                                            <th>Coupon</th>
+                                        <!-- <tr>
+                                            <th style="font-weight: bold;">Coupon</th>
                                             <td colspan="2" id="couponName"><em></em></td>
-                                        </tr>
+                                        </tr> -->
                                         <tr>
-                                            <th>Discount</th>
+                                            <th style="font-weight: bold;">Discount</th>
                                             <td colspan="2"  class="product-subtotal"><span class="font-xl text-brand fw-900">₹</span><span id="discount" class="font-xl text-brand fw-900">0</span></td>
                                         </tr>
                                         <tr>
-                                            <th>Grand Total</th>
+                                            <th style="font-weight: bold;">Grand Total</th>
                                             <td colspan="2"  class="product-subtotal"><span class="font-xl text-brand fw-900">₹</span><span id="GrandTotal" class="font-xl text-brand fw-900"> <%=total%></span></td>
                                         </tr>
                                         <%}%>
@@ -696,10 +665,7 @@ body {
                                         <!-- Wallet option -->
                                         <input class="form-check-input" required="" type="radio" name="payment_option" id="walletOption" value="Wallet">
                                         <label class="form-check-label" for="walletOption" data-bs-toggle="collapse" data-target="#wallet" aria-controls="wallet">Wallet</label>
-                                        <!-- <label class="form-check-label" for="walletOption" data-bs-toggle="collapse" data-target="#wallet" aria-controls="wallet">Wallet</label>
-                                        <a href="#" style="margin-left: 10px;">View Balance</a> -->
-
-                                        <!-- _________________________________ -->
+                                        
 
 
                                         <!-- Button to trigger modal -->
@@ -1067,6 +1033,52 @@ rzp1.open()
         }
 
 
+    }else if(selectedRadioButton==='Wallet'){
+
+
+        fetch('/placeorderWallet', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(orderData),
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Handle success or failure based on the response
+                if (data.message === 'Order placed successfully') {
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'Order Placed',
+                        showConfirmButton: false,
+                        timer: 2000,
+                    });
+                    setTimeout(() => {
+                        window.location.href = '/';
+                    }, 1000);
+                } else {
+                    // Handle error response
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Cannot place order!',
+                    });
+                }
+            })
+            .catch(error => {
+                // Handle network errors or other issues
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong!',
+                });
+            });
+
+
+       
+
 
     }else{
 
@@ -1106,16 +1118,16 @@ rzp1.open()
        
     })
     
-    .catch(error=>{
+//     .catch(error=>{
       
-        Swal.fire({
-  icon: "error",
-  title: "Oops...",
-  text: "No product found !",
+//         Swal.fire({
+//   icon: "error",
+//   title: "Oops...",
+//   text: "Cannot place order !",
 
-   });
+//    });
         
-    })
+//     })
 
 
     .catch(error => {

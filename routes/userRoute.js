@@ -80,6 +80,8 @@ user_Route.post('/removeFromWishlist',userAuth.isLogin,userAuth.isBlocked,cartCo
 
 user_Route.get("/userDashboard",userAuth.isLogin,userAuth.isBlocked,userController.userDash)
 user_Route.get("/addressForm",userAuth.isLogin,userAuth.isBlocked,userController.addressForm)
+user_Route.get("/checkOutAddress",userAuth.isLogin,userAuth.isBlocked,userController.addAddressInCheckout)
+user_Route.post("/createAddressInCheckOut",userAuth.isLogin,userAuth.isBlocked,userAuth.isBlocked,userController.createAddress2)
 user_Route.post("/createAddress",userAuth.isLogin,userAuth.isBlocked,userAuth.isBlocked,userController.createAddress)
 user_Route.get("/cancelOrder",userAuth.isLogin,userAuth.isBlocked,cartController.userOrderCancel)
 user_Route.get('/returnOrder',userAuth.isLogin,userAuth.isBlocked,cartController.userOrderReturn)
@@ -91,6 +93,8 @@ user_Route.post('/updateProfile',userAuth.isLogin,userAuth.isBlocked,userControl
 
 // ........wallet........
 
+
+user_Route.post('/placeorderWallet',userAuth.isLogin,userAuth.isBlocked,cartController.placeOrderWallet)
 user_Route.get("/Wallet",userAuth.isLogin,userAuth.isBlocked,cartController.walletDetails)
 
 

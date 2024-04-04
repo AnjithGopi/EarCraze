@@ -568,8 +568,8 @@ const adminOrderDelivered=async(req,res)=>{
 
 
         // Check if payment method is cash on delivery (COD)
-        if (order.paymentMethod === 'Cash on delivery') {
-            console.log("inside Cod")
+        if (order.paymentMethod === 'Cash on delivery'||order.paymentMethod==='Wallet'||order.paymentMethod==='Razorpay') {
+            
             const orderDelivered= await  Order.findByIdAndUpdate(orderId,{$set:{orderStatus:'Delivered',paymentStatus:"Recieved"}})
         }else{
 

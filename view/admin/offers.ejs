@@ -5,7 +5,7 @@
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-backend/page-orders-1.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 01 Aug 2021 15:33:21 GMT -->
 <head>
     <meta charset="utf-8">
-    <title>Evara Dashboard</title>
+    <title> Dashboard</title>
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,11 +14,13 @@
     <meta property="og:url" content="">
     <meta property="og:image" content="">
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="/admin-assets/imgs/theme/favicon.svg">
+    <link rel="shortcut icon" type="image/x-icon" href="/assets/imgs/theme/logo.png">
     <!-- Template CSS -->
     <link href="/admin-assets/css/main.css" rel="stylesheet" type="text/css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-
+    <link href="https://cdn.jsdelivr.net/npm/toastr@2.1.4/build/toastr.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.css" rel="stylesheet">
+    
 
    
    
@@ -163,7 +165,7 @@ input[type="date"] {
     <aside class="navbar-aside" id="offcanvas_aside">
         <div class="aside-top">
             <a href="index.html" class="brand-wrap">
-                <img src="/admin-assets/imgs/theme/logo.svg" class="logo" alt="Evara Dashboard">
+                <img src="/assets/imgs/theme/logo.png" class="logo" alt="Evara Dashboard">
             </a>
             <div>
                 <button class="btn btn-icon btn-aside-minimize"> <i class="text-muted material-icons md-menu_open"></i> </button>
@@ -317,8 +319,19 @@ input[type="date"] {
                                     <td><%= i+1 %></td>
                                     <td><b><%= categories[i].name %></b></td>
                                     <td style="color: rgb(235, 13, 13); font-weight: bold;"><%= categories[i].offerPercent %> %</td>
-                                    <td><span class="badge rounded-pill alert-primary">Pending</span></td>
-                                    <td><%= categories[i].expiry %></td>
+
+                                   <% if(categories[i].expiry > Date.now()) {%>
+                                      <td><span class="badge rounded-pill alert-success">Active</span></td>
+
+                                   <% }else{ %>
+                                      <td><span class="badge rounded-pill alert-danger">Expired</span></td>
+
+                                   <% } %>
+
+                                    
+                                   
+                                   
+                                    <td style="font-weight: bold;"><%= new Date(categories[i].expiry).toLocaleDateString('en-GB') %></td>
                                     <td><a class="premium-button" onclick="showModal('<%= categories[i]._id %>')">Apply</a></td>
                                   </tr>
                                 <% } %>
@@ -376,7 +389,12 @@ input[type="date"] {
 
 
 
-
+    
+    
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/toastr@2.1.4/build/toastr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.20/dist/sweetalert2.min.js"></script>
     <script>
         // Get the modal and apply button elements
 const modal = document.getElementById('myModal');
@@ -419,8 +437,20 @@ function showModal(categoryId) {
       throw new Error('Network response was not ok.');
     })
     .then(data => {
-      alert(data.message);
+
+      // toastr.success(data.message);
+      //  alert(data.message);
+      Swal.fire({
+      
+      text: 'Offer Applied Successfully',
+      icon: 'success',
+      confirmButtonText: 'Okay'
+    });
+    setTimeout(()=>{
       window.location.href = "/admin/offers";
+
+    },1500)
+      
       // Close the modal after successful submission
       modal.style.display = 'none';
     })

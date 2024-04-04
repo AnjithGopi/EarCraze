@@ -207,7 +207,7 @@
                                             <% orderDetails.products.forEach((item) => { %>
                                                 <% console.log(item) %>
                                                 <tr>
-                                                    <td><%= item.productId.title %></td>
+                                                    <td style="font-weight: bold;"><%= item.productId.title %></td>
                                                     <td>₹ <%= item.productId.salesprice %></td>
                                                     <td><%= item.quantity %></td>
                                                     <td class="highlight-amount">₹ <%= item.quantity * item.productId.salesprice %></td>

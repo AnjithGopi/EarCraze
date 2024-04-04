@@ -270,21 +270,21 @@
                                 <%if(locals.orderList){%>
                                    <% orderList.forEach((order)=>{%>
                                     <tr>
-                                        <td><%=order.orderId%></td>
-                                        <td><b><%=order.userId.name%></b></td>
-                                        <td><b><%=order. paymentMethod%></b></td>
+                                        <td style="color: rgb(0, 4, 8);font-weight: 600;"><%=order.orderId%></td>
+                                        <td style="color: rgb(0, 2, 5);"><b><%=order.userId.name%></b></td>
+                                        <td style="color: rgb(0, 0, 1); font-weight: bolder;"><b><%=order. paymentMethod%></b></td>
                                         <!-- <td>₹ <%=order.totalAmount.toLocaleString()%></td> -->
                                         <!-- <td>₹ <%= order.totalAmount.toLocaleString() %></td> -->
-                                        <td>₹ <%= parseFloat(order.totalAmount).toLocaleString() %></td>
+                                        <td style="color: rgb(192, 77, 100); font-weight: bolder;">₹ <%= parseFloat(order.totalAmount).toLocaleString() %></td>
 
 
                                         <td class="col-date">
                                            
-                                            <span class="fs-0"><%= order.orderDate.toLocaleDateString()%></span>
+                                            <span class="fs-0"style="font-weight: bolder;"><%= order.orderDate.toLocaleDateString()%></span>
                                         </td>
 
                                         <%if(order.paymentStatus=="Recieved"){%>
-                                            <td><span class="badge rounded-pill custom-green"><%=order.paymentStatus%></span></td>
+                                            <td><span  class="badge rounded-pill custom-green"><%=order.paymentStatus%></span></td>
 
                                         <%}else{%>
                                             <td><span class="badge rounded-pill custom-orange"><%=order.paymentStatus%></span></td>

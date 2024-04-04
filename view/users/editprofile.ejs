@@ -81,6 +81,15 @@
             background-color: #f9f9f9;
         }
 
+        input[type="email"] {
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+            background-color: #f9f9f9;
+        }
+
         input[type="password"]:focus {
             outline: none;
             border-color: #ff5e62;
@@ -132,13 +141,15 @@
             left: 100%;
         }
     </style>
- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
- <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.css">
 </head>
 <body>
     <div class="container">
         <h1>Change Password</h1>
-        <form id="profileEditForm" action="/profileEdit2" method="post">
+        <form id="profileEditForm" action="/updateProfile" method="post">
+
+            <label for="currentPassword">Email</label>
+            <input type="email" id="email" name="email" required>
             <label for="currentPassword">Current Password:</label>
             <input type="password" id="currentPassword" name="password" required>
             <label for="newPassword">New Password:</label>
@@ -146,51 +157,67 @@
             <label for="confirmNewPassword">Confirm New Password:</label>
             <input type="password" id="confirmNewPassword" name="cnpassword" required pattern="^(?=.*[A-Z]).{8,}$">
             <button type="submit">Change Password</button>
-          </form>
-          
-          <script>
-            const profileEditForm = document.getElementById('profileEditForm');
-            profileEditForm.addEventListener('submit', async (event) => {
-              event.preventDefault(); // Prevent the default form submission
-          
-              const formData = new FormData(profileEditForm);
-              const response = await fetch('/profileEdit2', {
+        </form>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+    <script>
+        const profileEditForm = document.getElementById('profileEditForm');
+        profileEditForm.addEventListener('submit', (event) => {
+            event.preventDefault(); // Prevent the default form submission
+
+            const formData = new FormData(profileEditForm);
+            fetch('/updateProfile', {
                 method: 'POST',
                 headers: {
-                  'Content-Type': 'application/json',
+                    'Content-Type': 'application/json',
                 },
                 body: JSON.stringify(Object.fromEntries(formData)),
-              });
-          
-              const data = await response.json();
-          
-              if (data.success) {
-                toastr.success(data.message);
-                // Additional actions if needed
-              } else {
-                toastr.error(data.message);
-                // Additional error handling if needed
-              }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    swal({
+                        title: "Password Changed Successfully",
+                        icon: "success",
+                        timer: 1500,
+                        buttons: false
+                    });
+                    setTimeout(()=>{
+                      window.location.href="/userDashboard"
+                    },1000)
+                } else {
+                    throw new Error(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
+                swal("Error", error.message, "error");
             });
-          
-            const newPasswordInput = document.getElementById('newPassword');
-            const confirmNewPasswordInput = document.getElementById('confirmNewPassword');
-          
-            newPasswordInput.addEventListener('input', function() {
-              if (this.validity.patternMismatch) {
+        });
+
+        const newPasswordInput = document.getElementById('newPassword');
+        const confirmNewPasswordInput = document.getElementById('confirmNewPassword');
+
+        newPasswordInput.addEventListener('input', function () {
+            if (this.validity.patternMismatch) {
                 this.setCustomValidity('Password must meet the requirements');
-              } else {
+            } else {
                 this.setCustomValidity('');
-              }
-            });
-          
-            confirmNewPasswordInput.addEventListener('input', function() {
-              if (this.value !== newPasswordInput.value) {
+            }
+        });
+
+        confirmNewPasswordInput.addEventListener('input', function () {
+            if (this.value !== newPasswordInput.value) {
                 this.setCustomValidity('Passwords do not match');
-              } else {
+            } else {
                 this.setCustomValidity('');
-              }
-            });
-          </script>
-          
+            }
+        });
+    </script>
+</body>
 </html>

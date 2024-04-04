@@ -505,7 +505,8 @@ const createCoupon= async(req,res)=>{
 
            
             for (const product of productsToUpdate) {
-            const updatedPrice = product.salesprice * ((100 - discount) / 100);
+            // const updatedPrice = product.salesprice * ((100 - discount) / 100);
+            const updatedPrice = Math.round(product.salesprice * ((100 - discount) / 100));
             product.salesprice = updatedPrice;
             await product.save();
            }

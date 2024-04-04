@@ -19,6 +19,7 @@
     <link rel="stylesheet" href="assets/css/maind134.css?v=3.4">
     
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+   <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css" rel="stylesheet">
 
 
     <style>
@@ -547,31 +548,56 @@ function decreaseQuantity(productId, total, price) {
 
 
 
-                                  async function updateCartItemQuantity(productId, direction) {
-                                    console.log('hereeeee');
-                                      try {
-                                          const response = await fetch('/updateCartItemQuantity', {
-                                              method: 'POST',
-                                              headers: {
-                                                  'Content-Type': 'application/json',
-                                              },
-                                              body: JSON.stringify({ productId, direction }),
-                                          });
+                                //   async function updateCartItemQuantity(productId, direction) {
+                                //     console.log('hereeeee');
+                                //       try {
+                                //           const response = await fetch('/updateCartItemQuantity', {
+                                //               method: 'POST',
+                                //               headers: {
+                                //                   'Content-Type': 'application/json',
+                                //               },
+                                //               body: JSON.stringify({ productId, direction }),
+                                //           });
                                   
-                                          if (!response.ok) {
-                                              console.error('Failed to update item quantity:', response.statusText);
-                                          } else {
-                                              const responseData = await response.json();
-                                              // Access the totalPrice here
-                                              console.log('Updated totalPrice:', response.totalPrice);
+                                //           if (!response.ok) {
+                                //               console.error('Failed to update item quantity:', response.statusText);
+                                //           } else {
+                                //               const responseData = await response.json();
+                                //               // Access the totalPrice here
+                                //               console.log('Updated totalPrice:', response.totalPrice);
                                               
                                               
-                                          }
-                                      } catch (error) {
-                                          console.error('Error:', error.message);
-                                      }
-                                  }
-                                  
+                                //           }
+                                //       } catch (error) {
+                                //           console.error('Error:', error.message);
+                                //       }
+                                //   }
+                                async function updateCartItemQuantity(productId, direction) {
+                                  try {
+                              const response = await fetch('/updateCartItemQuantity', {
+                             method: 'POST',
+                             headers: {
+                           'Content-Type': 'application/json',
+                                },
+                            body: JSON.stringify({ productId, direction }),
+                             });
+
+                           if (!response.ok) {
+                           console.error('Failed to update item quantity:', response.statusText);
+                          } else {
+                          const responseData = await response.json();
+                       if (responseData.error) {
+                        // Show Toastr message for out of stock
+                         toastr.error('Item is out of stock');
+                         } else {
+                           // Access the totalPrice here
+                           console.log('Updated totalPrice:', response.totalPrice);
+                           }
+                            }
+                        } catch (error) {
+        console.error('Error:', error.message);
+    }
+}
                                       </script>
 <!--  loopp......ends----........................................................-->
                                    
@@ -729,7 +755,7 @@ function decreaseQuantity(productId, total, price) {
         </div>
     </footer>
     <!-- Preloader Start -->
-    <!-- <div id="preloader-active">
+    <div id="preloader-active">
         <div class="preloader d-flex align-items-center justify-content-center">
             <div class="preloader-inner position-relative">
                 <div class="text-center">
@@ -742,7 +768,7 @@ function decreaseQuantity(productId, total, price) {
                 </div>
             </div>
         </div>
-    </div> -->
+    </div>
     <!-- Vendor JS-->
 
     <script>
@@ -771,82 +797,9 @@ function decreaseQuantity(productId, total, price) {
     }
     </script>
 
-    <!-- search cart -->
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const searchInput = document.getElementById('searchInput');
-            const tableBody = document.getElementById('productTableBody');
     
-            if (!tableBody) {
-                console.error('Table body element not found.');
-                return; // Exit the function if table body is not found
-            }
-    
-            searchInput.addEventListener('input', function() {
-                const searchTerm = searchInput.value.trim();
-                if (searchTerm.length >= 0) {
-                    searchProducts(searchTerm);
-                } else {
-                    // Clear search results or show default content
-                    clearTable();
-                }
-            });
-    
-            function searchProducts(searchTerm) {
-                fetch(`/search?term=${encodeURIComponent(searchTerm)}`)
-                    .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok');
-                        }
-                        return response.json();
-                    })
-                    .then(data => {
-                        // Update UI with search results
-                       
-                        updateTable(data);
-                    })
-                    .catch(error => {
-                        console.error('Error searching products:', error);
-                    });
-            }
-    
-            function updateTable(products) {
-                // Clear existing products from the table
-                clearTable();
-                console.log(products);
-                // Add the new products to the table
-                products.forEach(product => {
-                    const row = document.createElement('tr');
-                       
-                    // Create and append cells for product details
-                    const imageCell = document.createElement('td');
-                    const image = document.createElement('img');
-                    image.src = product.productId.image[0]; // Adjust according to your data structure
-                    image.alt = product.productId.title; // Adjust according to your data structure
-                    imageCell.appendChild(image);
-                    row.appendChild(imageCell);
-    
-                    const nameCell = document.createElement('td');
-                    nameCell.textContent = product.productId.title; // Adjust according to your data structure
-                    row.appendChild(nameCell);
-    
-                    const priceCell = document.createElement('td');
-                    priceCell.textContent = product.productId.salesprice; // Adjust according to your data structure
-                    row.appendChild(priceCell);
-    
-                    // Append the row to the table body
-                    tableBody.appendChild(row);
-                });
-            }
-    
-            function clearTable() {
-                if (tableBody) {
-                    // Remove all rows from the table body
-                    tableBody.innerHTML = '';
-                }
-            }
-        });
-    </script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
     
     
 

@@ -11,8 +11,8 @@ const Wallet= require("../models/walletModel")
 const Razorpay=require('razorpay')
 
 var instance = new Razorpay({
-    key_id: 'rzp_test_HLFENnvKhWUWjZ',
-    key_secret: 'SQd2IeNenul5pBC1TWPUXiVx',
+    key_id: process.env.KEYID,
+    key_secret: process.env.KEYSECRET,
   });
 
 
@@ -153,34 +153,41 @@ const deleteIteminCart= async(req,res)=>{
 const updateitemQuantity= async(req,res)=>{
     try {
 
+        
+
+        // >>>>>>>>>>>>>Again UPDATED <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
+
+
+
         const { productId, direction } = req.body;
         const userId = req.session.userId;
-        let userCart = await Cart.findOne({ userId:userId });
-       
-
+        
+        // Find the user's cart and populate the products with their details
+        let userCart = await Cart.findOne({ userId: userId }).populate('products.productId');
+        
         if (!userCart) {
             return res.status(404).json({ error: 'User does not have a cart' });
         }
-           
-        
-        const productIndex = userCart.products.findIndex(product => product.productId.toString() === productId);
-   
+
+        const productIndex = userCart.products.findIndex(product => product.productId._id.toString() === productId);
         if (productIndex !== -1) {
-           
+            const product = userCart.products[productIndex].productId;
+            
+            // Check if the requested quantity update is valid based on available stock
             if (direction === 'up') {
-                userCart.products[productIndex].quantity++;
-                console.log(userCart.products[productIndex].quantity);
+                if (userCart.products[productIndex].quantity < product.quantity) {
+                    userCart.products[productIndex].quantity++;
+                } else {
+                    return res.json({ error: 'Item is out of stock' });
+                }
             } else if (direction === 'down' && userCart.products[productIndex].quantity > 1) {
                 userCart.products[productIndex].quantity--;
             }
-            
 
+            // Update totalPrice
             userCart.totalPrice = userCart.products.reduce((total, product) => {
-               
                 if (product && product.productId) {
-                     
                     const productTotal = product.quantity * product.productId.salesprice;
-            
                     return total + productTotal;
                 } else {
                     console.log('Invalid product or productId');
@@ -198,6 +205,8 @@ const updateitemQuantity= async(req,res)=>{
             console.log('Item not found in the cart.');
             return res.status(404).json({ error: 'Item not found in the cart' });
         }
+        
+        
 
         
         
@@ -503,25 +512,155 @@ const onlinePayment = async (req, res) => {
 
 
 
+const placeOrderWallet = async (req, res) => {
+    try {
+
+        const userId = req.session.userId;
+        const addressId = req.body.selectedAddress;
+        const paymentMethod = req.body.paymentMethod;
+        const amount = req.body.amount;
+        const couponDiscount = req.body.couponDiscount;
+
+        const userWallet = await Wallet.findOne({ user_id: userId });
+
+        if (!userWallet) {
+            return res.status(404).json({ error: 'Wallet not found' });
+        }
+
+        const cartData = await Cart.findOne({ userId: userId }).populate('products.productId');
+        if (!cartData || cartData.products.length === 0) {
+            return res.status(400).json({ error: 'Cart is empty' });
+        }
+
+        if (userWallet.balance < amount) {
+            return res.status(400).json({ error: 'Insufficient balance' });
+        }
+
+        userWallet.balance -= amount;
+        await userWallet.save();
+
+        function generateOrderId() {
+            const timestamp = Date.now().toString();
+            const randomChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let orderId = 'ORD';
+            while (orderId.length < 6) {
+                const randomIndex = Math.floor(Math.random() * randomChars.length);
+                orderId += randomChars.charAt(randomIndex);
+            }
+            return orderId + timestamp.slice(-6);
+        }
+        const orderId = generateOrderId();
+
+        const addressData = await Address.findById(addressId);
+        if (!addressData) {
+            return res.status(404).json({ error: 'Address not found' });
+        }
+
+        const newOrder = new Order({
+            userId: userId,
+            products: cartData.products.map(item => ({
+                productId: item.productId._id,
+                quantity: item.quantity,
+            })),
+            address: addressData,
+            paymentMethod: paymentMethod,
+            totalAmount: amount,
+            paymentStatus:'Recieved',
+            couponDiscount: couponDiscount,
+            orderId: orderId,
+        });
+        await newOrder.save();
+
+
+
+
+
+
+        for (const item of cartData.products) {
+            const product = await Product.findById(item.productId._id);
+            if (product) {
+                product.quantity -= item.quantity;
+                await product.save();
+            }
+        }
+
+        await Cart.updateOne({ userId: userId }, { $unset: { products: 1 } });
+
+        res.status(200).json({ message: 'Order placed successfully', orderId: newOrder._id });
+        
+       
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ error: 'Internal Server Error' });
+    }
+};
+
+
+
+
+
 
 
 
 const userOrderCancel= async(req,res)=>{
     try {
 
-         console.log("order cancel entered")
-        const userId= req.session.userId
-        const orderId=req.query.id
+        //  console.log("order cancel entered")
+        // const userId= req.session.userId
+        // const orderId=req.query.id
+        // const cartData = await Cart.findOne({ userId: userId }).populate('products.productId');
        
-        const orderCancel = await Order.findByIdAndUpdate(orderId,{$set: {orderStatus:'Cancelled'}})
-
-
+        // const orderCancel = await Order.findByIdAndUpdate(orderId,{$set: {orderStatus:'Cancelled'}})
 
        
-       
-        console.log("cancel Order::",orderCancel)
+        // console.log("cancel Order::",orderCancel)
 
-         res.redirect('/userDashboard')
+        //  res.redirect('/userDashboard')
+
+
+        //  <<<<<<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>
+
+
+
+
+        console.log("Order cancel entered");
+
+        const userId = req.session.userId;
+        const orderId = req.query.id;
+
+         // Fetch the order to be canceled
+          const order = await Order.findById(orderId).populate('products.productId');
+
+            if (!order) {
+      return res.status(404).json({ message: "Order not found" });
+     }
+
+       // Change the order status to "Cancelled"
+     order.orderStatus = 'Cancelled';
+     await order.save();
+
+      // Retrieve the products from the canceled order
+      const productsToRestore = order.products;
+
+      // Increment the quantity of each product back based on the canceled order
+     for (const item of productsToRestore) {
+      const product = await Product.findById(item.productId);
+      if (product) {
+        product.quantity += item.quantity;
+        await product.save();
+      }
+     }
+
+    console.log("Cancel Order:", order);
+
+    res.redirect('/userDashboard');
+
+
+
+
+        // <<<<<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>>>>>>>
+
+
 
 
     
@@ -537,53 +676,98 @@ const userOrderCancel= async(req,res)=>{
 const userOrderReturn= async(req,res)=>{
     try {
 
-        console.log("order return entered")
-        const userId= req.session.userId
-        const orderId=req.query.id
+        // console.log("order return entered")
+        // const userId= req.session.userId
+        // const orderId=req.query.id
+
+
+        
+        // const order = await Order.findById(orderId);
+
+       
+        // if (!order || order.userId.toString() !== userId) {
+        //     return res.status(404).send("Order not found");
+        // }
 
 
 
-        // _____________________________
+      
+        // const refundedAmount = parseFloat(order.totalAmount) 
 
 
-
-        // Retrieve order details
-        const order = await Order.findById(orderId);
-
-        // Ensure the order belongs to the current user
-        if (!order || order.userId.toString() !== userId) {
-            return res.status(404).send("Order not found");
-        }
-
-
-
-        // Calculate refunded amount (assuming totalAmount is a string, convert it to a number)
-        const refundedAmount = parseFloat(order.totalAmount) 
-
-
-        // Update user's wallet balance
-        let wallet = await Wallet.findOne({ user_id: userId });
-        if (wallet) {
-            wallet.balance += refundedAmount;
-            await wallet.save();
-        } else {
-            // If the wallet doesn't exist, create a new one for the user
-            wallet = await Wallet.create({
-                user_id: userId,
-                balance: refundedAmount,
-                currency: "INR", // You may want to change this based on your currency system
+        
+        // let wallet = await Wallet.findOne({ user_id: userId });
+        // if (wallet) {
+        //     wallet.balance += refundedAmount;
+        //     await wallet.save();
+        // } else {
+          
+        //     wallet = await Wallet.create({
+        //         user_id: userId,
+        //         balance: refundedAmount,
+        //         currency: "INR", 
                 
                 
-            });
-        }
+        //     });
+        // }
 
-        // ______________________________
+        
+
+        // const orderCancel = await Order.findByIdAndUpdate(orderId,{$set: {orderStatus:'Returned'}})
+
+        // res.redirect("/userDashboard")
 
 
-        const orderCancel = await Order.findByIdAndUpdate(orderId,{$set: {orderStatus:'Returned'}})
 
-        res.redirect("/userDashboard")
 
+        // <<<<<<<<<<<<<<<<UPDATED CODE>>>>>>>>>>>>>>>>>>>
+
+
+        console.log("Order return entered");
+    const userId = req.session.userId;
+    const orderId = req.query.id;
+
+    // Retrieve order details including products
+    const order = await Order.findById(orderId).populate('products.productId');
+
+    // Ensure the order belongs to the current user
+    if (!order || order.userId.toString() !== userId) {
+      return res.status(404).send("Order not found");
+    }
+
+    // Update product quantities and calculate refunded amount
+    let refundedAmount = 0;
+    for (const item of order.products) {
+      const product = await Product.findById(item.productId);
+      if (product) {
+        product.quantity += item.quantity;
+        refundedAmount += item.quantity * product.salesprice; // Assuming salesprice is used for calculation
+        await product.save();
+      }
+    }
+
+    // Update user's wallet balance
+    let wallet = await Wallet.findOne({ user_id: userId });
+    if (wallet) {
+      wallet.balance += refundedAmount;
+      await wallet.save();
+    } else {
+      // If the wallet doesn't exist, create a new one for the user
+      wallet = await Wallet.create({
+        user_id: userId,
+        balance: refundedAmount,
+        currency: "INR", // You may want to change this based on your currency system
+      });
+    }
+
+    // Change order status to "Returned"
+    const orderReturn = await Order.findByIdAndUpdate(orderId, { $set: { orderStatus: 'Returned' } });
+
+    res.redirect("/userDashboard");
+
+
+
+        
 
 
 
@@ -821,4 +1005,4 @@ const applyCoupon= async(req,res)=>{
 
 module.exports={getCart,addtoCart,deleteIteminCart,updateitemQuantity,
     checkOut,placeOrder,onlinePayment,userOrderCancel,userOrderReturn,applyCoupon,
-    userOrderDetails,getWishlist,addtoWishList,removeFromWishlist,searchInCart,changeStatus,walletDetails}  
+    userOrderDetails,getWishlist,addtoWishList,removeFromWishlist,searchInCart,changeStatus,walletDetails,placeOrderWallet}  

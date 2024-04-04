@@ -5,7 +5,7 @@
 <!-- Mirrored from wp.alithemes.com/html/evara/evara-frontend/page-account.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 15 Jul 2023 10:11:15 GMT -->
 <head>
     <meta charset="utf-8">
-    <title>Evara - eCommerce HTML Template</title>
+    <title>dashboard</title>
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -15,7 +15,7 @@
     <meta property="og:image" content="">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/x-icon" href="assets/imgs/theme/favicon.svg">
+    <link rel="shortcut icon" type="image/x-icon" href="assets/imgs/theme/logo.png">
     <!-- Template CSS -->
     <link rel="stylesheet" href="assets/css/maind134.css?v=3.4">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -251,6 +251,16 @@ body {
             color: white;
             text-decoration: none;
         }
+
+        .premium-text {
+        font-size: 32px;
+        color: #4a8e6e;
+        margin-top: 100px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-weight: bold;
+        text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+    }
 
 
 
@@ -601,11 +611,11 @@ body {
                                                         
                                                             <div class="form-group">
                                                                 <label for="username">Username</label>
-                                                                <input type="text" class="form-control" id="username" value="<%=userDetails.name%>" readonly>
+                                                                <input style="font-weight: bold;" type="text" class="form-control" id="username" value="<%=userDetails.name%>" readonly>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label for="email">Email address</label>
-                                                                <input type="email" class="form-control" id="email" value="<%=userDetails.email%>" readonly>
+                                                                <input style="font-weight: bold;" type="email" class="form-control" id="email" value="<%=userDetails.email%>" readonly>
                                                             </div>
 
                                                             <div class="form-group">
@@ -703,14 +713,20 @@ body {
                                                                 <th>Order Details</th>
                                                             </tr>
                                                         </thead>
+                                                       <% if(locals.order.length<=0){%>
+                                                        <div class="premium-text">
+                                                            <span>No Orders Found</span>
+                                                        </div><br><br>
+                                                            
+                                                        <%}%>
                                                         <tbody>
                                                             <% if (locals.order) { %>
                                                                 <% order.forEach((item) => { %>
                                                                     <tr>
                                                                         <!-- <td><%= item.orderId %></td>
                                                                         <td><%= item.paymentMethod %></td> -->
-                                                                        <td style="font-size: 11px;"><%= item.orderId %></td>
-                                                                        <td style="font-size: 11px;"><%= item.paymentMethod %></td>
+                                                                        <td style="font-size: 11px;font-weight: bold;"><%= item.orderId %></td>
+                                                                        <td style="font-size: 11px;font-weight: bold;"><%= item.paymentMethod %></td>
                                                                         <td>
                                                                             <% if(item.orderStatus=='Cancelled'){ %>
                                                                                 <span class="badge bg-danger"><%=item.orderStatus%></span>
@@ -727,12 +743,12 @@ body {
                                                                             <% } %>
                                                                         </td>
                                                                         <% if(item.paymentStatus=='Recieved'){ %>
-                                                                            <td><span class="badge bg-success"><%=item.paymentStatus%></span></td> 
+                                                                            <td><span class="badge bg-success">Paid</span></td> 
                                                                         <% } else { %>
                                                                             <td><span class="badge bg-warning text-dark"><%=item.paymentStatus%></span></td> 
                                                                         <% } %>
-                                                                        <td style="font-size: 11px;"><%= item.orderDate.toLocaleDateString() %></td>
-                                                                        <td style="font-size:11px;">₹ <%= parseFloat(item.totalAmount).toLocaleString() %></td>
+                                                                        <td style="font-size: 11px;font-weight: bold;"><%= item.orderDate.toLocaleDateString() %></td>
+                                                                        <td style="font-size:11px;font-weight: bold;">₹ <%= parseFloat(item.totalAmount).toLocaleString() %></td>
                                                                         <td>
                                                                             <div class="btn-group" role="group">
                                                                                 <% if(item.orderStatus=='Delivered'){ %>
