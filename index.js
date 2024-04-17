@@ -1,7 +1,7 @@
 const mongoose=require("mongoose")
 const dotenv = require('dotenv')
 dotenv.config()
-mongoose.connect("mongodb://127.0.0.1:27017/EarCrazeProject")
+mongoose.connect(process.env. MONGO_STRING)
 // const UserController=require('./controllers/userController')
 // const adminController=require('./controllers/adminController')
 const flash = require('express-flash')

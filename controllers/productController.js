@@ -349,6 +349,9 @@ const addCatagories=async(req,res)=>{
 
         const newCategory = await category.save();
         console.log(newCategory);
+
+
+        console.log("newCategory")
         res.status(201).json(newCategory);
         
         // res.redirect("/admin/categories");
