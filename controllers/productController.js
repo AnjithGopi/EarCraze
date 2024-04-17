@@ -319,35 +319,59 @@ const addCatagories=async(req,res)=>{
     try {
 
 
-        const {catagoryName,catagoryDescription}=req.body
-        let catagory = new Category({
-            name : catagoryName ,
-            description : catagoryDescription
-        })
+        // const {catagoryName,catagoryDescription}=req.body
+        // let catagory = new Category({
+        //     name : catagoryName ,
+        //     description : catagoryDescription
+        // })
 
-        const newCatagory= await catagory.save()
-        console.log(newCatagory)
-        res.redirect("/admin/categories")
+        // const newCatagory= await catagory.save()
+        // console.log(newCatagory)
+        // res.redirect("/admin/categories")
 
-        
-    } catch (error) {
-        console.log(error.message)
-        
-    }
-}
 
-const categoryExist= async(req,res)=>{
-    try {
-        const { categoryName } = req.body;
+        const { categoryName, categoryDescription } = req.body;
+
+        // Check if the category name already exists
         const existingCategory = await Category.findOne({ name: categoryName });
         const exists = !!existingCategory;
-        res.json({ exists });
+
+        if (exists) {
+            res.status(400).json({ error: 'Category already exists' });
+            return;
+        }
+
+        // Create the new category if it doesn't exist
+        let category = new Category({
+            name: categoryName,
+            description: categoryDescription,
+        });
+
+        const newCategory = await category.save();
+        console.log(newCategory);
+        res.status(201).json(newCategory);
+        
+        // res.redirect("/admin/categories");
+       
         
     } catch (error) {
         console.log(error.message)
         
     }
 }
+
+// const categoryExist= async(req,res)=>{
+//     try {
+//         const { categoryName } = req.body;
+//         const existingCategory = await Category.findOne({ name: categoryName });
+//         const exists = !!existingCategory;
+//         res.json({ exists });
+        
+//     } catch (error) {
+//         console.log(error.message)
+        
+//     }
+// }
 
 const brand=async(req,res)=>{
     try {
@@ -696,6 +720,6 @@ module.exports={addProduct,addnewProduct,deleteImage,
     addCatagories, brand,addBrand,addNewBrand,blockCategory,
     unblockCategory,editCategoryLoad,updateCategory,blockBrand,
      unblockBrand,getOrders,adminOrderCancelled,orderDetails,adminOrderShipped,
-     adminOrderDelivered,adminOrderPending,adminOrderReturned,categoryExist}
+     adminOrderDelivered,adminOrderPending,adminOrderReturned,}
     
    
