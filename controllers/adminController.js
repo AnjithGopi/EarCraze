@@ -526,6 +526,11 @@ const createCoupon= async(req,res)=>{
             await product.save();
            }
 
+
+
+           
+           
+
             res.status(200).json({ message: 'Offer applied successfully', category: updatedCategory });
             
         } catch (error) {
