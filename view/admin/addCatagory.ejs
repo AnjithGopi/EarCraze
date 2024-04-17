@@ -90,11 +90,9 @@
             </ul>
             <hr>
             <ul class="menu-aside">
-                <!-- <li class="menu-item has-submenu"> -->
-                    <a class="menu-link" href="/admin/dashboard"> <i class="icon material-icons md-settings"></i>
-                        <span class="text">Settings</span>
-                    </a>
-                    
+                <a class="menu-link" href="/admin/userEnquiry"> <i class="icon material-icons md-settings"></i>
+                    <span class="text">Enquiries</span>
+                </a>
                 <!-- <li class="menu-item"> -->
                     <a class="menu-link" href="/admin/dashboard"> <i class="icon material-icons md-local_offer"></i>
                         <span class="text"> Starter page </span>
@@ -145,12 +143,12 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-3">
-                            <form action="/admin/addCatagory" method="post">
+                            <!-- <form action="/admin/addCatagory" method="post" onsubmit="return validateForm()">
                                 <div class="mb-4">
                                     <label for="product_name" class="form-label">Catagory Name</label>
                                     <input type="text" placeholder="Type here" class="form-control" id="product_name" name="catagoryName"/>
                                 </div>
-                               <!-- ====================================== -->
+                             
                                 <div class="mb-4">
                                     <label class="form-label">Description</label>
                                     <textarea placeholder="Type here" class="form-control" name="catagoryDescription"></textarea>
@@ -158,7 +156,70 @@
                                 <div class="d-grid">
                                     <button class="btn btn-primary" type="submit">Create category</button>
                                 </div>
+                            </form> -->
+                            <form action="/admin/addCatagory" method="post" onsubmit="return validateForm()">
+                                <div class="mb-4">
+                                    <label for="product_name" class="form-label">Category Name</label>
+                                    <input type="text" placeholder="Type here" class="form-control" id="product_name" name="categoryName" required/>
+                                    <div id="nameError" class="text-danger"></div>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label">Description</label>
+                                    <textarea placeholder="Type here" class="form-control" name="categoryDescription" required></textarea>
+                                    <div id="descriptionError" class="text-danger"></div>
+                                </div>
+                                <div class="d-grid">
+                                    <button class="btn btn-primary" type="submit">Create category</button>
+                                </div>
                             </form>
+                            <script>
+                                 async function validateForm() {
+        const nameInput = document.getElementById('product_name');
+        const descriptionInput = document.querySelector('textarea[name="categoryDescription"]');
+        const nameError = document.getElementById('nameError');
+        const descriptionError = document.getElementById('descriptionError');
+
+        nameError.textContent = '';
+        descriptionError.textContent = '';
+
+        if (!nameInput.value.trim()) {
+            nameError.textContent = 'Category name is required.';
+            return false;
+        }
+
+        if (/\d/.test(nameInput.value)) {
+            nameError.textContent = 'Category name should not contain numbers.';
+            return false;
+        }
+
+        if (/\s/.test(nameInput.value)) {
+            nameError.textContent = 'Category name should not contain spaces.';
+            return false;
+        }
+
+        // Check if the category name already exists
+        const response = await fetch('/admin/checkCategoryExists', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ categoryName: nameInput.value.trim() })
+        });
+        const data = await response.json();
+
+        if (data.exists) {
+            nameError.textContent = 'Category already exists.';
+            return false;
+        }
+
+        if (!descriptionInput.value.trim()) {
+            descriptionError.textContent = 'Description is required.';
+            return false;
+        }
+
+        return true;
+    }
+                            </script>
                           
                         </div>
                         <div class="col-md-9">

@@ -105,6 +105,10 @@ const updateProduct= async(req,res)=>{
     try {
 
 
+        console.log("req.bodu.regprice:",req.body.regularPrice)
+        
+
+
         // const { id } = req.query;
     
         // const product = await Product.findById(id);
@@ -132,13 +136,46 @@ const updateProduct= async(req,res)=>{
 
 
 
-
-
+        let price= parseInt(req.body.regularPrice)
+        console.log("price1:",price)
         const { id } = req.query;
 
         const product = await Product.findById(id);
+
+        console.log("product:",product)
         if (!product) {
             return res.status(404).send({ success: false, message: 'Product not found.' });
+        }
+
+        if(product.category!=req.body.category){
+            
+            console.log("price:",product.salesprice)
+            const cat= await Category.findById(req.body.category)
+
+            const newPrice=  Math.round(product.regularprice * ((100 - cat.offerPercent) / 100));
+            console.log("dissss=:",cat.discount)
+
+            price=newPrice
+
+
+            console.log("price:",price)
+
+        }
+
+
+        if(product.regularprice!=req.body.regularPrice){
+            
+            console.log("price:",product.salesprice)
+            const cat= await Category.findById(req.body.category)
+
+            const newPrice=  Math.round(req.body.regularPrice * ((100 - cat.offerPercent) / 100));
+            console.log("dissss=:",cat.discount)
+
+            price=newPrice
+
+
+            console.log("price:",price)
+
         }
 
         // Update product data based on the form fields (e.g., pname, pdescription, quantity, etc.)
@@ -147,8 +184,8 @@ const updateProduct= async(req,res)=>{
         product.quantity = req.body.quantity;
         product.category = req.body.category;
         product.brand = req.body.pbrand;
+        product.salesprice = parseInt(price);
         product.regularprice = req.body.regularPrice;
-        // product.salesprice = req.body.salesPrice;
 
         // Check if new images are uploaded
 
@@ -160,6 +197,7 @@ const updateProduct= async(req,res)=>{
             console.log("images........AAAAAAAAAAAAAAAAAAAAAAAAa",images)
             // product.image = product.image.concat(images.map(image => console.log("image:",image)));
             product.image = product.image.concat(images);
+
         }
 
         // Save the updated product
@@ -167,7 +205,7 @@ const updateProduct= async(req,res)=>{
 
         // res.status(200).json({ success: true, message: 'Product updated successfully.', updatedProduct });
 
-        res.redirect("/admin/productlist")
+        res.redirect("/admin/productlist")  
 
     
 
@@ -291,6 +329,19 @@ const addCatagories=async(req,res)=>{
         console.log(newCatagory)
         res.redirect("/admin/categories")
 
+        
+    } catch (error) {
+        console.log(error.message)
+        
+    }
+}
+
+const categoryExist= async(req,res)=>{
+    try {
+        const { categoryName } = req.body;
+        const existingCategory = await Category.findOne({ name: categoryName });
+        const exists = !!existingCategory;
+        res.json({ exists });
         
     } catch (error) {
         console.log(error.message)
@@ -558,11 +609,6 @@ const adminOrderDelivered=async(req,res)=>{
     try {
 
 
-        // const orderId= req.query.id
-        // const orderDelivered= await  Order.findByIdAndUpdate(orderId,{$set:{orderStatus:'Delivered'}})
-        //  res.redirect('/admin/getOrders')
-
-
         const orderId = req.query.id;
         const order = await Order.findById(orderId);
 
@@ -576,16 +622,18 @@ const adminOrderDelivered=async(req,res)=>{
             const orderDelivered= await  Order.findByIdAndUpdate(orderId,{$set:{orderStatus:'Delivered'}})
 
         }
-         
+        
+     
     
         res.redirect('/admin/getOrders');
         
     } catch (error) {
 
         console.log(error.message)
+
         
     }
-   
+    
 
 
 }
@@ -648,6 +696,6 @@ module.exports={addProduct,addnewProduct,deleteImage,
     addCatagories, brand,addBrand,addNewBrand,blockCategory,
     unblockCategory,editCategoryLoad,updateCategory,blockBrand,
      unblockBrand,getOrders,adminOrderCancelled,orderDetails,adminOrderShipped,
-     adminOrderDelivered,adminOrderPending,adminOrderReturned}
+     adminOrderDelivered,adminOrderPending,adminOrderReturned,categoryExist}
     
    

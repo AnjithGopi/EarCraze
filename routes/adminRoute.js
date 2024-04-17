@@ -26,6 +26,8 @@ admin_Route.get("/blockuser",adminAuth.isLogin,adminController.blockUser)
 admin_Route.get("/unblockuser",adminAuth.isLogin,adminController.unblockUser)
 admin_Route.get('/logout',adminController.adminLogin)
 
+admin_Route.get('/userEnquiry',adminController.userEnquiry)
+
 
 
 //....................Products.............................................
@@ -42,6 +44,7 @@ admin_Route.get("/blockProduct",adminAuth.isLogin,productController.blockProduct
 admin_Route.get("/unBlockProduct",adminAuth.isLogin,productController.unblockProduct)
 admin_Route.get('/categories',adminAuth.isLogin,productController.getCatagories)
 admin_Route.post('/addCatagory',adminAuth.isLogin,productController.addCatagories)
+admin_Route.post('/checkCategoryExists',adminAuth.isLogin,productController.categoryExist)
 admin_Route.get("/brand",adminAuth.isLogin,productController.brand)
 admin_Route.get("/addBrand",adminAuth.isLogin,productController.addBrand)
 admin_Route.post("/addNewBrand",adminAuth.isLogin,upload.array('image',1),productController.addNewBrand)

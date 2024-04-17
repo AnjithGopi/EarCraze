@@ -86,10 +86,13 @@ user_Route.post("/createAddress",userAuth.isLogin,userAuth.isBlocked,userAuth.is
 user_Route.get("/cancelOrder",userAuth.isLogin,userAuth.isBlocked,cartController.userOrderCancel)
 user_Route.get('/returnOrder',userAuth.isLogin,userAuth.isBlocked,cartController.userOrderReturn)
 user_Route.get('/userOrderDetails',userAuth.isLogin,userAuth.isBlocked,cartController.userOrderDetails)
+user_Route.post('/edit_userProfile',userAuth.isLogin,userController.editUserProfile)
+user_Route.get('/editAddress',userAuth.isLogin,userController.editAddress)
+user_Route.post("/updateAddress",userAuth.isLogin,userController.updateAddress)
 
 
-user_Route.get('/editProfile',userAuth.isLogin,userAuth.isBlocked,userController.editProfile)
-user_Route.post('/updateProfile',userAuth.isLogin,userAuth.isBlocked,userController.updateUserDetails)
+user_Route.get('/changePassword',userAuth.isLogin,userAuth.isBlocked,userController.editProfile)
+user_Route.post('/updatePassword',userAuth.isLogin,userAuth.isBlocked,userController.updatePassword)
 
 // ........wallet........
 
@@ -125,11 +128,14 @@ user_Route.get("/sortBrand",userController.sortBrand)
 
 user_Route.get("/lowtoHigh",userController.lowtohigh)
 user_Route.get("/hightoLow",userController.hightoLow)
+user_Route.get("/Aa_Zz",userController.atoz)
+user_Route.get("/Zz_Aa",userController.ztoa)
 
 
 // ----contact----
 
 user_Route.get("/contact",userController.contact)
+user_Route.post('/sendMessage',userAuth.isLogin,userAuth.isBlocked,userController.sendMessage)
 
 
 

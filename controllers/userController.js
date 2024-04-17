@@ -10,6 +10,8 @@ const bcrypt= require('bcrypt')
 const Brand= require("../models/brandModel")
 const Category=require("../models/categoryModel")
 const Banner= require("../models/bannerModel")
+const Wallet= require("../models/walletModel")
+const Contact= require('../models/contactModel')
 
 
 
@@ -448,9 +450,13 @@ const userDash= async(req,res)=>{
         const showAddress= await Address.find({userId:userId})
         const loginData= await User.findById(userId)
 
+        // Fetch user wallet details
+        const walletDetails = await Wallet.findOne({ user_id: userId });
+
+
         
         const order= await Order.find({userId:userId}).sort({ orderDate:-1})
-        res.render("userDashboard",{showAddress,userDetails,order,loginData})
+        res.render("userProfile",{showAddress,userDetails,order,loginData,walletDetails})
         
     } catch (error) {
         console.log(error.message)
@@ -483,7 +489,8 @@ const  createAddress= async(req,res)=>{
 
             userId:userId,
             first_name:fname,
-            last_name: lname,
+            last_name:lname,
+           
             address:address,
             city:city,
             state:state,
@@ -519,7 +526,11 @@ const editProfile=async(req,res)=>{
 
 
 
-        res.render("editProfile",{loginData})
+        res.render("changePassword",{loginData})
+
+
+        // res.render("userProfile",{loginData})
+        
         
     } catch (error) {
         console.log(error.message)
@@ -529,44 +540,42 @@ const editProfile=async(req,res)=>{
 
 
 
-const  updateUserDetails= async(req,res)=>{
 
+const updatePassword = async (req, res) => {
     try {
 
-   
-
-              const { email, password, npassword, cnpassword } = req.body;
-
-              if (npassword !== cnpassword) {
-              return res.status(400).json({ success: false, message: "Passwords do not match" });
-             }
- 
-             const user = await User.findOne({ email });
-
-                if (!user) {
-               return res.status(404).json({ success: false, message: "User not found" });
-              }
-
-              const isMatch = await bcrypt.compare(password, user.password);
-
-              if (!isMatch) {
-                    return res.status(400).json({ success: false, message: "Incorrect password" });
-                }
-
-              const saltRounds = 10;
-               const hashedNewPassword = await bcrypt.hash(npassword, saltRounds);
-                user.password = hashedNewPassword;
-               await user.save();
-
-                return res.status(200).json({ success: true, message: "Password Changed Successfully" });
-
-
-      
-       } catch (error) {
-        console.log(error.message)
+        const { email, password, npassword, cnpassword } = req.body;
         
-      }
-}
+
+        if (npassword !== cnpassword) {
+            return res.status(400).json({ success: false, message: "Passwords do not match" });
+        }
+
+        const user = await User.findOne({ email });
+
+        if (!user) {
+            return res.status(404).json({ success: false, message: "User not found" });
+        }
+
+        const isMatch = await bcrypt.compare(password, user.password);
+
+        if (!isMatch) {
+            return res.status(400).json({ success: false, message: "Incorrect password" });
+        }
+
+        const saltRounds = 10;
+        const hashedNewPassword = await bcrypt.hash(npassword, saltRounds);
+        user.password = hashedNewPassword;
+        await user.save();
+
+        return res.status(200).json({ success: true, message: "Password changed successfully" });
+
+    } catch (error) {
+        console.error(error.message);
+        return res.status(500).json({ success: false, message: "Server error" });
+    }
+};
+
 
 
 
@@ -685,7 +694,7 @@ const lowtohigh= async(req,res)=>{
 
         const products=await Product.find({is_active:0 , cat_status:0,brand_status:0,$or: [
             { title: { $regex: search, $options: 'i' } } 
-        ]}) .populate('category').sort({salesprice: 1}) .skip((page - 1) * limit) // Skip records based on page number
+        ]}) .populate('category').sort({salesprice:1}) .skip((page - 1) * limit) // Skip records based on page number
         .limit(limit) // Limit records per page
         .exec(); // Sort by date in descending order (newest first)
         
@@ -741,7 +750,7 @@ const hightoLow= async(req,res)=>{
 
         const products=await Product.find({is_active:0 , cat_status:0,brand_status:0,$or: [
             { title: { $regex: search, $options: 'i' } } 
-        ]}) .populate('category').sort({salesprice: -1}) .skip((page - 1) * limit) // Skip records based on page number
+        ]}) .populate('category').sort({salesprice:-1}) .skip((page - 1) * limit) // Skip records based on page number
         .limit(limit) // Limit records per page
         .exec(); // Sort by date in descending order (newest first)
         
@@ -753,6 +762,120 @@ const hightoLow= async(req,res)=>{
 
 
 
+
+
+        
+    } catch (error) {
+        console.log(error.message)
+        
+    }
+}
+
+
+const atoz =async(req,res)=>{
+    try {
+
+         
+        const userId= req.session.userId
+        const loginData = await User.findById(userId)
+
+        let page = parseInt(req.query.page) || 1; // Default page number is 1
+        const limit = 12; // Number of products per page
+
+
+
+
+        var search = ""
+        if( req.body.search){
+            search= req.body.search
+        }
+
+
+
+        const count = await Product.countDocuments({
+            is_active: 0,
+            cat_status: 0,
+            brand_status: 0,
+            $or: [{ title: { $regex: search, $options: 'i' } }]
+        });
+
+        const totalPages = Math.ceil(count / limit);
+        page = Math.min(totalPages, Math.max(1, page)); // Ensure page number is within valid range
+
+
+
+
+        const products=await Product.find({is_active:0 , cat_status:0,brand_status:0,$or: [
+            { title: { $regex: search, $options: 'i' } } 
+        ]}) .populate('category').sort({title:1}) .skip((page - 1) * limit) // Skip records based on page number
+        .limit(limit) // Limit records per page
+        .exec(); // Sort by date in descending order (newest first)
+        
+
+
+       
+        
+        res.render("shop",{products,loginData,totalPages, currentPage: page})
+
+
+
+
+
+
+
+
+        
+    } catch (error) {
+        console.log(error.message)
+        
+    }
+}
+
+
+
+const ztoa= async(req,res)=>{
+    try {
+
+        const userId= req.session.userId
+        const loginData = await User.findById(userId)
+
+        let page = parseInt(req.query.page) || 1; // Default page number is 1
+        const limit = 12; // Number of products per page
+
+
+
+
+        var search = ""
+        if( req.body.search){
+            search= req.body.search
+        }
+
+
+
+        const count = await Product.countDocuments({
+            is_active: 0,
+            cat_status: 0,
+            brand_status: 0,
+            $or: [{ title: { $regex: search, $options: 'i' } }]
+        });
+
+        const totalPages = Math.ceil(count / limit);
+        page = Math.min(totalPages, Math.max(1, page)); // Ensure page number is within valid range
+
+
+
+
+        const products=await Product.find({is_active:0 , cat_status:0,brand_status:0,$or: [
+            { title: { $regex: search, $options: 'i' } } 
+        ]}) .populate('category').sort({title: -1}) .skip((page - 1) * limit) // Skip records based on page number
+        .limit(limit) // Limit records per page
+        .exec(); // Sort by date in descending order (newest first)
+        
+
+
+       
+        
+        res.render("shop",{products,loginData,totalPages, currentPage: page})
 
 
         
@@ -840,7 +963,7 @@ const contact= async(req,res)=>{
 
 
         res.render("contact",{loginData})
-
+       
 
         
     } catch (error) {
@@ -849,6 +972,56 @@ const contact= async(req,res)=>{
         
     }
 }
+
+
+
+
+
+const sendMessage= async(req,res)=>{
+
+    try {
+
+        // Check if the user is logged in
+        const userId = req.session.userId;
+        if (!userId) {
+            return res.status(401).json({ message: 'You need to log in to send a message.' });
+        }
+
+        // Extract form data from the request body
+        const { name, email, telephone, message } = req.body;
+
+        // Create a new Contact instance
+        const newContact = new Contact({
+           name: name,
+            email:email,
+            phone:telephone,
+            message:message,
+           
+        });
+
+        // Save the contact message to the database
+        await newContact.save();
+
+        res.status(200).json({ message: 'Message sent successfully.' });
+
+        
+
+
+
+
+
+
+
+        
+    } catch (error) {
+        console.error(error.message)
+        
+    }
+}
+
+
+
+
 
 
 
@@ -899,12 +1072,125 @@ const  createAddress2= async(req,res)=>{
         const addressData= await addressdata.save()
         res.redirect('/checkOut')
 
-       
-        
+             
 
 
     } catch (error) {
         console.log(error.message)
+        
+    }
+}
+
+
+
+
+const editUserProfile= async(req,res)=>{
+
+    try {
+
+
+        const userId = req.session.userId;
+
+        
+        console.log(req.body,userId)
+        const userDetails = await User.findById(userId);
+
+        if (!userDetails) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        const { newUsername, newMobile } = req.body;
+
+        // Validate newUsername and newMobile
+        if (!newUsername || !newMobile) {
+            return res.status(400).json({ error: 'New username and mobile number are required' });
+        }
+
+        // Check if the new values are different
+        if (newUsername !== userDetails.name || newMobile !== userDetails.mobile) {
+            userDetails.name = newUsername;
+            userDetails.mobile = newMobile;
+
+            await userDetails.save();
+
+            // Send a success response as JSON
+            return res.status(200).json({ message: 'Profile updated successfully' });
+        }
+
+        // If new values are the same, send a message indicating no changes were made
+        return res.status(200).json({ message: 'No changes were made to the profile' });
+
+        
+    } catch (error) {
+        console.error(error.message)
+        
+    }
+}
+
+
+
+const editAddress= async(req,res)=>{
+
+    try {
+
+
+        const userId= req.session.userId
+        const id= req.query.id
+        console.log("id",id)
+
+        const address= await Address.findById(id)
+
+        const loginData= await User.findById(userId)
+
+
+        res.render("editAddress",{loginData,address})
+
+        
+    } catch (error) {
+
+        console.log(error.message)
+    }
+}
+
+
+const updateAddress= async(req,res)=>{
+
+
+    try {
+
+
+        const { fname, lname, address, city, state, zipcode, mobile } = req.body;
+        const userId = req.session.userId; // Assuming you have the user ID in the session
+        const id= req.query.id
+
+        // Find the address to update
+        const existingAddress = await Address.findById(id);
+
+        console.log('----------------existingAddress',existingAddress);
+        if (!existingAddress) {
+            return res.status(404).json({ error: 'Address not found' });
+        }
+
+        // Update the address fields
+        existingAddress.first_name = fname;
+        existingAddress.last_name = lname;
+        existingAddress.address = address;
+        existingAddress.city = city;
+        existingAddress.state = state;
+        existingAddress.zipcode = zipcode;
+        existingAddress.mobile = mobile;
+
+        // Save the updated address
+        await existingAddress.save();
+
+        // Show success alert using SweetAlert
+        res.status(200).json({ message: 'Address updated successfully' });
+
+
+
+        
+    } catch (error) {
+        console.error(error.message)
         
     }
 }
@@ -928,7 +1214,11 @@ module.exports={
    getForgotPassword,
    postForgotPassword,newOtp,
    verifyNewOtp,verifyPasswords,
-   loadLogout,editProfile,updateUserDetails,
-   userDash,addressForm,createAddress,invoiceShow,shop,
-   filterProdutcs,sortBrand,contact,lowtohigh,hightoLow,addAddressInCheckout,createAddress2
+   loadLogout,editProfile,updatePassword,
+   userDash,addressForm,createAddress,
+   invoiceShow,shop,
+   filterProdutcs,sortBrand,
+   contact,lowtohigh,hightoLow,addAddressInCheckout,
+   createAddress2,atoz,ztoa,
+   editUserProfile,editAddress,updateAddress,sendMessage
 }

@@ -404,7 +404,7 @@ body {
                 </div>
             </div>
         </div>
-        <section class="hero-2 bg-green">
+        <section class="hero-2 bg-blue">
             <div class="hero-content">
                 <div class="container">
                     <div class="text-center">
@@ -412,10 +412,14 @@ body {
                         <h1 class="mb-20 wow fadeIn animated font-xxl fw-900">
                             Let's Talk About <br>Your <span class="text-style-1">Idea</span>
                         </h1>
-                        <p class="w-50 m-auto mb-50 wow fadeIn animated">Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum quam eius placeat, a quidem mollitia at accusantium reprehenderit pariatur provident nam ratione incidunt magnam sequi.</p>
+                        <!-- <p class="w-50 m-auto mb-50 wow fadeIn animated">Lorem ipsum dolor sit amet consectetur adipisicing elit. Harum quam eius placeat, a quidem mollitia at accusantium reprehenderit pariatur provident nam ratione incidunt magnam sequi.</p> -->
                         <p class="wow fadeIn animated">
-                            <a class="btn btn-brand btn-lg font-weight-bold text-white border-radius-5 btn-shadow-brand hover-up" href="page-about.html">About Us</a>
-                            <a class="btn btn-outline btn-lg btn-brand-outline font-weight-bold text-brand bg-white text-hover-white ml-15 border-radius-5 btn-shadow-brand hover-up">Support Center</a>
+                            <!-- <a class="btn btn-brand btn-lg font-weight-bold text-white border-radius-5 btn-shadow-brand hover-up" href="page-about.html">About Us</a> -->
+                            <!-- <a class="btn btn-outline btn-lg btn-brand-outline font-weight-bold text-brand bg-white text-hover-white ml-15 border-radius-5 btn-shadow-brand hover-up">Support Center</a> -->
+                            <a class="btn btn-lg font-weight-bold text-white border-radius-5 btn-shadow-brand hover-up" href="page-about.html" style="background-color: rgba(3, 3, 83, 0.98);">About Us</a>
+
+                            <a class="btn btn-lg btn-brand-outline font-weight-bold text-brand bg-white text-hover-white ml-15 border-radius-5 btn-shadow-brand hover-up" style="color: rgba(3, 3, 83, 0.98);">Support Center</a>
+
                         </p>
                     </div>
                 </div>
@@ -428,43 +432,88 @@ body {
                     <div class="col-xl-8 col-lg-10 m-auto">
                         <div class="contact-from-area padding-20-row-col wow FadeInUp">
                             <h3 class="mb-10 text-center">Drop Us a Line</h3><br><br>
-                           
-                            <form class="contact-form-style text-center" id="contact-form" action="#" method="post">
+                            <form class="contact-form-style text-center" id="contact-form" action="/sendMessage" method="post" >
                                 <div class="row">
                                     <div class="col-lg-6 col-md-6">
                                         <div class="input-style mb-20">
-                                            <input name="name" placeholder="First Name" type="text">
+                                            <input name="name" placeholder=" Name" type="text" required>
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-md-6">
                                         <div class="input-style mb-20">
-                                            <input name="email" placeholder="Your Email" type="email">
+                                            <input name="email" placeholder=" Email" type="email" required>
                                         </div>
                                     </div>
                                     <div class="col-lg-6 col-md-6">
                                         <div class="input-style mb-20">
-                                            <input name="telephone" placeholder="Your Phone" type="tel">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6 col-md-6">
-                                        <div class="input-style mb-20">
-                                            <input name="subject" placeholder="Subject" type="text">
+                                            <input name="telephone" placeholder=" Phone" type="tel" required>
                                         </div>
                                     </div>
                                     <div class="col-lg-12 col-md-12">
                                         <div class="textarea-style mb-30">
-                                            <textarea name="message" placeholder="Message"></textarea>
+                                            <textarea name="message" placeholder="Message"></textarea required>
                                         </div>
-                                        <button class="submit submit-auto-width" type="submit">Send message</button>
+                                        <button class="submit submit-auto-width" style="background-color: rgba(3, 3, 83, 0.98);" type="submit">Send message</button>
                                     </div>
                                 </div>
                             </form>
+
+                            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script>
+    document.getElementById('contact-form').addEventListener('submit', async (event) => {
+        event.preventDefault(); // Prevent the default form submission
+        const form = event.target;
+        const formData = new FormData(form);
+
+        try {
+            const response = await fetch(form.action, {
+                method: form.method,
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(Object.fromEntries(formData.entries()))
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to submit form');
+            }
+
+            const data = await response.json();
+            Swal.fire({
+                title: 'Success',
+                text: data.message,
+                icon: 'success'
+            },1500);
+
+            setTimeout(()=>{
+                window.location.reload()
+            },1500)
+
+
+        } catch (error) {
+            Swal.fire({
+              
+                text: 'You need to Log in',
+                icon: 'error'
+            },1500);
+            setTimeout(()=>{
+                window.location.reload()
+            },1500)
+        }
+    });
+</script>
+
+                         
+
+
+
                             <p class="form-messege"></p>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
+        
     </main>
     <footer class="main">
         <section class="newsletter p-30 text-white wow fadeIn animated">

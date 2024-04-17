@@ -89,8 +89,8 @@
             <hr>
             <ul class="menu-aside">
                 <!-- <li class="menu-item has-submenu"> -->
-                    <a class="menu-link" href="/admin/dashboard"> <i class="icon material-icons md-settings"></i>
-                        <span class="text">Settings</span>
+                    <a class="menu-link" href="/admin/userEnquiry"> <i class="icon material-icons md-settings"></i>
+                        <span class="text">Enquiries</span>
                     </a>
                     
                 <!-- <li class="menu-item"> -->
@@ -143,21 +143,15 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-3">
-                            <form action="/admin/updateCategory?id=<%=category.id%>" method="post">
+                            <!-- <form action="/admin/updateCategory?id=<%=category.id%>" method="post">
                                 <div class="mb-4">
                                     <label for="product_name" class="form-label">Name</label>
-                                    <input type="text" value="<%=category.name%>" class="form-control"  id="product_name" name="cname" required/>
+                                    <input type="text" value="<%=category.name%>" class="form-control"  id="product_name" name="cname" />
                                 </div>
                                 <div class="mb-4">
-                                    <!-- <label for="product_slug" class="form-label">Slug</label>
-                                    <input type="text" placeholder="Type here" class="form-control" id="product_slug" />
-                                </div> -->
+                                   
                                 <div class="mb-4">
-                                    <!-- <label class="form-label">Parent</label>
-                                    <select class="form-select">
-                                        <option>Clothes</option>
-                                        <option>T-Shirts</option>
-                                    </select> -->
+                                   
                                 </div>
                                 <div class="mb-4">
                                     <label class="form-label">Description</label>
@@ -166,7 +160,48 @@
                                 <div class="d-grid">
                                     <button class="btn btn-primary">confirm</button>
                                 </div>
+                            </form> -->
+                            <form action="/admin/updateCategory?id=<%=category.id%>" method="post" id="updateCategoryForm">
+                                <div class="mb-4">
+                                    <label for="product_name" class="form-label">Name</label>
+                                    <input type="text" value="<%=category.name%>" class="form-control" id="product_name" name="cname" />
+                                    <span id="nameError" style="color: red; display: none;">Name cannot be empty or contain spaces or numbers.</span>
+                                </div>
+                                <div class="mb-4">
+                                    <label class="form-label">Description</label>
+                                    <textarea class="form-control" name="cdescription"><%=category.description%></textarea>
+                                    <span id="descriptionError" style="color: red; display: none;">Description cannot be empty.</span>
+                                </div>
+                                <div class="d-grid">
+                                    <button type="button" class="btn btn-primary" onclick="validateAndUpdate()">Confirm</button>
+                                </div>
                             </form>
+                            
+                            <script>
+                                function validateAndUpdate() {
+                                    const nameInput = document.getElementById('product_name');
+                                    const descriptionInput = document.querySelector('textarea[name="cdescription"]');
+                                    const name = nameInput.value.trim();
+                                    const description = descriptionInput.value.trim();
+                            
+                                    // Check for empty fields
+                                    if (!name || !description) {
+                                        document.getElementById('nameError').style.display = !name ? 'block' : 'none';
+                                        document.getElementById('descriptionError').style.display = !description ? 'block' : 'none';
+                                        return;
+                                    }
+                            
+                                    // Check for spaces and numbers in name
+                                    if (/\s/.test(name) || /\d/.test(name)) {
+                                        document.getElementById('nameError').style.display = 'block';
+                                        return;
+                                    }
+                            
+                                    // Submit the form if all validations pass
+                                    document.getElementById('updateCategoryForm').submit();
+                                }
+                            </script>
+                            
                       
                        
                         </div> <!-- .col// -->

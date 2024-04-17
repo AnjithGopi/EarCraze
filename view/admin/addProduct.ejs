@@ -140,8 +140,8 @@
             <hr>
             <ul class="menu-aside">
                 <!-- <li class="menu-item has-submenu"> -->
-                    <a class="menu-link" href="/admin/dashboard"> <i class="icon material-icons md-settings"></i>
-                        <span class="text">Settings</span>
+                    <a class="menu-link" href="/admin/userEnquiry"> <i class="icon material-icons md-settings"></i>
+                        <span class="text">Enquiries</span>
                     </a>
                     
                 <!-- <li class="menu-item"> -->
@@ -237,7 +237,36 @@
                            
                     <div class="card-body">
                         <div class="input-upload">
-                            <input class="form-control" id="fileInput" type="file" name="image" accept="image/*" multiple>
+                            <input class="form-control" id="fileInput" type="file" name="image" accept="image/*" multiple onchange="validateFileInput()">
+                            <span id="fileError" style="color: red; display: none;">Please select only image files.</span>
+                            <script>
+                                function validateFileInput() {
+                                    const fileInput = document.getElementById('fileInput');
+                                    const fileError = document.getElementById('fileError');
+                            
+                                    // Check if any file is selected
+                                    if (fileInput.files.length === 0) {
+                                        fileError.style.display = 'none'; // Hide error message if no file is selected
+                                        return;
+                                    }
+                            
+                                    // Check each selected file
+                                    for (let i = 0; i < fileInput.files.length; i++) {
+                                        const file = fileInput.files[i];
+                                        const fileType = file.type;
+                            
+                                        // Check if the file type is an image
+                                        if (!fileType.startsWith('image/')) {
+                                            fileError.style.display = 'block'; // Show error message for non-image file
+                                            fileInput.value = ''; // Clear the file input
+                                            return;
+                                        }
+                                    }
+                            
+                                    // If all selected files are images, hide the error message
+                                    fileError.style.display = 'none';
+                                }
+                            </script>
                         </div>
                     </div>
                     <div class="card-body">

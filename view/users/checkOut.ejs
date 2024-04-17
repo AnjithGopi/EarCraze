@@ -702,8 +702,9 @@ body {
                                  return response.json();
                                  })
                                 .then(data => {
+                                    const formattedBalance = parseFloat(data.balance).toFixed(2);
                                    // Update modal with fetched wallet balance
-                                  document.getElementById('walletBalance').innerHTML = 'Available balance :  ' + data.balance;
+                                  document.getElementById('walletBalance').innerHTML = 'Available balance :  ' + formattedBalance;
                                 })
                                  .catch(error => {
                                    console.error(error);
@@ -956,7 +957,6 @@ function placeOrder() {
 
 
     if(selectedRadioButton==='Razorpay'){
-  console.log('iffff');
 
         fetch('/paymentByRazorpay',{
             method:'POST',
@@ -972,11 +972,6 @@ function placeOrder() {
         .then(data=>{
             const orderId= data.razOrder
             id = data.id
-            console.log("orderId:",orderId)
-            //const user = data.userData
-
-            console.log('inside');
-
             initiatePayment(orderId)
             
 
@@ -987,22 +982,33 @@ function placeOrder() {
 
         function initiatePayment(orderId){
             let order= JSON.stringify(orderId)
-            //let user=JSON.stringify(user)
-         console.log('amountttt'+order.amount);
-   console.log('calleddd');
+           
+        
             var options = {
-    "key": "rzp_test_HLFENnvKhWUWjZ", // Enter the Key ID generated from the Dashboard
-    "amount":Math.ceil(totalAmount*100), // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+    "key": "rzp_test_HLFENnvKhWUWjZ",                   // Enter the Key ID generated from the Dashboard
+    "amount":Math.ceil(totalAmount*100),               // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
     "currency": "INR",
-    "name": "Acme Corp",
+    "name": "Sonic Rhythmes",
     "description": "Test Transaction",
-    "image": "https://example.com/your_logo",
-    "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+    "image": "assets/imgs/theme/logo.png",
+    "order_id":order.id,                         //This is a sample Order ID. Pass the id obtained in the response of Step 1
     "handler": function (response){
-        // alert(response.razorpay_payment_id);
-        // alert(response.razorpay_order_id);
-        // alert(response.razorpay_signature)
-        window.location.href="/";
+
+
+                                             // alert(response.razorpay_payment_id);
+                                            // alert(response.razorpay_order_id);
+                                           // alert(response.razorpay_signature)
+                                          // window.location.href="/";
+        Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'Order Placed',
+                        showConfirmButton: false,
+                        timer: 2000,
+                    });
+                    setTimeout(() => {
+                        window.location.href = '/';
+                    }, 1000);
     },
     "prefill": {
         "name": 'hghghhh',
@@ -1013,14 +1019,24 @@ function placeOrder() {
         "address": "Razorpay Corporate Office"
     },
     "theme": {
-        "color": "#3399cc"
+        "color": " rgba(3, 3, 83, 0.98);"
     }
 };
 var rzp1 = new Razorpay(options);
 rzp1.on('payment.failed', function (response){
+
+
+    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Cannot place order!',
+                    });
   
-     
-       window.location.href =`/changestatus?id=${id}`
+     setTimeout(()=>{
+        window.location.href =`/changestatus?id=${id}`
+
+     },1500)
+      
         // alert(response.error.description);
         // alert(response.error.source);
         // alert(response.error.step);
@@ -1031,6 +1047,9 @@ rzp1.on('payment.failed', function (response){
 
 rzp1.open()
         }
+
+       
+
 
 
     }else if(selectedRadioButton==='Wallet'){

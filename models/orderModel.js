@@ -25,7 +25,7 @@ const orderSchema= mongoose.Schema({
     razOrderId:{type:String},
     paymentMethod:{type:String,required:true},
     paymentStatus:{type:String,enum:['Pending','Recieved','Failed','Refund'],default:"Pending"},
-    orderStatus:{type:String,enum:['Order Placed','Confirmed','Shipped','Delivered','Cancelled','Returned'],default:"Order Placed"},
+    orderStatus:{type:String,enum:['Order Placed','Confirmed','Shipped','Delivered','Cancelled','Returned','Pending'],default:"Order Placed"},
     orderDate:{type:Date,default:Date.now},
     orderId:{type:String},
     couponDiscount:{type:Number},

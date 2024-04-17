@@ -6,6 +6,7 @@ const Brand=require("../models/brandModel")
 const Order= require('../models/orderModel')
 const Coupon=require('../models/couponModel')
 const Banner= require("../models/bannerModel")
+const Contact= require('../models/contactModel')
 
 
 
@@ -167,6 +168,20 @@ const userList= async(req,res)=>{
         
     } catch (error) {
         console.log(error.message)
+        
+    }
+}
+
+
+const userEnquiry= async(req,res)=>{
+    try {
+
+        const enq= await Contact.find()
+
+        res.render("messages",{enq})
+        
+    } catch (error) {
+        console.error(error.message)
         
     }
 }
@@ -554,49 +569,62 @@ const createCoupon= async(req,res)=>{
 
 
 
-
-     const salesData= async(req,res)=>{
-
-
+     const salesData = async (req, res) => {
         try {
+            // Query orders with paymentStatus "Received" and orderStatus "Delivered"
+            const orders = await Order.find({
+                paymentStatus: 'Recieved',
+                orderStatus: 'Delivered'
+            }).select('orderDate totalAmount'); // Selecting only necessary fields (e.g., orderDate, totalAmount)
+    
+            // Processing sales data to get monthly, weekly, and yearly sales
+            const monthlySales = {}; // Object to store monthly sales
+            const weeklySales = {}; // Object to store weekly sales
+            const yearlySales = {}; // Object to store yearly sales
+    
+            // Process each order
+            orders.forEach(order => {
+                const orderDate = new Date(order.orderDate);
+                const month = orderDate.getMonth()+1;
+                console.log("month:",month) // Month index (0-11)
 
-           const salesData = await Order.aggregate([
-                {
-                  $match: {
-                    orderStatus: 'Delivered', // Filter by order status
-                    paymentStatus: 'Received' // Filter by payment status
-                  }
-                },
-                {
-                  $group: {
-                    _id: { $dateToString: { format: '%Y-%m', date: '$orderDate' } },
-                    totalSales: { $sum: '$totalAmount' }
-                  }
-                }
-              ]);
+                
+                
+                // const week = `${orderDate.getFullYear()}-${month}-${Math.floor((orderDate.getDate() - 1) / 7)}` +1;
+                const week = `${orderDate.getFullYear()}-${orderDate.getMonth() + 1}-${Math.floor((orderDate.getDate() - 1) / 7) + 1}`;
 
-
-              console.log("salesData:",salesData)
-            //   res.json(salesData);
-
-
-
-
-
-            
+                console.log("week:",week) // Week format: YYYY-MM-WW
+                const year = orderDate.getFullYear();
+                console.log("year:",year) // Full year (e.g., 2023)    
+               
+        
+                // Monthly sales
+                monthlySales[month] = (monthlySales[month] || 0) + parseFloat(order.totalAmount);
+                console.log("monthly sales:",monthlySales)
+    
+                // Weekly sales
+                weeklySales[week] = (weeklySales[week] || 0) + parseFloat(order.totalAmount);
+                console.log("weekly sales:",weeklySales)
+    
+                // Yearly sales
+                yearlySales[year] = (yearlySales[year] || 0) + parseFloat(order.totalAmount);
+                console.log("yearly sales:",yearlySales)
+            });
+    
+            // Return sales data
+            res.json({
+                monthly: monthlySales,
+                weekly: weeklySales,
+                yearly: yearlySales
+            });
         } catch (error) {
-            console.error(error.message)
-            
+            console.error(error.message);
+            res.status(500).json({ error: 'Internal Server Error' });
         }
-     }
-
-
-
-
-
-
-
-
+    };
+    
+   
+    
 
 
 
@@ -605,5 +633,5 @@ module.exports={
     unblockUser,getDashboard,adminLogout,salesReport,
     salesReportSearch,coupon,createCoupon,blockCoupon, 
     unblockCoupon,getCouponCode,bannerPage,addBanner,offers,applyOffers,
-    deleteExpiredBanners,salesData,
+    deleteExpiredBanners,salesData,userEnquiry
 }

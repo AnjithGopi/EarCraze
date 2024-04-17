@@ -24,6 +24,9 @@ const path = require('path');
 
 const axios= require("axios")
 
+app.set('view engine','ejs')
+app.set('views','./view/users')
+
 
 
 
@@ -60,7 +63,8 @@ app.use("/admin",admin_Route)
 app.use("*",(req,res)=>{
 
 
-    res.send("404 page not found")
+    // res.send("404 page not found")
+    res.render("404")
 
 })
 

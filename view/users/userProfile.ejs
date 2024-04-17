@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/2.0.2/css/dataTables.dataTables.min.css">
+
+    <!-- Custom CSS -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f7f7f7;
+            margin: 0;
+            padding: 0;
+        }
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: rgba(3, 3, 83, 0.98);
+            color: #fff;
+            padding: 10px 20px;
+        }
+        .navbar-brand {
+            font-size: 24px;
+            font-weight: bold;
+            text-decoration: none;
+            color: #fff;
+        }
+        .navbar-menu ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+        .navbar-menu li {
+            margin-right: 20px;
+        }
+        .navbar-menu a {
+            text-decoration: none;
+            color: #fff;
+            transition: color 0.3s ease;
+        }
+        .navbar-menu a:hover {
+            color: #f0f0f0;
+        }
+        .sticky-bar {
+            position: sticky;
+            top: 0;
+            background-color: #ffffff;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 10px 20px;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .sticky-bar ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+        .sticky-bar li {
+            margin-right: 20px;
+        }
+        .sticky-bar a {
+            text-decoration: none;
+            color: #333;
+            transition: color 0.3s ease;
+        }
+        .sticky-bar a:hover {
+            color: #007bff;
+        }
+        .container {
+            display: flex;
+            max-width: 1200px;
+            margin: 20px auto;
+            background-color: #fff;
+            border-radius: 10px;
+            padding-left: 0px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        .sidebar {
+            width: 250px;
+          
+            background-color: rgba(3, 3, 83, 0.98);
+            color: #fff;
+            padding: 20px;
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+        }
+        .sidebar h2 {
+            margin-bottom: 20px;
+            font-size: 24px;
+            color: #fff;
+        }
+        .sidebar ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .sidebar li {
+            margin-bottom: 10px;
+        }
+        .sidebar a {
+            color: #fff;
+            text-decoration: none;
+            display: block;
+            padding: 8px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .sidebar a:hover {
+            background-color: #0056b3;
+        }
+        .sidebar a.active {
+            background-color: #0056b3;
+        }
+        .content {
+            flex-grow: 1;
+            padding: 20px;
+            display: none;
+        }
+        .order-item {
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .order-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .order-item h3 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .order-item p {
+            margin-bottom: 5px;
+            color: #666;
+        }
+        .order-item span {
+            font-weight: bold;
+        }
+        .profile-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+        .profile-header h1 {
+            font-size: 24px;
+            color: #333;
+        }
+
+        .profile-header a {
+            background-color: #17a2b8;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 20px;
+            cursor: pointer;
+            transition:background-color 0.3s ease;
+            text-decoration: none;
+        }
+        .profile-header button:hover {
+            background-color: #138496;
+        }
+
+        /* change passwords */
+
+
+        
+       
+
+
+
+    </style>
+</head>
+<body>
+    <!-- Header section -->
+    <header class="navbar">
+        <a href="#" class="navbar-brand"></a>
+        <div class="navbar-menu">
+            <ul>
+                <% if(locals.loginData) { %>
+                    <li><i class="fa-solid fa-user"></i>&nbsp;&nbsp;&nbsp;<a href="#"><%= loginData.name %></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+
+                <%}else{%>
+                <li><i class="fa-solid fa-user"></i>&nbsp;&nbsp;&nbsp;<a href="#">Login</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+                <%}%>
+            </ul>
+        </div>
+    </header>
+
+    <!-- Sticky bar section -->
+    <div class="sticky-bar">
+        <img src="assets/imgs/theme/logo.png" alt="Logo" style="height: 40px; margin-left: 60px;">
+        <!-- <a href="#" class="navbar-brand">Your Logo</a> -->
+        <ul>
+            <li><a style="font-weight: bold;color: black;" href="/">Home</a></li>
+            <li><a style="font-weight: bold;color: black;"href="/cart">Cart</a></li>
+            <li><a style="font-weight: bold;color: black;" href="/wishlist">Wishlist</a></li>
+            <li><a style="font-weight: bold;color: black;" href="/shop">Shop</a></li>
+            <li><a style="font-weight: bold;color: black;" href="/contact">Contact</a></li>
+            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+        </ul>
+        
+    </div>
+
+    <!-- Main content section -->
+    <div  class="container">
+        <!-- Sidebar section -->
+        <div class="sidebar">
+            <h2>Menu</h2>
+            <ul>
+                <li><a href="#"  onclick="toggleContent('profile')">User Profile</a></li>
+                <li><a href="#" onclick="toggleContent('orders')">Orders</a></li>
+                <li><a href="#" onclick="toggleContent('wallet')">Wallet</a></li>
+                <li><a href="#" onclick="toggleContent('address')">My Address</a></li>
+                <li><a href="#" onclick="toggleContent('password')">Change Password</a></li><br><br><br><br><br><br>
+
+                <% if(locals.loginData) { %>
+                <li><a href="/logout">Logout</a></li>
+                <%}%>
+            </ul>
+        </div>
+
+        <!-- Content section -->
+        <div class="content" id="profileSection" style="display: block;">
+            <div class="profile-header">
+                <!-- <h1>User Profile</h1> -->
+               &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<a href="#" onclick="toggleContent('editProfile')">Edit Profile</a>
+            </div>
+
+            <div class="profile-info">
+                <%if(locals.userDetails){%>
+                <h2>Personal Information</h2>
+               
+                <p><i class="fas fa-user"></i> <%=userDetails.name%></p>
+                <p><i class="fas fa-envelope"></i> <%=userDetails.email%></p>
+                <p><i class="fas fa-phone"></i> <%=userDetails.mobile%></p>
+                
+                <%}%>
+
+
+            </div>
+            <div class="profile-about"><br><br>
+                <h2>Welcome Home</h2>
+                <p>From your account dashboard. you can easily check & view your recent orders, manage your shipping and billing addresses and edit your password and account details.</p>
+            </div>
+        </div>
+
+        <!-- Order details section -->
+       
+        <div class="content" id="ordersSection">
+            <% if (locals.order && order.length > 0 ) { %>
+                <% order.forEach((item) => { %>
+            
+            <div class="order-item row">
+
+                <div class="col">
+                   
+                    
+                    <h5>Order ID : <%= item.orderId %></h5>
+                    <p><span style="font-size: small;">Payment </span> <span style="color: #208203;font-size: small"><%= item.paymentMethod %></span></p>
+
+                    <!-- <p><span>Status:</span> Shipped</p> -->
+                    <% if(item.orderStatus=='Cancelled'){ %>
+                        <span style="font-size: small;" >Order Status:</span> <span style="color: red;font-size: small"><%=item.orderStatus%></span><br>
+                    <% } else if(item.orderStatus=='Pending'){ %>
+                        <span style="font-size: small;">Order Status:</span> <span style="color: orange;font-size: small"><%=item.orderStatus%></span><br>
+                    <% } else if(item.orderStatus=='Shipped'){ %>
+                        <span style="font-size: small;">Order Status:</span> <span style="color: rgb(2, 55, 2);font-size: small"><%=item.orderStatus%></span><br>
+                    <% } else if(item.orderStatus=='Delivered'){ %>
+                        <span style="font-size: small;">Order Status:</span> <span style="color: greenyellow;font-size: small"><%=item.orderStatus%></span><br>
+                    <% } else if(item.orderStatus=='Returned'){ %>
+                        <span style="font-size: small;">Order Status:</span> <span style="color: black;font-size: small"><%=item.orderStatus%></span><br>
+                    <% } else { %>
+                        <span style="font-size: small;">Order Status:</span> <span style="color: green;font-size: small"><%=item.orderStatus%></span><br>
+
+                        
+                    <% } %>
+
+
+                    
+                    <!-- ---------------------------------------------------payment Status-------------------------------------->
+                    <% if(item.paymentStatus=='Pending'){ %>
+                        <span style="font-size: small;" >Payment Status:</span> <span style="color: rgb(229, 182, 54);font-size: small"><%=item.paymentStatus%></span><br>
+                        <% } else if(item.orderStatus=='Recieved'){ %>
+                            <span style="font-size: small;" >Payment Status:</span> <span style="color: rgb(57, 128, 63);font-size: small"><%=item.paymentStatus%></span><br>
+                            <% } else if(item.orderStatus=='Failed'){ %>
+                                <span style="font-size: small;" >Payment Status:</span> <span style="color: rgb(245, 7, 7);font-size: small"><%=item.paymentStatus%></span><br>
+
+                            <%}%>
+
+
+
+
+
+
+
+
+                    <!-- --------------------------------------------------------------------------------------------------------->
+                    <p><span style="font-size: small;">Date:</span> <span style="color: black;font-size: small"><%= item.orderDate.toLocaleDateString() %></span></p>
+                    <p><span style="font-size: small;">Total:</span> ₹ <span style="color: rgb(244, 12, 8);font-size: small"><%= parseFloat(item.totalAmount).toLocaleString() %></span> </p>
+
+
+
+                    <a  href="/userOrderDetails?id=<%=item._id%>" class="btn btn-primary btn-sm">View Details</a>
+
+                    
+
+                </div>
+                <div class="col-auto">
+                    <% if(item.orderStatus=='Delivered'){ %>
+                        <!-- <a href="#" onclick="returnOrder('<%= item._id %>')" class="btn btn-success">Return</a> -->
+                        <a href="#" onclick="confirmReturn('<%= item._id %>')" class="btn btn-success">Return</a>
+
+
+                        <script>
+                             function confirmReturn(orderId) {
+        // Display a confirmation dialog using SweetAlert
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'Do you want to return this order?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Return',
+            cancelButtonText: 'Cancel'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // If user confirms, make an AJAX request using Fetch API
+                fetch(`/returnOrder?id=${orderId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to return order');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Handle the response as needed
+                    Swal.fire({
+                        title: 'Success',
+                        text: 'Order returned successfully',
+                        icon: 'success'
+                    });
+
+                    setTimeout(()=>{
+
+                        window.location.reload()
+
+                    },1500)
+
+    
+                    // Optionally, you can reload the page or update the UI after successful return
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Failed to return order',
+                        icon: 'error'
+                    });
+                });
+            }
+        });
+    }
+                        </script>
+
+
+                    <% } else if(item.orderStatus=='Returned'){ %>
+                        <span style="color: rgb(228, 5, 5);">ORDER RETURNED</span>
+                   <% }else if(item.orderStatus=="Pending" && item.paymentStatus=="Failed"){%>
+                    <!-- <span style="color: rgb(4, 18, 100);">RETRY</span> -->
+                    <a href="/cart" style="color: white;"  class="btn btn-warning">Retry</a>
+
+                    <% } else if (item.orderStatus=="Cancelled"){%>
+                        <span style="color: rgb(217, 6, 6);">CANCELLED</span>
+                    <% }else {%>
+                        
+                        <a href="#" class="btn btn-danger" onclick="confirmCancel('<%= item._id %>')">Cancel</a>
+                        <script>
+                            function confirmCancel(orderId) {
+                      // Display a confirmation dialog using SweetAlert
+       Swal.fire({
+           title: 'Are you sure?',
+           text: 'Do you want to cancel? this order?',
+           icon: 'question',
+           showCancelButton: true,
+           confirmButtonText: 'Yes',
+           cancelButtonText: 'NO'
+       }).then((result) => {
+           if (result.isConfirmed) {
+               // If user confirms, make an AJAX request using Fetch API
+               fetch(`/cancelOrder?id=${orderId}`, {
+                   method: 'GET',
+                   headers: {
+                       'Content-Type': 'application/json'
+                   }
+               })
+               .then(response => {
+                   if (!response.ok) {
+                       throw new Error('Failed to return order');
+                   }
+                   return response.json();
+               })
+               .then(data => {
+                   // Handle the response as needed
+                   Swal.fire({
+                       title: 'Success',
+                       text: 'Order Cancelled ',
+                       icon: 'success'
+                   });
+
+                   setTimeout(()=>{
+
+                       window.location.reload()
+
+                   },1500)
+
+   
+                   // Optionally, you can reload the page or update the UI after successful return
+               })
+               .catch(error => {
+                   console.error('Error:', error);
+                   Swal.fire({
+                       title: 'Error',
+                       text: 'Failed to return order',
+                       icon: 'error'
+                   });
+               });
+           }
+       });
+   }
+                       </script>
+                        
+
+                   <% } %>
+                       
+                    <!-- <button class="btn btn-danger">Cancel Order</button> -->
+                </div>
+            </div>
+            <% }) %>
+                
+                       
+
+                    <%}else{%>
+
+                        <div class="order-item row" style="background-color: #f8f9fa; padding: 20px; border-radius: 5px;">
+                            <div class="col">
+                                <h3 style="color: #000000; font-size: 24px; text-align: center; font-weight: bolder;">No Orders Found</h3>
+                            </div>
+                        </div>
+                        
+
+
+                    <%}%>
+            
+           
+        </div>
+        <!-- Wallet section -->
+
+        <% if (locals.walletDetails) { %>
+            <div class="content" id="walletSection">
+                <div class="wallet-info">
+                    <h2 class="mb-3">Wallet Balance</h2>
+                    <div class="card bg-light mb-3" style="max-width: 30rem;">
+                        <!-- <div class="card-body">
+                            <h5 class="card-title">Current Balance</h5>
+                            <p class="card-text fs-5" style="color: rgb(2, 9, 80); font-weight: bold;">₹ <%= walletDetails.balance %></p>
+                        </div> -->
+                        <div class="card-body">
+                            <h5 class="card-title">Current Balance</h5>
+                            <% const formattedBalance = walletDetails.balance.toFixed(2); %>
+                            <p class="card-text fs-5" style="color: rgb(34, 140, 18); font-weight: bold;">₹ <%= formattedBalance %></p>
+                        </div>
+                        
+                    </div>
+                </div>
+                <div class="transaction-history">
+                    <h2 class="mb-3">Transaction History</h2>
+                    <table class="table table-striped" id="">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Type</th>
+                                <th>Amount</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                          
+                                <tr>
+                                    <% for (let i = 0; i < walletDetails.transactionHistory.length; i++) { %>
+                                        <% const transaction = walletDetails.transactionHistory[i]; %>
+                                        <tr>
+                                            <td style="font-weight: bold; color: black;"><%= transaction.date.toDateString() %></td>
+                                            <% if (transaction.type === 'Credit') { %>
+                                                <td style="color: green;font-weight: bold;"><%= transaction.type %></td>
+                                                <td style="color: green;font-weight: bold;">₹ <%= transaction.amount %></td>
+                                            <% } else { %>
+                                                <td style="color: rgb(240, 47, 4);font-weight: bold;"><%= transaction.type %></td>
+                                                <td style="color: rgb(240, 47, 4);font-weight: bold;">₹ <%= transaction.amount %></td>
+                                            <% } %>
+                                        </tr>
+                                    <% } %>
+                                    
+                                </tr>
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        <% } %>
+        
+        
+      
+
+        <div class="content" id="addressesSection">
+            <div class="profile-header">
+                <!-- <h1>User Profile</h1> -->
+               &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;<a href="#"  onclick="toggleContent('addAddress')">Add new Address</a>
+            </div>
+            <%if(locals.showAddress){%>
+                <%showAddress.forEach((address)=>{%>
+            <div class="address-item">
+                <h3>Shipping Address</h3>
+                <p>Name :<%=address.first_name%> <%=address.last_name%></p>
+                <address>Address :<%=address.address%><br>
+                    <%=address.city%> ,<%=address.state%><br>Phone : <%=address.mobile%></address>
+                <p>Zip :<%=address.zipcode%></p>
+                <a href="/editAddress?id=<%=address._id%>" style="display: inline-block; padding: 8px 16px; background-color: #033f68; color: #fff; border: 2px solid #033f68; border-radius: 4px; text-decoration: none; font-size: 14px; font-weight: bold; text-align: center; cursor: pointer; transition: background-color 0.3s, color 0.3s, border-color 0.3s;">
+    Edit
+</a>
+
+                    
+               
+               
+                
+            </div>
+             <%})%>
+             <%}%>
+           
+            
+             
+        </div>
+        
+        
+
+
+        <!-- passwords -->
+        <div class="content" id="passwordSection" style="background-color: #f5f5f5; padding: 30px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+            <div class="profile-header" style="margin-bottom: 20px;">
+                <h1 style="font-size: 32px; color: #333; text-align: center;">Change Password</h1>
+            </div>
+            <!-- <form id="changePasswordForm" action="/updatePassword" method="POST" onsubmit="return validatePassWordForm()">
+                
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label for="email" style="font-size: 18px; color: #555; font-weight: bold;">Email</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" required>
+                </div>
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label for="currentPassword" style="font-size: 18px; color: #555; font-weight: bold;">Current Password</label>
+                    <input type="password" id="currentPassword" name="password" placeholder="Enter your current password" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" required>
+                </div>
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label for="newPassword" style="font-size: 18px; color: #555; font-weight: bold;">New Password</label>
+                    <input type="password" id="newPassword" name="npassword" placeholder="Enter your new password" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" required>
+                </div>
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label for="confirmNewPassword" style="font-size: 18px; color: #555; font-weight: bold;">Confirm New Password</label>
+                    <input type="password" id="confirmNewPassword" name="cnpassword" placeholder="Confirm your new password" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" required>
+                </div>
+                <button type="submit" style="background-color: rgba(3, 3, 83, 0.98); color: #fff; border: none; padding: 12px 20px; border-radius: 5px; font-size: 18px; cursor: pointer;">Change Password</button>
+            </form> -->
+            <form id="changePasswordForm" action="/updatePassword" method="POST" onsubmit="return validatePasswordForm()">
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label for="email" style="font-size: 18px; color: #555; font-weight: bold;">Email</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" >
+                    <span id="emailError" class="error-message" style="color: red; display: none;">Please enter a valid email address.</span>
+                </div>
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label for="currentPassword" style="font-size: 18px; color: #555; font-weight: bold;">Current Password</label>
+                    <input type="password" id="currentPassword" name="password" placeholder="Enter your current password" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;">
+                    <span id="currentPasswordError" class="error-message" style="color: red; display: none;">Current password cannot contain spaces.</span>
+                </div>
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label for="newPassword" style="font-size: 18px; color: #555; font-weight: bold;">New Password</label>
+                    <input type="password" id="newPassword" name="npassword" placeholder="Enter your new password" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" >
+                    <span id="passwordError" class="error-message" style="color: red; display: none;">New password must have at least 8 characters and should not contain spaces.</span>
+                </div>
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label for="confirmNewPassword" style="font-size: 18px; color: #555; font-weight: bold;">Confirm New Password</label>
+                    <input type="password" id="confirmNewPassword" name="cnpassword" placeholder="Confirm your new password" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" >
+                    <span id="confirmPasswordError" class="error-message" style="color: red; display: none;">Passwords do not match.</span>
+                </div>
+                <button type="submit" style="background-color: rgba(3, 3, 83, 0.98); color: #fff; border: none; padding: 12px 20px; border-radius: 5px; font-size: 18px; cursor: pointer;">Change Password</button>
+            </form>
+            
+            <script>
+                function validatePasswordForm() {
+                    const email = document.getElementById('email').value.trim();
+                    const currentPassword = document.getElementById('currentPassword').value.trim();
+                    const newPassword = document.getElementById('newPassword').value.trim();
+                    const confirmNewPassword = document.getElementById('confirmNewPassword').value.trim();
+            
+                    // Check if any field is empty
+                    if (email === '' || currentPassword === '' || newPassword === '' || confirmNewPassword === '') {
+                        document.getElementById('emailError').textContent = 'Please fill in all fields.';
+                        document.getElementById('emailError').style.display = 'block';
+                        return false;
+                    } else {
+                        document.getElementById('emailError').style.display = 'none';
+                    }
+            
+                    // Check if current password contains spaces
+                    if (currentPassword.indexOf(' ') !== -1) {
+                        document.getElementById('currentPasswordError').textContent = 'Current password cannot contain spaces.';
+                        document.getElementById('currentPasswordError').style.display = 'block';
+                        return false;
+                    } else {
+                        document.getElementById('currentPasswordError').style.display = 'none';
+                    }
+            
+                    // Check if new password and confirm password match
+                    if (newPassword !== confirmNewPassword) {
+                        document.getElementById('confirmPasswordError').textContent = 'Passwords do not match.';
+                        document.getElementById('confirmPasswordError').style.display = 'block';
+                        return false;
+                    } else {
+                        document.getElementById('confirmPasswordError').style.display = 'none';
+                    }
+            
+                    // Check if new password has minimum 8 characters and does not contain spaces
+                    if (newPassword.length < 8 || newPassword.indexOf(' ') !== -1) {
+                        document.getElementById('passwordError').textContent = 'New password must have at least 8 characters and should not contain spaces.';
+                        document.getElementById('passwordError').style.display = 'block';
+                        return false;
+                    } else {
+                        document.getElementById('passwordError').style.display = 'none';
+                    }
+            
+                    // Additional validation checks can be added here if needed
+            
+                    return true; // Form will be submitted if all validations pass
+                }
+            </script>
+            
+            
+            
+
+           
+
+
+
+
+
+
+
+
+
+            <!-- ------------------------- -->
+
+
+
+
+        </div>
+        <!-- editProfile -->
+        <div class="content" id="editSection" style="background-color: #f5f5f5; padding: 30px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+            <div class="profile-header" style="margin-bottom: 20px;">
+                <h1 style="font-size: 32px; color: #333; text-align: center;">Edit Profile</h1>
+            </div>
+            
+                <!-- Display current username -->
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label for="currentUsername" style="font-size: 18px; color: #555; font-weight: bold;">Current Username</label>
+                    <p id="currentUsername" style="padding: 10px; border-radius: 5px; border: 1px solid #ccc; background-color: #fff;color: #000000;font-weight: bold;"><%=userDetails.name%></p>
+                </div>
+                <!-- Display current email -->
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label for="currentEmail" style="font-size: 18px; color: #555; font-weight: bold;">Current Email</label>
+                    <p id="currentEmail" style="padding: 10px; border-radius: 5px; border: 1px solid #ccc; background-color: #fff;color: #000000;font-weight: bold;"><%=userDetails.email%></p>
+                </div>
+                <!-- Display current mobile number -->
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label for="currentMobile" style="font-size: 18px; color: #555; font-weight: bold;">Current Mobile Number</label>
+                    <p id="currentMobile" style="padding: 10px; border-radius: 5px; border: 1px solid #ccc; background-color: #fff;color: #000000;font-weight: bold;"><%=userDetails.mobile%></p>
+                </div>
+            <!-- <form id="editProfileForm" action="/edit_userProfile" method="POST">
+              
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label for="newUsername" style="font-size: 18px; color: #555; font-weight: bold;">New Username</label>
+                    <input type="text" id="newUsername" name="newUsername" placeholder="Enter your new username" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" required>
+                </div>     
+                
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label for="newMobile" style="font-size: 18px; color: #555; font-weight: bold;">New Mobile Number</label>
+                    <input type="tel" id="newMobile" name="newMobile" placeholder="Enter your new mobile number" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" required>
+                </div>
+                
+                <button type="submit" style="background-color: rgba(3, 3, 83, 0.98); color: #fff; border: none; padding: 12px 20px; border-radius: 5px; font-size: 18px; cursor: pointer;">Save Changes</button>
+            </form> -->
+            <form id="editProfileForm" action="/edit_userProfile" method="POST" onsubmit="return validateEditProfileForm(event)">
+                <!-- Input field for new username -->
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label for="newUsername" style="font-size: 18px; color: #555; font-weight: bold;">New Username</label>
+                    <input type="text" id="newUsername" name="newUsername" placeholder="Enter your new username" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" required>
+                    <span id="newUsernameError" class="error-message" style="color: red; display: none;"></span>
+                </div>     
+                <!-- Input field for new mobile number -->
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label for="newMobile" style="font-size: 18px; color: #555; font-weight: bold;">New Mobile Number</label>
+                    <input type="tel" id="newMobile" name="newMobile" placeholder="Enter your new mobile number" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" required>
+                    <span id="newMobileError" class="error-message" style="color: red; display: none;"></span>
+                </div>
+                
+                <button type="submit" style="background-color: rgba(3, 3, 83, 0.98); color: #fff; border: none; padding: 12px 20px; border-radius: 5px; font-size: 18px; cursor: pointer;">Save Changes</button>
+            </form>
+            
+            <script>
+             
+    function validateEditProfileForm(e) {
+        e.preventDefault()
+        const newUsername = document.getElementById('newUsername').value.trim();
+        const newMobile = document.getElementById('newMobile').value.trim();
+
+        // Check if any field is empty
+        if (newUsername === '' || newMobile === '') {
+            document.getElementById('newUsernameError').textContent = 'Please fill in all fields.';
+            document.getElementById('newUsernameError').style.display = 'block';
+            document.getElementById('newMobileError').textContent = 'Please fill in all fields.';
+            document.getElementById('newMobileError').style.display = 'block';
+            return false; // Prevent form submission
+        } else {
+            document.getElementById('newUsernameError').style.display = 'none';
+            document.getElementById('newMobileError').style.display = 'none';
+        }
+
+        // Check if username contains spaces
+        if (/\s/.test(newUsername)) {
+            document.getElementById('newUsernameError').textContent = 'Username cannot contain spaces.';
+            document.getElementById('newUsernameError').style.display = 'block';
+            return false; // Prevent form submission
+        } else {
+            document.getElementById('newUsernameError').style.display = 'none';
+        }
+
+        // Check if mobile number contains spaces or is less than 10 characters
+        if (/\s/.test(newMobile) || newMobile.length < 10) {
+            document.getElementById('newMobileError').textContent = 'Mobile number must be 10 digits long and should not contain spaces.';
+            document.getElementById('newMobileError').style.display = 'block';
+            return false; // Prevent form submission
+        } else {
+            document.getElementById('newMobileError').style.display = 'none';
+        }
+        submitFormData(e)
+        return true; // Form will be submitted if all validations pass
+    }
+</script>
+
+            </script>
+            
+        </div>
+
+        <!-- add new ADDRESS -->
+        <div class="content" id="addAddressSection" style="background-color: #f5f5f5; padding: 30px; border-radius: 10px; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+            <div class="profile-header" style="margin-bottom: 20px;">
+                <h1 style="font-size: 32px; color: #333; text-align: center;">Add New Address</h1>
+            </div>
+            <!-- <form id="addAddressForm" action="/createAddress" method="POST">
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label for="fullName" style="font-size: 18px; color: #555; font-weight: bold;">First Name</label>
+                    <input type="text" id="fullName" name="fname" placeholder="Enter your first name" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" required>
+                </div>
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label for="fullName" style="font-size: 18px; color: #555; font-weight: bold;">Last Name</label>
+                    <input type="text" id="fullName" name="lname" placeholder="Enter your last name" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" required>
+                </div>
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label for="addressLine1" style="font-size: 18px; color: #555; font-weight: bold;">Address</label>
+                    <input type="text" id="addressLine1" name="address" placeholder="Enter address line 1" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" required>
+                </div>
+                
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label for="city" style="font-size: 18px; color: #555; font-weight: bold;">City</label>
+                    <input type="text" id="city" name="city" placeholder="Enter city" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" required>
+                </div>
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label for="state" style="font-size: 18px; color: #555; font-weight: bold;">State</label>
+                    <input type="text" id="state" name="state" placeholder="Enter state" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" required>
+                </div>
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label for="state" style="font-size: 18px; color: #555; font-weight: bold;">Country</label>
+                    <input type="text" id="state" name="country" placeholder="Enter state" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" required>
+                </div>
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label for="postalCode" style="font-size: 18px; color: #555; font-weight: bold;">Postal Code</label>
+                    <input type="text" id="postalCode" name="zipcode" placeholder="Enter postal code" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" required>
+                </div>
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label for="phoneNumber" style="font-size: 18px; color: #555; font-weight: bold;">Phone Number</label>
+                    <input type="tel" id="phoneNumber" name="mobile" placeholder="Enter phone number" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" required>
+                </div>
+                <button type="submit" style="background-color: rgba(3, 3, 83, 0.98); color: #fff; border: none; padding: 12px 20px; border-radius: 5px; font-size: 18px; cursor: pointer;">Add Address</button>
+            </form> -->
+
+            <form id="addAddressForm" action="/createAddress" method="POST" onsubmit="return validateAddAddressForm()">
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label for="fullName" style="font-size: 18px; color: #555; font-weight: bold;">First Name</label>
+                    <input type="text" id="fullName" name="fname" placeholder="Enter your first name" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" >
+                    <span id="fnameError" style="color: red; display: none;">Please fill in this field.</span>
+                </div>
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label for="lastName" style="font-size: 18px; color: #555; font-weight: bold;">Last Name</label>
+                    <input type="text" id="lastName" name="lname" placeholder="Enter your last name" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" >
+                    <span id="lnameError" style="color: red; display: none;">Please fill in this field.</span>
+                </div>
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label for="addressLine1" style="font-size: 18px; color: #555; font-weight: bold;">Address</label>
+                    <input type="text" id="addressLine1" name="address" placeholder="Enter address line 1" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;">
+                    <span id="addressError" style="color: red; display: none;">Please fill in this field.</span>
+                </div>
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label for="city" style="font-size: 18px; color: #555; font-weight: bold;">City</label>
+                    <input type="text" id="city" name="city" placeholder="Enter city" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" >
+                    <span id="cityError" style="color: red; display: none;">Please fill in this field.</span>
+                </div>
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label for="state" style="font-size: 18px; color: #555; font-weight: bold;">State</label>
+                    <input type="text" id="state" name="state" placeholder="Enter state" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" >
+                    <span id="stateError" style="color: red; display: none;">Please fill in this field.</span>
+                </div>
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label for="country" style="font-size: 18px; color: #555; font-weight: bold;">Country</label>
+                    <input type="text" id="country" name="country" placeholder="Enter country" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" >
+                    <span id="countryError" style="color: red; display: none;">Please fill in this field.</span>
+                </div>
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label for="postalCode" style="font-size: 18px; color: #555; font-weight: bold;">Postal Code</label>
+                    <input type="text" id="postalCode" name="zipcode" placeholder="Enter postal code" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" >
+                    <span id="zipcodeError" style="color: red; display: none;">Please fill in this field.</span>
+                </div>
+                <div class="form-group" style="margin-bottom: 20px;">
+                    <label for="phoneNumber" style="font-size: 18px; color: #555; font-weight: bold;">Phone Number</label>
+                    <input type="tel" id="phoneNumber" name="mobile" placeholder="Enter phone number" style="width: 100%; padding: 10px; border-radius: 5px; border: 1px solid #ccc;" >
+                    <span id="mobileError" style="color: red; display: none;">Please fill in this field.</span>
+                </div>
+                <button type="submit" style="background-color: rgba(3, 3, 83, 0.98); color: #fff; border: none; padding: 12px 20px; border-radius: 5px; font-size: 18px; cursor: pointer;">Add Address</button>
+            </form>
+        
+            <script>
+                function validateAddAddressForm() {
+                  
+                    const fname = document.getElementById('fullName').value.trim();
+                    const lname = document.getElementById('lastName').value.trim();
+                    const address = document.getElementById('addressLine1').value.trim();
+                    const city = document.getElementById('city').value.trim();
+                    const state = document.getElementById('state').value.trim();
+                    const country = document.getElementById('country').value.trim();
+                    const zipcode = document.getElementById('postalCode').value.trim();
+                    const mobile = document.getElementById('phoneNumber').value.trim();
+        
+                    // Check if any field is empty
+                    if (fname === '') {
+                        document.getElementById('fnameError').style.display = 'block';
+                        return false;
+                    } else {
+                        document.getElementById('fnameError').style.display = 'none';
+                    }
+        
+                    if (lname === '') {
+                        document.getElementById('lnameError').style.display = 'block';
+                        return false;
+                    } else {
+                        document.getElementById('lnameError').style.display = 'none';
+                    }
+        
+                    if (address === '') {
+                        document.getElementById('addressError').style.display = 'block';
+                        return false;
+                    } else {
+                        document.getElementById('addressError').style.display = 'none';
+                    }
+        
+                    if (city === '') {
+                        document.getElementById('cityError').style.display = 'block';
+                        return false;
+                    } else {
+                        document.getElementById('cityError').style.display = 'none';
+                    }
+        
+                    if (state === '') {
+                        document.getElementById('stateError').style.display = 'block';
+                        return false;
+                    } else {
+                        document.getElementById('stateError').style.display = 'none';
+                    }
+        
+                    if (country === '') {
+                        document.getElementById('countryError').style.display = 'block';
+                        return false;
+                    } else {
+                        document.getElementById('countryError').style.display = 'none';
+                    }
+        
+                    if (zipcode === '') {
+                        document.getElementById('zipcodeError').style.display = 'block';
+                        return false;
+                    } else {
+                        document.getElementById('zipcodeError').style.display = 'none';
+                    }
+        
+                    if (mobile === '') {
+                        document.getElementById('mobileError').style.display = 'block';
+                        return false;
+                    } else {
+                        document.getElementById('mobileError').style.display = 'none';
+                    }
+        
+                    return true; // Form will be submitted if all validations pass
+                }
+            </script>
+        
+
+
+
+        </div>
+
+         
+
+
+    </div>
+    <div><br><br><br><br><br><br><br><br>
+        <header style="background-color: #000000;" class="bar">
+            <a href="#" class="navbar-brand"></a>
+            <div class="navbar-menu">
+                
+            </div>
+        </header><br><br>
+
+    </div>
+    
+    <footer class="footer text-black">
+        <div style="width: fit-content;" class="containerr">
+            <div style="margin-left: 250px;" class="row">
+                <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+                    <h4 class="text-uppercase mb-4">About Us</h4>
+                    <p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed malesuada gravida massa, id dictum quam auctor id.</p>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+                    <h4 class="text-uppercase mb-4">Contact Us</h4>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-map-marker-alt me-2"></i>123 Street Name, City, Country</li>
+                        <li><i class="fas fa-envelope me-2"></i>info@example.com</li>
+                        <li><i class="fas fa-phone me-2"></i>+1234567890</li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4 mb-lg-0">
+                    <h4 class="text-uppercase mb-4">Follow Us</h4>
+                    <ul class="list-inline">
+                        <li class="list-inline-item"><a href="#" class="text-white text-decoration-none"><i class="fab fa-facebook-f"></i></a></li>
+                        <li class="list-inline-item"><a href="#" class="text-white text-decoration-none"><i class="fab fa-twitter"></i></a></li>
+                        <li class="list-inline-item"><a href="#" class="text-white text-decoration-none"><i class="fab fa-instagram"></i></a></li>
+                        <li class="list-inline-item"><a href="#" class="text-white text-decoration-none"><i class="fab fa-linkedin"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="text-center">
+                <p class="mb-0">&copy; 2024 Your Company. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+        
+   
+    
+
+    <!-- Bootstrap JS and other scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+
+
+
+    <script>
+      const submitFormData = async (event) => {
+            event.preventDefault(); // Prevent the form from submitting normally
+
+            const form = event.target;
+            console.log(event.target)
+            const formData = new FormData(form);
+            console.log(Object.fromEntries(formData))
+            console.log("formDarta",formData)
+
+            try {
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: JSON.stringify(Object.fromEntries(formData)), // Convert FormData to object
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    const responseData = await response.json();
+
+                    // Show SweetAlert based on JSON response
+                    if (responseData.message) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: responseData.message,
+                            showConfirmButton: false,
+                            timer: 1500 // Automatically close after 1.5 seconds
+                        });
+                        setTimeout(()=>{
+                            window.location.reload()
+
+                        },1500)
+                       
+                    } else {
+                        Swal.fire({
+                            icon: 'info',
+                            title: 'Unexpected Response',
+                            text: 'Unexpected response from the server'
+                        });
+                    }
+
+                    // Optional: Reset the form after successful submission
+                    form.reset();
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Something went wrong!'
+                    });
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong!'
+                });
+            }
+        }
+    </script>
+
+    <!-- change passowords -->
+
+    <script>
+        document.getElementById('changePasswordForm').addEventListener('submit', async (event) => {
+            event.preventDefault(); // Prevent form submission
+    
+            const form = event.target;
+            const formData = new FormData(form);
+    
+            try {
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: JSON.stringify(Object.fromEntries(formData)), // Convert FormData to object
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+    
+                if (response.ok) {
+                    const responseData = await response.json();
+    
+                    // Show success message using SweetAlert
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: responseData.message,
+                        showConfirmButton: false,
+                        timer: 1500
+
+
+                    });
+                    setTimeout(()=>{
+                            window.location.reload()
+
+                        },1500)
+
+
+                } else {
+                    throw new Error('Failed to update password');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                // Show error message using SweetAlert
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: 'Something went wrong!'
+                });
+            }
+        });
+    </script>
+    
+    
+    
+    <script>
+        function toggleContent(content) {
+            console.log('content.......',content);
+            if (content === 'profile') {
+                document.getElementById('profileSection').style.display = 'block';
+                document.getElementById('ordersSection').style.display = 'none';
+                document.getElementById('walletSection').style.display = 'none';
+                document.getElementById('addressesSection').style.display = 'none';
+                document.getElementById('passwordSection').style.display = 'none';
+                document.getElementById('editSection').style.display = 'none';
+                document.getElementById('addAddressSection').style.display = 'none';
+                document.getElementById('editAddressSection').style.display = 'none';
+
+
+            } else if (content === 'orders') {
+                document.getElementById('profileSection').style.display = 'none';
+                document.getElementById('ordersSection').style.display = 'block';
+                document.getElementById('walletSection').style.display = 'none';
+                document.getElementById('addressesSection').style.display = 'none';
+                document.getElementById('passwordSection').style.display = 'none';
+                document.getElementById('editSection').style.display = 'none';
+                document.getElementById('addAddressSection').style.display = 'none';
+                document.getElementById('editAddressSection').style.display = 'none';
+
+
+            }else if (content === 'wallet') {
+                document.getElementById('profileSection').style.display = 'none';
+                document.getElementById('ordersSection').style.display = 'none';
+                document.getElementById('walletSection').style.display = 'block';
+                document.getElementById('addressesSection').style.display = 'none';
+                document.getElementById('passwordSection').style.display = 'none';
+                document.getElementById('editSection').style.display = 'none';
+                document.getElementById('addAddressSection').style.display = 'none';
+                document.getElementById('editAddressSection').style.display = 'none';
+
+
+            } else if(content === 'address'){
+
+                document.getElementById('profileSection').style.display = 'none';
+                document.getElementById('ordersSection').style.display = 'none';
+                document.getElementById('walletSection').style.display = 'none';
+                document.getElementById('addressesSection').style.display = 'block';
+                document.getElementById('passwordSection').style.display = 'none';
+                document.getElementById('editSection').style.display = 'none';
+                document.getElementById('addAddressSection').style.display = 'none';
+                document.getElementById('editAddressSection').style.display = 'none';
+
+
+
+            } else if(content === 'password'){
+                document.getElementById('profileSection').style.display = 'none';
+                document.getElementById('ordersSection').style.display = 'none';
+                document.getElementById('walletSection').style.display = 'none';
+                document.getElementById('addressesSection').style.display = 'none';
+                document.getElementById('passwordSection').style.display = 'block';
+                document.getElementById('editSection').style.display = 'none';
+                document.getElementById('addAddressSection').style.display = 'none';
+                document.getElementById('editAddressSection').style.display = 'none';
+
+
+
+            }else if(content === 'editProfile'){
+                document.getElementById('profileSection').style.display = 'none';
+                document.getElementById('ordersSection').style.display = 'none';
+                document.getElementById('walletSection').style.display = 'none';
+                document.getElementById('addressesSection').style.display = 'none';
+                document.getElementById('passwordSection').style.display = 'none';
+                document.getElementById('editSection').style.display = 'block';
+                document.getElementById('addAddressSection').style.display = 'none';
+                document.getElementById('editAddressSection').style.display = 'none';
+
+
+            }else if(content === 'addAddress'){
+                document.getElementById('profileSection').style.display = 'none';
+                document.getElementById('ordersSection').style.display = 'none';
+                document.getElementById('walletSection').style.display = 'none';
+                document.getElementById('addressesSection').style.display = 'none';
+                document.getElementById('passwordSection').style.display = 'none';
+                document.getElementById('editSection').style.display = 'none';
+                document.getElementById('addAddressSection').style.display = 'block';
+                document.getElementById('editAddressSection').style.display = 'none';
+
+
+            }else if(content === 'editAddress'){
+                document.getElementById('profileSection').style.display = 'none';
+                document.getElementById('ordersSection').style.display = 'none';
+                document.getElementById('walletSection').style.display = 'none';
+                document.getElementById('addressesSection').style.display = 'none';
+                document.getElementById('passwordSection').style.display = 'none';
+                document.getElementById('editSection').style.display = 'none';
+                document.getElementById('addAddressSection').style.display = 'none';
+                document.getElementById('editAddressSection').style.display = 'block';
+
+
+            }
+        }
+    </script>
+     <script src="//cdn.datatables.net/2.0.2/js/dataTables.min.js"></script>
+
+    <script>
+        $(document).ready( function() {
+            new DataTable("#orderTable");
+        });
+    
+        // let table = new DataTable('#walletTable');
+    
+        </script>
+</body>
+</html>
