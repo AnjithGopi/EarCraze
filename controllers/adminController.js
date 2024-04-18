@@ -229,7 +229,7 @@ const unblockUser=async(req,res)=>{
 const adminLogout = async(req,res)=>{
     try {
         req.session.destroy()
-        res.redirect('/')
+        res.redirect('/admin')
         
     } catch (error) {
         console.log(error.message)
@@ -529,7 +529,7 @@ const createCoupon= async(req,res)=>{
 
 
            
-           
+
 
             res.status(200).json({ message: 'Offer applied successfully', category: updatedCategory });
             

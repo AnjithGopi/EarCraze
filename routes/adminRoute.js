@@ -24,7 +24,7 @@ admin_Route.post("/dashboard",adminController.verifyAdmin)
 admin_Route.get("/userlist",adminAuth.isLogin,adminController.userList)
 admin_Route.get("/blockuser",adminAuth.isLogin,adminController.blockUser)
 admin_Route.get("/unblockuser",adminAuth.isLogin,adminController.unblockUser)
-admin_Route.get('/logout',adminController.adminLogin)
+admin_Route.get('/logout',adminController.adminLogout)
 
 admin_Route.get('/userEnquiry',adminController.userEnquiry)
 
