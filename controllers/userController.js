@@ -31,7 +31,7 @@ const loadHome=async(req,res)=>{
         ]}) .populate('category').sort({ date: -1 }) // Sort by date in descending order (newest first)
         .limit(9).exec();
 
-        const categories= await Category.find()
+        const categories= await Category.find({is_active:false})
 
         const banners= await Banner.find()
         
