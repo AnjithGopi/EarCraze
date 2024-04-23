@@ -478,7 +478,7 @@ const createCoupon= async(req,res)=>{
     }
 
         // Schedule the task to run every day at midnight (0:0:0)
-         cron.schedule('0 0 * * *', deleteExpiredBanners);
+        //  cron.schedule('0 0 * * *', deleteExpiredBanners);
 
 
 
